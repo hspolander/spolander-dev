@@ -1,0 +1,122 @@
+@import "../../../css/util";
+@import "../../../css/color";
+
+$break-large: 1024px;
+@mixin respond-to($media) {
+  @if $media == small-screens {
+    @media only screen and (max-width: $break-large) { @content; }
+  }
+  @else if $media == wide-screens {
+    @media only screen and (min-width: $break-large) { @content; }
+  }
+}
+
+.banner-search {
+
+	width: 89%;
+    @include respond-to(small-screens) { width: 97% ;}
+    @extend .center-vertically;
+    .menu-items {
+        display: inline-block;
+        .menu-item {
+            color: $darkblue;
+            display: inline-block;
+            margin-top: 16px;
+            padding: 0 40px;
+            @include respond-to(small-screens) { padding: 0 20px;}
+            text-align: center;
+            i {
+                display: block;
+                &.fa {
+                    color: $darkblue;
+                    @include respond-to(small-screens) { font-size: 55px;}
+
+                }
+                &.icon-title {
+                    font-weight: normal;
+                    font-size: 15px;
+                }
+            }
+        }
+    }
+	input {
+        @extend .center-vertically;
+        display: inline-block;
+        size: 16px;
+        left: 80%;
+        padding: 8px;
+        color: #000000;
+        border: 1px solid $darkblue;
+        border-radius: 4px;
+        outline: none;
+        @include respond-to(small-screens) {
+          font-size: 32px;
+          left: 1%;
+          position: sticky;
+        }
+		&:focus, &:active {
+			border: 2px solid $darkblue;
+		}
+		&.noMatch {
+			border: 2px solid #cf2020;
+		}
+	}
+
+	.autocomplete-select {
+        position: absolute;
+        display: inline-block;
+        left: 80%;
+        top: 72%;
+        width: 20%;
+        background: whitesmoke;
+        opacity: 0.9;
+        @include respond-to(small-screens) {
+            left: 1%;
+            top: 82%;
+            width: 50vh;
+        }
+
+    	.autocomplete-result {
+    		overflow: auto;
+    		width: 100%;
+    		text-align: left;
+    		padding: 0;
+    		max-height: 400px;
+            @include respond-to(small-screens) {
+                max-height: 70vh;
+                width: 50vh;
+            }
+    	}
+
+    	ul {
+    		li {
+    			list-style: none;
+    			color: gray;
+    			margin: 5px 0px 5px 10px;
+    		}
+
+    		.autocomplete-item {
+    			margin: 5px 0px 0px 5px;
+    			cursor: pointer;
+                @include respond-to(small-screens) {
+                    font-size: 40px;
+                    margin: 20px 0px;
+                    list-style-type: square;
+                }
+    			&:hover {
+    				color: $darkgray;
+    			}
+    		}
+
+    		p {
+                font-size: 16px;
+                color: black;
+                text-decoration: underline;
+                cursor: default;
+                @include respond-to(small-screens) {
+                    font-size: 40px;
+                }
+    		}
+    	}
+	}
+}

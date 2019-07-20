@@ -1,0 +1,32 @@
+@import "../../css/util";
+
+
+.autocomplete-div {
+	position: absolute;
+    top: 54px;
+    text-align: left;
+    left: 10px;
+	background: #fbfbff;
+	z-index: 10;
+	border: 1px #EFEFEF solid;
+	border-radius: 10px;
+	button {
+		@extend .normalize-button;
+		width: 100%;
+		text-align: left;
+		padding: 10px 10px 10px 0px;
+		&:hover, &:active, &:focus {
+			text-align: left;
+			padding: 10px 10px 10px 0px;
+			background: #EFEFFF;
+			cursor: pointer;
+			span {
+				text-decoration: underline;
+			}
+		}
+		span {
+			color: black;
+			font-size: 14px;
+		}
+	}
+}

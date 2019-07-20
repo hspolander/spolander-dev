@@ -1,0 +1,46 @@
+@import "../../css/util";
+@import "../../css/color";
+
+$break-large: 1024px;
+@mixin respond-to($media) {
+  @if $media == small-screens {
+    @media only screen and (max-width: $break-large) { @content; }
+  }
+  @else if $media == wide-screens {
+    @media only screen and (min-width: $break-large) { @content; }
+  }
+}
+
+.login {
+	@extend .center;
+	width: 215px;
+  min-height: 25vh;
+	padding: 20px;
+	border: 3px #54799B solid;
+	border-radius: 10px;
+  z-index: 100;
+  background-color: white;
+  @include respond-to(small-screens) { 
+    border: 10px #54799B solid;
+    width: 70vw;
+    height: 40vh;
+    font-size: 50px;
+  }
+  .sessionExpired {
+    border-bottom: 3px #54799B solid;
+  }
+}
+.loginOverlay {
+  z-index: 99;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: black;
+  opacity: 0.7;
+}
+
+.overlay {
+  min-height: 290px;
+}
