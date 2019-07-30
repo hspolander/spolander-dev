@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { dispatch } from '../../store';
+import { dispatch } from '../../configureStore';
 
 import {
   FETCH_WINES_FULFILLED,

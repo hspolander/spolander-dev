@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { reset } from 'redux-form';
 import { jsonToQueryString } from '../global/helpfunctions';
-import { dispatch } from '../../store';
+import { dispatch } from '../../configureStore';
 
 import {
   ADD_WINE_FETCHING,

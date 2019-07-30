@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-import { dispatch } from '../../store';
+import { dispatch } from '../../configureStore';
 
 import {
   USER_LOGIN_FETCHING,

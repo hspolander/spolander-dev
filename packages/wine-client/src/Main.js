@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Cookies from 'js-cookie';
 
@@ -11,12 +11,12 @@ import ReviwResult from './components/result/reviewResult';
 import LoginOverlay from './components/login/loginOverlay';
 import Login from './components/login/login';
 
-import PrivateRoute from './components/global/privateRoute';
+import PrivateRoute from './components/global/PrivateRoute';
 
 import './client.scss';
 
 const Client = () => (
-  <BrowserRouter>
+  <Router>
     <div>
       <Banner />
       {Cookies.get('WINE_UUID') && <LoginOverlay />}
@@ -34,7 +34,7 @@ const Client = () => (
         </Switch>
       </div>
     </div>
-  </BrowserRouter>
+  </Router>
 );
 
 const mapStateToProps = state => ({

@@ -9,10 +9,16 @@ import LoginForm from './loginform';
 
 import './login.scss';
 
-const Login = ({ location }) => {
+const Login = ({ location, isAuthenticated }) => {
   useEffect(() => {
     authUser();
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      
+    }
+  }, [isAuthenticated]);
 
   const handleSendLoginRequest = values => {
     loginUser(values);
@@ -21,12 +27,13 @@ const Login = ({ location }) => {
   const { from } = location.state || { from: { pathname: '/' } };
   if (Cookies.get('WINE_UUID')) {
     return <Redirect to={from.pathname} />;
+  } else {
+    return (
+      <div className="login">
+        <LoginForm handleSubmit={handleSendLoginRequest} />
+      </div>
+    );
   }
-  return (
-    <div className="login">
-      <LoginForm handleSubmit={handleSendLoginRequest} />
-    </div>
-  );
 };
 Login.propTypes = {
   location: PropTypes.object,

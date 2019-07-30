@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
 import authMiddleware from './authMiddleware';
+import invariant from 'redux-immutable-state-invariant';
 
 import reducers from './reducers';
 
@@ -10,11 +11,14 @@ const configureStore = createStore(
     reducers,
     composeEnhancer(
       applyMiddleware(
+        invariant(),
         thunk,
-        promise,
         authMiddleware,
       )
     ),
   );
+  export const getState = () => configureStore.getState();
+  
+  export const dispatch = action => configureStore.dispatch(action);
 
   export default configureStore;
