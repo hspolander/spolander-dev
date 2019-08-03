@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import InputField from '../formcomponents/inputField.jsx';
+import InputTextField from '@spolander/shared-components/src/components/InputRegular';
 
 const LoginForm = props => {
   const [username, setUsername] = useState('');
@@ -10,16 +10,19 @@ const LoginForm = props => {
 
   return (
     <div>
-      <InputField
+      <InputTextField
         onChange={val => setUsername(val)}
         value={username}
-        placeholder="Användarnamn"
+        variant="outlined"
+        label="Användarnamn"
         onEnterKeyPress={() => handleSubmit({ username, password })}
       />
-      <InputField
+      <InputTextField
         onChange={val => setPassword(val)}
+        variant="outlined"
+        type="password"
         value={password}
-        placeholder="Lösenord"
+        label="Lösenord"
         onEnterKeyPress={() => handleSubmit({ username, password })}
       />
 

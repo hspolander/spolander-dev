@@ -12,18 +12,18 @@ $break-large: 1024px;
 }
 
 .login {
-	@extend .center;
-	width: 215px;
-  min-height: 25vh;
+  @extend .center;
 	padding: 20px;
 	border: 3px #54799B solid;
 	border-radius: 10px;
   z-index: 100;
   background-color: white;
+  .MuiTextField-root {
+    display: block;
+    margin: 20px;
+  }
   @include respond-to(small-screens) { 
     border: 10px #54799B solid;
-    width: 70vw;
-    height: 40vh;
     font-size: 50px;
   }
   .sessionExpired {

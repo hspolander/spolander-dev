@@ -14,12 +14,6 @@ const Login = ({ location, isAuthenticated }) => {
     authUser();
   }, []);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      
-    }
-  }, [isAuthenticated]);
-
   const handleSendLoginRequest = values => {
     loginUser(values);
   };
