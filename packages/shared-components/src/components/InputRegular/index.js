@@ -1,9 +1,13 @@
 import { withStyles } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 import InputRegular from './InputRegular';
 
-const styles = theme => ({
+let theme = createMuiTheme();
+
+const styles = () => ({
   [theme.breakpoints.up('xs')]: {
     root: {
+      margin: '15px 2px',
       width: '95vw',
     },
     resize: {
@@ -12,7 +16,8 @@ const styles = theme => ({
   },
   [theme.breakpoints.up('sm')]: {
     root: {
-      width: '56vw',
+      margin: '15px 5px',
+      width: '48vw',
     },
     resize: {
       fontSize: 29,
@@ -20,6 +25,7 @@ const styles = theme => ({
   },
   [theme.breakpoints.up('md')]: {
     root: {
+      margin: '15px 10px',
       width: '35vw',
     },
     resize: {
@@ -28,6 +34,7 @@ const styles = theme => ({
   },
   [theme.breakpoints.up('lg')]: {
     root: {
+      margin: '15px 12px',
       width: '22vw',
     },
     resize: {
@@ -36,6 +43,7 @@ const styles = theme => ({
   },
   [theme.breakpoints.up('xl')]: {
     root: {
+      margin: '15px',
       width: '20vw',
     },
     resize: {

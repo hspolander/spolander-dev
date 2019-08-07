@@ -7,7 +7,6 @@ import { withState } from '@dump247/storybook-state';
 import InputRegular from '../src/components/InputRegular';
 
 storiesOf('InputRegular', module)
-  .addDecorator(muiTheme())
   .add(
     'Standard',
     withState({ value: '' })(({ store }) => (
@@ -102,5 +101,72 @@ storiesOf('InputRegular', module)
       >
         Filled required
       </InputRegular>
+    )),
+  )
+  .add(
+    'Several textfields',
+    withState({ value: '' })(({ store }) => (
+      <div>
+        <InputRegular
+        label="Label"
+        variant="outlined"
+        color="default"
+        type="text"
+        {...store.state}
+        onChange={value => store.set({ value })}
+      >
+        Outlined
+      </InputRegular>
+      <InputRegular
+        label="Label"
+        variant="outlined"
+        color="default"
+        type="text"
+        {...store.state}
+        onChange={value => store.set({ value })}
+      >
+        Outlined
+      </InputRegular>
+      <InputRegular
+        label="Label"
+        variant="outlined"
+        color="default"
+        type="text"
+        {...store.state}
+        onChange={value => store.set({ value })}
+      >
+        Outlined
+      </InputRegular>
+      <InputRegular
+        label="Label"
+        variant="outlined"
+        color="default"
+        type="text"
+        {...store.state}
+        onChange={value => store.set({ value })}
+      >
+        Outlined
+      </InputRegular>
+      <InputRegular
+        label="Label"
+        variant="outlined"
+        color="default"
+        type="text"
+        {...store.state}
+        onChange={value => store.set({ value })}
+      >
+        Outlined
+      </InputRegular>
+      <InputRegular
+        label="Label"
+        variant="outlined"
+        color="default"
+        type="text"
+        {...store.state}
+        onChange={value => store.set({ value })}
+      >
+        Outlined
+      </InputRegular>
+      </div>
     )),
   );
