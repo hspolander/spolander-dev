@@ -26,25 +26,19 @@ const options = [
 }));
 
 storiesOf('Autocomplete', module)
-  .addDecorator(muiTheme())
   .add(
-    'Async creatable',
+    'Loading creatable',
     withState({ selectedValue: null })(({ store }) => (
       <Autocomplete
-        options={(value, callback) => {
-          console.log(value);
-          setTimeout(() => {
-            callback(options);
-          }, 1000);
-        }}
+        options={options}
         {...store.state}
         inputType="single"
         label="Label"
-        required={true}
+        isLoading
+        required
         variant="outlined"
         placeholder="Write anything"
         handleChange={selectedValue => {
-          console.log(store);
           store.set({ selectedValue });
         }}
       />
@@ -54,25 +48,20 @@ storiesOf('Autocomplete', module)
 storiesOf('Autocomplete', module)
   .addDecorator(muiTheme())
   .add(
-    'Async creatable multi select',
+    'Creatable multi select',
     withState({ selectedValue: null })(({ store }) => (
       <Autocomplete
-        options={(value, callback) => {
-          console.log(value);
-          setTimeout(() => {
-            callback(options);
-          }, 1000);
-        }}
+        options={options}
         {...store.state}
         inputType="single"
         label="Label"
         isMulti
         required
+        onInputChange={(inputValue, actionMeta) => console.log({inputValue, actionMeta, hej:"hej"})}
         variant="outlined"
         placeholder="Write anything"
         formatCreateLabel={val => `Skapa ny ${val}`}
         handleChange={selectedValue => {
-          console.log(store);
           store.set({ selectedValue });
         }}
       />

@@ -1,5 +1,5 @@
 import React from 'react';
-import AsyncCreatableSelect from 'react-select/async-creatable';
+import Creatable from 'react-select/creatable';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -22,12 +22,14 @@ function Control(props) {
     children,
     innerProps,
     innerRef,
+    value,
     selectProps: { classes, TextFieldProps },
   } = props;
 
   return (
     <TextField
       fullWidth
+      value={value}
       InputProps={{
         inputComponent,
         inputProps: {
@@ -181,24 +183,28 @@ const wideMultiStyle = makeStyles({
 });
 
 const Autocomplete = props => {
-  const { options, label, handleChange, isMulti, classes, required, variant } = props;
+  const { options, label, handleChange, isMulti, classes, required, variant, onInputChange, isLoading, value, onBlur } = props;
 
   const multiClasses = wideMultiStyle(isMulti);
 
   return (
     <div className={clsx(classes.root, multiClasses.root)}>
       <NoSsr>
-        <AsyncCreatableSelect
+        <Creatable
           onChange={selected => handleChange(selected)}
           placeholder=""
           components={components}
-          loadOptions={options}
+          options={options}
           classes={classes}
-          isMulti
+          isMulti={isMulti}
+          isLoading={isLoading}
           escapeClearsValue
+          onInputChange={onInputChange}
           isClearable
+          value={value}
+          onBlur={onBlur}
+          required={required}
           openMenuOnClick={false}
-          noOptionsMessage={() => 'Skriv för att söka/lägga till'}
           loadingMessage={() => 'Laddar förslag...'}
           formatCreateLabel={val => `${val} (Ny)`}
           createOptionPosition="first"
@@ -218,14 +224,14 @@ const Autocomplete = props => {
 };
 
 Autocomplete.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  components: PropTypes.arrayOf(PropTypes.node).isRequired,
-  styles: PropTypes.object.isRequired,
+  handleChange: PropTypes.func,
+  components: PropTypes.arrayOf(PropTypes.node),
+  styles: PropTypes.object,
   loadOptions: PropTypes.array,
   classes: PropTypes.object.isRequired,
   isMulti: PropTypes.bool,
   label: PropTypes.string.isRequired,
-  required: PropTypes.bool.isRequired,
+  required: PropTypes.bool,
   variant: PropTypes.string.isRequired,
 };
 

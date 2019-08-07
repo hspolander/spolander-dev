@@ -1,9 +1,16 @@
 import { withStyles } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 import Autocomplete from './Autocomplete';
 
-const styles = theme => ({
+let theme = createMuiTheme();
+
+const styles = () => ({
+  root:{
+    display: 'inline-block',
+  },
   [theme.breakpoints.up('xs')]: {
     root: {
+      margin: '15px 2px',
       width: '95vw',
     },
     resize: {
@@ -12,7 +19,8 @@ const styles = theme => ({
   },
   [theme.breakpoints.up('sm')]: {
     root: {
-      width: '56vw',
+      margin: '15px 5px',
+      width: '48vw',
     },
     resize: {
       fontSize: 29,
@@ -20,6 +28,7 @@ const styles = theme => ({
   },
   [theme.breakpoints.up('md')]: {
     root: {
+      margin: '15px 10px',
       width: '35vw',
     },
     resize: {
@@ -28,6 +37,7 @@ const styles = theme => ({
   },
   [theme.breakpoints.up('lg')]: {
     root: {
+      margin: '15px 12px',
       width: '22vw',
     },
     resize: {
@@ -36,6 +46,7 @@ const styles = theme => ({
   },
   [theme.breakpoints.up('xl')]: {
     root: {
+      margin: '15px',
       width: '20vw',
     },
     resize: {
@@ -48,6 +59,7 @@ const styles = theme => ({
   valueContainer: {
     display: 'flex',
     flewWrap: 'wrap',
+    zIndex: 1,
     flex: 1,
     alignItems: 'center',
     overflow: 'hidden',
@@ -71,7 +83,7 @@ const styles = theme => ({
   },
   paper: {
     position: 'absolute',
-    zIndex: 1,
+    zIndex: 100,
     marginTop: theme.spacing(1),
     left: 0,
     right: 0,
