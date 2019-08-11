@@ -3,11 +3,19 @@ import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 
 const InputRegular = props => {
-  const { type, onChange, value, label, children, color, classes, variant, ...other } = props;
+  const { type, onChange, onEnterPress, value, label, children, color, classes, variant, ...other } = props;
+
+  const onKeyPress = (e) => {
+    if (e.key === "Enter" && onEnterPress) {
+      return onEnterPress();
+    }
+  };
+
   return (
     <TextField
       {...other}
       className={classes.root}
+      onKeyPress={e => onKeyPress(e)}
       onChange={e => onChange(e.target.value)}
       classes={{
         contained: classes.contained,
