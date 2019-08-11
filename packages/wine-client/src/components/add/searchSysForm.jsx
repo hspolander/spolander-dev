@@ -1,119 +1,100 @@
-import React from 'react';
-import { Field, reduxForm } from 'redux-form';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 
-import { numeric, maxValueCurrentYear } from './addFormValidation';
-import { addKr } from './addFormNormalize';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import InputTextField from '@spolander/shared-components/src/components/InputRegular';
+import Autocomplete from '@spolander/shared-components/src/components/Autocomplete';
+import InputSelect from '@spolander/shared-components/src/components/SelectRegular';
+import ButtonRegular from '@spolander/shared-components/src/components/ButtonRegular';
+
+import {
+  loadSysWines,
+} from './actions';
 
 import './add.scss';
 
-const renderField = ({
-  input,
-  label,
-  type,
-  placeholder,
-  meta: { touched, error },
-}) => (
-  <div className="input-div">
-    <span className="input-label noSelect">{label}</span>
-    <input
-      {...input}
-      type={type}
-      placeholder={placeholder}
-      autoComplete="off"
-      list="dataList"
-    />
-    {touched && error && <span className="form-error">{error}</span>}
-  </div>
-);
-renderField.propTypes = {
-  input: PropTypes.object.isRequired,
-  label: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  placeholder: PropTypes.string,
-  meta: PropTypes.object.isRequired,
-};
+export const SearchSysForm = () => {
 
-const renderSelect = ({
-  input,
-  label,
-  sublabel,
-  options,
-  meta: { touched, error },
-}) => (
-  <div className="input-div">
-    <span className="input-label noSelect">{label}</span>
-    <select {...input}>
-      {options.map(option => (
-        <option value={option} key={option}>
-          {option}
-          {sublabel}
-        </option>
-      ))}
-    </select>
-    {touched && error && <span className="form-error">{error}</span>}
-  </div>
-);
-renderSelect.propTypes = {
-  input: PropTypes.object.isRequired,
-  label: PropTypes.string.isRequired,
-  options: PropTypes.array.isRequired,
-  sublabel: PropTypes.string,
-  meta: PropTypes.object,
-};
+  const [formdata, setFormData] = useState({
+    'name': "",
+    'color': "",
+    'year': "",
+    'price': "",
+    'nr': "",
+  });
 
-const SearchSysform = props => (
-  <form className="searchSysForm" onSubmit={props.handleSubmit}>
-    <Field
-      type="text"
-      label="Namn"
-      name="name"
-      component={renderField}
-      placeholder="ex. Baron de ley"
-    />
-    <Field
-      name="color"
-      label="Färg"
-      component={renderSelect}
-      sublabel=""
-      options={['', 'Rött', 'Vitt', 'Rosé', 'Mousserande vin']}
-    />
-    <Field
-      type="text"
-      label="År"
-      name="year"
-      component={renderField}
-      validate={[maxValueCurrentYear, numeric]}
-      placeholder="ex. 2012"
-    />
-    <Field
-      type="text"
-      label="Systembolaget Artnr"
-      name="nr"
-      component={renderField}
-      placeholder=""
-    />
-    <Field
-      type="text"
-      label="Pris"
-      normalize={addKr}
-      name="price"
-      component={renderField}
-      placeholder="ex. 139kr"
-    />
-    <div className="button-div">
-      <button type="submit" disabled={props.pristine || props.submitting}>
-        Sök
-      </button>
+  const resetForm = () => {
+    setFormData({
+      'name': "",
+      'color': "",
+      'year': "",
+      'price': "",
+      'nr': "",
+    });
+  };
+
+  const colors = [
+    {name: "Rött", value: "Rött"},
+    {name: "Rosé", value: "Rosé"},
+    {name: "Vitt", value: "Vitt"},
+    {name: "Mousserande vin", value: "Mousserande vin"},
+  ];
+
+  return (
+    <div className="addWineForm">
+      <InputTextField
+        onChange={val => setFormData({...formdata, 'name': val})}
+        label="Namn"
+        variant="outlined"
+        value={formdata.name}
+        onEnterPress={() => loadSysWines(formdata)}
+        placeholder="ex Spier signature"
+      />
+      <InputSelect
+        values={colors}
+        value={formdata.color}
+        label={"Färg"}
+        onEnterPress={() => loadSysWines(formdata)}
+        onChange={val => setFormData({...formdata, 'color': val})}
+      />
+      <InputTextField
+        onChange={val => setFormData({...formdata, 'year': val})}
+        variant="outlined"
+        value={formdata.year}
+        label="År"
+        onEnterPress={() => loadSysWines(formdata)}
+        placeholder="ex. 2012"
+      />
+      <InputTextField
+        onChange={val => setFormData({...formdata, 'nr': val})}
+        variant="outlined"
+        value={formdata.nr}
+        onEnterPress={() => loadSysWines(formdata)}
+        label="Artikelnummer"
+      />
+      <InputTextField
+        onChange={val => setFormData({...formdata, 'price': val})}
+        variant="outlined"
+        value={formdata.price}
+        onEnterPress={() => loadSysWines(formdata)}
+        label="Pris"
+      />
+      <div className="buttonDiv">
+        <ButtonRegular variant="outlined" color="secondary" onClick={() => resetForm()}>
+          <i>Rensa</i>
+        </ButtonRegular>
+        <ButtonRegular variant="contained" color="primary" onClick={() => loadSysWines(formdata)}>
+          <i>Lägg till</i>
+        </ButtonRegular>
+      </div>
     </div>
-  </form>
-);
-SearchSysform.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  pristine: PropTypes.bool.isRequired,
-  submitting: PropTypes.bool.isRequired,
+  );
+};
+SearchSysForm.propTypes = {
+  autocompleteFieldData: PropTypes.object,
 };
 
-export default reduxForm({
-  form: 'sysSearchForm',
-})(SearchSysform);
+export default connect(
+  null,
+  null,
+)(SearchSysForm);

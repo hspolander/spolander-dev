@@ -205,6 +205,7 @@ export const loadAddWine = values => {
 };
 
 export const loadSysWines = values => {
+  values = removeFalsy(values);
   dispatch({ type: SYSTEMBOLAGET_FETCHING });
   getSysWines(jsonToQueryString(values));
 };
