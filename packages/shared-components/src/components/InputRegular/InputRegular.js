@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 
 const InputRegular = props => {
-  const { type, onChange, onEnterPress, value, label, children, color, classes, variant, ...other } = props;
+  const { type, onChange, readOnly, onEnterPress, value, label, children, color, classes, variant, ...other } = props;
 
   const onKeyPress = (e) => {
     if (e.key === "Enter" && onEnterPress) {
@@ -29,6 +29,7 @@ const InputRegular = props => {
       value={value}
       label={label}
       InputProps={{
+        readOnly: readOnly,
         classes: {
           root: classes.resize,
         },
