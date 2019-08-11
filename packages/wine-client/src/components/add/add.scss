@@ -30,43 +30,23 @@ $break-large: 1024px;
   	border: 1px solid $yellowgreen;
   	border-radius: 10px;
     @include respond-to(small-screens) { 
-      margin: 0px 10px 10px 20px;
+      margin: 0px;
+      padding: 0px;
+      border: 0px;
     }
   	ul {
   		margin: 0;
   		li {
-  			dsplay: block;
+  			display: block;
   		}
-  	}
-    .form-error {
+    }
+    .buttonDiv {
       display: block;
-      color: red;
-      font-size: 8pt;
-      position: absolute;
-      @include respond-to(small-screens) { 
-        font-size: 20px;
+      margin: 15px 15px 15px 0px;
+      button {
+        margin-left: 15px;
       }
     }
-  }
-  
-  .grape-div {
-  	margin: 5px;
-  	border: 1px solid $yellowgreen;
-    border-radius: 10px;
-    min-height: 75px;
-  
-      .fa {
-      	margin-left: 10px;
-      	color: $yellowgreen;
-      }
-  
-      .input-div {
-      margin-top: 10px;
-  	  width: 350px;
-  	  &:first-child {
-  	    margin-top: 15px;
-        }
-      }
   }
   
   .clearForm {

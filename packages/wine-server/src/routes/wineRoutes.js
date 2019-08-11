@@ -727,7 +727,7 @@ export default (server) => {
           for (var i = 0; i < autocompleteAddWine.length; i++) {
             responseArray.push(autocompleteAddWine[i][req.query.prop]);
           }
-          res.json({"error" : false, "message" : `Success`, "data" : {[req.query.prop]:responseArray}});
+          res.json({"error" : false, "message" : `Success`, "data" : {prop: req.query.prop, match: responseArray}});
         } else {
           res.json({"error" : false, "message" : `Success`, "data" : null});
         }

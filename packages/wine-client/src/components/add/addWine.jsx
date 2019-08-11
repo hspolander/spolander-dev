@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import NewAddWineForm from './newAddWineForm';
+import AddWineForm from './addWineForm';
 import { usePrevious } from '../../hooks';
 import SearchSysForm from './searchSysForm';
 import SearchSysResult from './searchSysResult';
@@ -13,7 +13,6 @@ import {
   showImageOfWine,
   hideImageOfWine,
   loadSysWines,
-  loadAddWine,
 } from './actions';
 
 import { authUser } from '../login/actions';
@@ -74,11 +73,11 @@ export const AddWine = ({ systemWineData, isSmallScreen, formValues }) => {
         <div className="formtitle" ref={formNode}>
           <span>Lägg till vin</span>
         </div>
-        <NewAddWineForm />
+        <AddWineForm />
         <div className="formtitle">
           <span>Sök i systembolagets sortiment</span>
         </div>
-        <SearchSysForm onSubmit={handleSendGetSystembolagetRequest} />
+        <SearchSysForm />
         {systemWineData && (
           <div ref={resultNode}>
             {systemWineData.length > 0 ? (

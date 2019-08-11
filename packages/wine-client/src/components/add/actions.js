@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { reset } from 'redux-form';
-import { jsonToQueryString } from '../global/helpfunctions';
+import { jsonToQueryString, removeFalsy } from '../global/helpfunctions';
 import { dispatch } from '../../configureStore';
 
 import {
@@ -47,15 +47,6 @@ export const clearInitialValues = () => {
 export const setInitialValues = values => ({
   type: SET_INITIAL_VALUES,
   payload: values,
-});
-
-export const onClearFieldFocus = () => ({
-  type: FIELD_AUTOCOMPLETE_CLEAR_FOCUS,
-});
-
-export const onFieldFocus = field => ({
-  type: FIELD_AUTOCOMPLETE_FOCUS_FIELD,
-  payload: field,
 });
 
 const addWine = values => {
@@ -205,6 +196,10 @@ export const loadAddReview = values => {
 };
 
 export const loadAddWine = values => {
+  values = removeFalsy(values);
+  if (values.price) {
+    values.price = values.price.replace(/\D/g,'') + ' kr';
+  }
   dispatch({ type: ADD_WINE_FETCHING });
   addWine(values);
 };
@@ -247,7 +242,7 @@ export const showImageOfWine = async (values, rowId) => {
 };
 
 export const loadFieldAutocomplete = (prop, value) => {
-  if (value.length > 3) {
+  if (value.length > 1) {
     dispatch({ type: FIELD_AUTOCOMPLETE_FETCHING });
     if (prop === 'grape') {
       fieldAutocomplete(`?&startsWith=${value}`);
