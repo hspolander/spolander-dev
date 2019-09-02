@@ -104,6 +104,24 @@ storiesOf('InputRegular', module)
     )),
   )
   .add(
+    'Multirow(Text area)',
+    withState({ value: '' })(({ store }) => (
+      <InputRegular
+        label="Label"
+        required
+        variant="outlined"
+        color="default"
+        type="text"
+        multiline
+        multiRows={5}
+        {...store.state}
+        onChange={value => store.set({ value })}
+      >
+        Filled required
+      </InputRegular>
+    )),
+  )
+  .add(
     'Several textfields',
     withState({ value: '' })(({ store }) => (
       <div>

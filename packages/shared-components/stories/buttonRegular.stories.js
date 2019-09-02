@@ -7,7 +7,6 @@ import {muiTheme} from 'storybook-addon-material-ui';
 import ButtonRegular from '../src/components/ButtonRegular'
 
 storiesOf('ButtonRegular', module)
-.addDecorator(muiTheme())
 .add('Contained default', () => (
   <ButtonRegular
     onClick={action('clicked')}
