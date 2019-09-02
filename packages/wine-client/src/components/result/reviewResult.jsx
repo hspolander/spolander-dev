@@ -12,7 +12,6 @@ import {
 import { setInitialValuesResult } from '../add/actions';
 import { usePrevious } from '../../hooks';
 import { authUser } from '../login/actions';
-import { setScreenSize } from '../global/actions';
 
 import './result.scss';
 
@@ -35,11 +34,6 @@ const ReviewResult = ({
       value,
       table,
     });
-    if (window.innerWidth <= 1024) {
-      setScreenSize(true);
-    } else {
-      setScreenSize(false);
-    }
   }, []);
 
   useEffect(

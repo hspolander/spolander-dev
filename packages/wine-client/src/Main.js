@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Cookies from 'js-cookie';
@@ -10,12 +10,23 @@ import WineResult from './components/result/wineResult';
 import ReviwResult from './components/result/reviewResult';
 import LoginOverlay from './components/login/loginOverlay';
 import Login from './components/login/login';
+import { setScreenSize } from './components/global/actions';
 
 import PrivateRoute from './components/global/PrivateRoute';
 
 import './client.scss';
 
-const Client = () => (
+const Client = () => {
+
+  useEffect(() => {
+  if (window.innerWidth <= 1024) {
+    setScreenSize(true);
+  } else {
+    setScreenSize(false);
+  }
+}, []);
+
+  return (
   <Router>
     <div>
       <Banner />
@@ -28,7 +39,7 @@ const Client = () => (
           <PrivateRoute
             path="/reviews/:table?/:property?/:value?"
             component={ReviwResult}
-          />
+            />
           <Route path="/login" component={Login} />
           <PrivateRoute path="/" component={AddWine} />
         </Switch>
@@ -36,6 +47,7 @@ const Client = () => (
     </div>
   </Router>
 );
+}
 
 const mapStateToProps = state => ({
   isAuthenticated: state.loginReducer.isAuthenticated,
