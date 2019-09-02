@@ -41,7 +41,7 @@ export const hideImageOfWine = rowId => {
 };
 
 export const clearInitialValues = () => {
-  dispatch({ type: CLEAR_INITIAL_VALUES, payload: null });
+  dispatch({ type: CLEAR_INITIAL_VALUES });
 };
 
 export const setInitialValues = values => ({

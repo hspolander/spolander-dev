@@ -67,7 +67,7 @@ export default function reducer(state = initialState, action) {
       return { ...state, initialValue: action.payload };
     }
     case CLEAR_INITIAL_VALUES: {
-      return { ...state, initialValue: action.payload };
+      return { ...state, payload: null };
     }
     case FIELD_AUTOCOMPLETE_FETCHING: {
       return { ...state, fetched: false, fetching: true };
@@ -211,9 +211,6 @@ export default function reducer(state = initialState, action) {
           [action.payload]: { $merge: { imageVisible: true } },
         },
       });
-    }
-    case FETCH_SYSTEMBOLAGET_IMAGE_INFO_NO_MATCH: {
-      return { ...state };
     }
     case FIELD_AUTOCOMPLETE_CLEAR_FOCUS: {
       return {

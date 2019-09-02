@@ -84,7 +84,7 @@ export const SearchSysForm = () => {
           <i>Rensa</i>
         </ButtonRegular>
         <ButtonRegular variant="contained" color="primary" onClick={() => loadSysWines(formdata)}>
-          <i>Lägg till</i>
+          <i>Sök</i>
         </ButtonRegular>
       </div>
     </div>
