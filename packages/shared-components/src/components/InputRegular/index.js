@@ -5,6 +5,9 @@ import InputRegular from './InputRegular';
 let theme = createMuiTheme();
 
 const styles = () => ({
+  wide: {
+    minWidth: '48vw',
+  },
   [theme.breakpoints.up('xs')]: {
     root: {
       margin: '15px 2px',

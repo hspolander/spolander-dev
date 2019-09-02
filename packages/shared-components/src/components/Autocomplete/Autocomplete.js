@@ -183,7 +183,7 @@ const wideMultiStyle = makeStyles({
 });
 
 const Autocomplete = props => {
-  const { options, label, handleChange, isMulti, classes, required, variant, onInputChange, isLoading, value, onBlur } = props;
+  const { options, label, handleChange, isMulti, classes, required, variant, onInputChange, isLoading, value } = props;
 
   const multiClasses = wideMultiStyle(isMulti);
 
@@ -202,7 +202,6 @@ const Autocomplete = props => {
           onInputChange={onInputChange}
           isClearable
           value={value}
-          onBlur={onBlur}
           required={required}
           openMenuOnClick={false}
           loadingMessage={() => 'Laddar förslag...'}
@@ -214,7 +213,7 @@ const Autocomplete = props => {
             required,
             InputLabelProps: {
               shrink: true,
-              className: classes.resize,
+              className: "resize",
             },
           }}
         />
