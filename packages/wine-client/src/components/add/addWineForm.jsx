@@ -102,6 +102,22 @@ export const AddWineForm = ({
     [autocompleteFieldData],
   );
 
+  const requiredFields = [
+    'name',
+    'color',
+  ];
+
+  const validateInputs = () => {
+    for (let key of requiredFields) {
+      if (!formdata[key]) {
+        alert('Du måste fylla i fälten Namn & Färg.');
+        return null;
+      }
+    };
+    loadAddWine(formdata);
+    resetForm();
+  }
+
   return (
     <div className="addWineForm">
       <InputTextField
@@ -199,7 +215,7 @@ export const AddWineForm = ({
         <ButtonRegular variant="outlined" color="secondary" onClick={() => resetForm()}>
           <i>Rensa</i>
         </ButtonRegular>
-        <ButtonRegular variant="contained" color="primary" onClick={() => loadAddWine(formdata)}>
+        <ButtonRegular variant="contained" color="primary" onClick={() => validateInputs()}>
           <i>Lägg till</i>
         </ButtonRegular>
       </div>

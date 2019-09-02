@@ -12,7 +12,6 @@ import {
   sendLoadSystembolagetImage,
   showImageOfWine,
   hideImageOfWine,
-  loadSysWines,
 } from './actions';
 
 import { authUser } from '../login/actions';
@@ -62,10 +61,6 @@ export const AddWine = ({ systemWineData, isSmallScreen, formValues }) => {
     },
     [formValues],
   );
-
-  const handleSendGetSystembolagetRequest = values => {
-    loadSysWines(values);
-  };
 
   return (
     <div className="content">
