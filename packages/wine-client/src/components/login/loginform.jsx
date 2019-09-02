@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import InputTextField from '@spolander/shared-components/src/components/InputRegular';
+import ButtonRegular from '@spolander/shared-components/src/components/ButtonRegular';
 
 const LoginForm = props => {
   const [username, setUsername] = useState('');
@@ -27,12 +28,9 @@ const LoginForm = props => {
       />
 
       <div className="button-div">
-        <button
-          onClick={() => handleSubmit({ username, password })}
-          type="submit"
-        >
-          Logga in
-        </button>
+        <ButtonRegular variant="outlined" color="primary" onClick={() => handleSubmit({ username, password })}>
+          <i>Logga in</i>
+        </ButtonRegular>
       </div>
     </div>
   );
