@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment } from '@fortawesome/free-regular-svg-icons'
 import { faCartPlus, faFlask, faSearch } from '@fortawesome/free-solid-svg-icons'
 
+import MobileMenu from './mobileMenu';
 import AutocompleteSelect from './autocompleteSelect';
 import loadAutocompleteSearch from './actions';
 
@@ -23,7 +24,7 @@ class Search extends React.Component {
   }
 
   render() {
-    const { match, data, fetched } = this.props;
+    const { match, data, fetched, isSmallScreen } = this.props;
     return (
       <div className="banner-search center-parent">
         <input
@@ -33,6 +34,9 @@ class Search extends React.Component {
           className={match ? 'match' : 'noMatch'}
         />
         {fetched && <AutocompleteSelect autocompleteSelect={data} />}
+        { isSmallScreen ?
+          <MobileMenu />
+        :
         <div className="menu-items">
           <MenuIcon faFamily="fas" icon={faSearch} text="Recensioner" navTo="/reviews" />
           <MenuIcon faFamily="fas" icon={faFlask} text="Vinförråd" navTo="/wines" />
@@ -48,7 +52,7 @@ class Search extends React.Component {
             text="Lägg till i vinförråd"
             navTo="/addWine"
           />
-        </div>
+        </div>}
       </div>
     );
   }
@@ -61,6 +65,7 @@ Search.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  isSmallScreen: state.globalReducer.isSmallScreen,
   data: state.searchbarReducer.data,
   error: state.searchbarReducer.error,
   fetching: state.searchbarReducer.fetching,

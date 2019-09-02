@@ -8,11 +8,11 @@ import Search from './search/search';
 
 import './banner.scss';
 
-const Banner = ({ isAuthenticated }) => (
+const Banner = ({ isAuthenticated, isSmallScreen }) => (
   <div className="banner-main">
     <Logo />
     {isAuthenticated && <Search />}
-    {isAuthenticated && <Logout />}
+    {!isSmallScreen && isAuthenticated && <Logout />}
   </div>
 );
 
@@ -21,6 +21,7 @@ Banner.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  isSmallScreen: state.globalReducer.isSmallScreen,
   isAuthenticated: state.loginReducer.isAuthenticated,
 });
 

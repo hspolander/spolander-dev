@@ -1,20 +1,60 @@
 @import "../../../css/util";
 @import "../../../css/color";
 
+$break-small: 640px;
 $break-large: 1024px;
 @mixin respond-to($media) {
-  @if $media == small-screens {
-    @media only screen and (max-width: $break-large) { @content; }
-  }
+    @if $media == mini-screens {
+      @media only screen and (max-width: $break-small) { @content; }
+    }
+    @if $media == small-screens {
+      @media only screen and (max-width: $break-large) { @content; }
+    }
   @else if $media == wide-screens {
     @media only screen and (min-width: $break-large) { @content; }
   }
 }
 
-.banner-search {
+.mobile-dropdown {
+    width: 40em;
+    color: $darkblue;
+    padding: 10px;
+    .MuiList-root {
+        padding: 0;
+        border: 1px $darkblue solid;
+        border-radius: 5px;
+        a {
+            text-decoration: none;
+            .menu-item {
+                border-bottom: 1px $darkblue solid;
+                padding: 5px 5px;
+                &:last-child {
+                    border-bottom-width: 0px;
+                }
+                svg {
+                    color: darkblue;
+                    min-width: 50px;
+                }
+                &:hover, &:active {
+                    color: rgb(246, 251, 255);
+                    svg, .icon-title {
+                        color: rgb(124, 189, 243);
+                    }
 
+                }
+                .icon-title {
+                    color: $darkblue;
+                    font-size: 2em;
+                    padding: 0 10px
+                }
+            }
+        }
+    }
+}
+
+.banner-search {
 	width: 89%;
-    @include respond-to(small-screens) { width: 97% ;}
+    @include respond-to(small-screens) { width: 100% ;}
     @extend .center-vertically;
     .menu-items {
         display: inline-block;
@@ -23,13 +63,11 @@ $break-large: 1024px;
             display: inline-block;
             margin-top: 16px;
             padding: 0 40px;
-            @include respond-to(small-screens) { padding: 0 20px;}
             text-align: center;
             i {
                 display: block;
                 &.fa {
                     color: $darkblue;
-                    @include respond-to(small-screens) { font-size: 55px;}
 
                 }
                 &.icon-title {
@@ -52,7 +90,7 @@ $break-large: 1024px;
         @include respond-to(small-screens) {
           font-size: 32px;
           left: 1%;
-          position: sticky;
+          width: 80vw;
         }
 		&:focus, &:active {
 			border: 2px solid $darkblue;
@@ -60,7 +98,18 @@ $break-large: 1024px;
 		&.noMatch {
 			border: 2px solid #cf2020;
 		}
-	}
+    }
+    
+    .mobile-menu {
+        @extend .center-vertically;
+        display: block;
+        right: 3vw;
+        @include respond-to(mini-screens) {
+            .fa-5x {
+                font-size: 4em;
+            }
+        }
+    }
 
 	.autocomplete-select {
         position: absolute;
