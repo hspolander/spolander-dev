@@ -17,7 +17,7 @@ const SelectRegular = props => {
   }, []);
 
   return (
-    <FormControl cariant={'outlined'} className={classes.root}>
+    <FormControl required className={classes.root}>
       <InputLabel shrink ref={inputLabel} className={clsx(classes.resize, classes.label)}>
         {label}
       </InputLabel>

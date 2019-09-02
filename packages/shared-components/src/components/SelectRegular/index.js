@@ -5,6 +5,9 @@ import SelectRegular from './SelectRegular';
 let theme = createMuiTheme();
 
 const styles = () => ({
+  root: {
+    textAlign: 'left',
+  },
   [theme.breakpoints.up('xs')]: {
     root: {
       margin: '15px 2px',
