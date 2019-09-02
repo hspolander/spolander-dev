@@ -1,399 +1,270 @@
-import React from 'react';
-import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
+
 import { connect } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMinusSquare, faPlusSquare } from '@fortawesome/free-regular-svg-icons'
+import PropTypes from 'prop-types'; import InputSelect from '@spolander/shared-components/src/components/SelectRegular';
+import InputTextField from '@spolander/shared-components/src/components/InputRegular';
+import Autocomplete from '@spolander/shared-components/src/components/Autocomplete';
+import SliderRegular from '@spolander/shared-components/src/components/SliderRegular';
+import ButtonRegular from '@spolander/shared-components/src/components/ButtonRegular';
 
 import {
   loadFieldAutocomplete,
-  onClearFieldFocus,
-  onFieldFocus,
-  resetForm,
+  loadAddReview,
 } from './actions';
 
+const AddReviewForm = ({
+  autocompleteFieldData,
+  initialValues,
+}) => {
 
-import {
-  numeric,
-  required,
-  minValue1950,
-  maxValueCurrentYear,
-} from './addFormValidation';
+  const colors = [
+    { name: "Rött", value: "Rött" },
+    { name: "Rosé", value: "Rosé" },
+    { name: "Vitt", value: "Vitt" },
+    { name: "Mousserande vin", value: "Mousserande vin" },
+  ];
 
-import { addKr, addMl } from './addFormNormalize';
+  const sizes = [
+    { name: "Helflaska", value: "Helflaska" },
+    { name: "Rött", value: "Rött" },
+    { name: "Glas", value: "Glas" },
+    { name: "Box", value: "Box" },
+    { name: "Halvflaska", value: "Halvflaska" },
+    { name: "Liten box", value: "Liten box" },
+    { name: "Piccolo", value: "Piccolo" },
+    { name: "Magnum", value: "Magnum" },
+    { name: "Tetra", value: "Tetra" },
+    { name: "Stor flaska", value: "Stor flaska" },
+    { name: "Annan", value: "Annan" },
+  ];
 
-const renderField = ({
-  input,
-  autocompleteData,
-  focusedField,
-  label,
-  type,
-  placeholder,
-  meta: { touched, error, active },
-}) => (
-  <div className="input-div">
-    <span className="input-label noSelect">{label}</span>
-    <input
-      {...input}
-      type={type}
-      placeholder={placeholder}
-      autoComplete="off"
-      list="dataList"
-    />
-    {touched && error && <span className="form-error">{error}</span>}
-    {active && autocompleteData && (
-      <datalist id="dataList">
-        {Object.values(autocompleteData[focusedField]).map(value => (
-          <option key={value} value={value} />
-        ))}
-      </datalist>
-    )}
-  </div>
-);
-renderField.propTypes = {
-  input: PropTypes.object.isRequired,
-  label: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  placeholder: PropTypes.string,
-  meta: PropTypes.object.isRequired,
-  autocompleteData: PropTypes.object,
-  focusedField: PropTypes.string,
-};
+  const [formdata, setFormData] = useState({
+    'name': "",
+    'producer': "",
+    'color': "",
+    'year': null,
+    'country': "",
+    'boughtFrom': "",
+    'price': "",
+    'container': "",
+    'nr': "",
+    'score': '',
+    'review': "",
+    'sizeml': "",
+    'grapes': [],
+  });
+  const [autocompleteResponse, setAutoCompleteResponse] = useState(null);
 
-const renderRange = ({
-  input,
-  value,
-  focusedField,
-  label,
-  type,
-  placeholder,
-  meta: { touched, error, active },
-}) => (
-  <div className="input-div">
-    <span className="input-label noSelect">{label}</span>
-    <input
-      {...input}
-      type="range"
-      min="1"
-      max="10"
-      placeholder={placeholder}
-      autoComplete="off"
-      list="dataList"
-    />
-    {touched && error && <span className="form-error">{error}</span>}
-  </div>
-);
-renderRange.propTypes = {
-  input: PropTypes.object.isRequired,
-  label: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  placeholder: PropTypes.string,
-  meta: PropTypes.object.isRequired,
-  autocompleteData: PropTypes.object,
-  focusedField: PropTypes.string,
-};
+  const setInitialValues = values => {
+    setFormData(values);
+  };
 
-const dataList = ({ autocompleteData, focusedField }) => (
-  <datalist id="dataList">
-    {Object.values(autocompleteData[focusedField]).map(value => (
-      <option key={value} value={value} />
-    ))}
-  </datalist>
-);
-dataList.propTypes = {
-  autocompleteData: PropTypes.object,
-  focusedField: PropTypes.string,
-};
+  const resetForm = () => {
+    setFormData({
+      'name': "",
+      'producer': "",
+      'color': "",
+      'year': null,
+      'country': "",
+      'boughtFrom': "",
+      'price': "",
+      'container': "",
+      'nr': "",
+      'score': '',
+      'comment': "",
+      'sizeml': "",
+      'grapes': [],
+    });
+  };
 
-const renderSelect = ({ input, label, options, meta: { touched, error } }) => (
-  <div className="input-div">
-    <span className="input-label noSelect">{label}</span>
-    <select {...input}>
-      {options.map(option => (
-        <option value={option} key={option}>
-          {option}
-        </option>
-      ))}
-    </select>
-    {touched && error && <span className="form-error">{error}</span>}
-  </div>
-);
-renderSelect.propTypes = {
-  input: PropTypes.object.isRequired,
-  label: PropTypes.string.isRequired,
-  options: PropTypes.array.isRequired,
-  meta: PropTypes.object,
-};
 
-const renderGrapes = ({
-  autocompleteData,
-  focusedField,
-  fields,
-  loadFieldAutocomplete,
-  onClearFieldFocus,
-  onFieldFocus,
-}) => (
-  <div className="grape-div">
-    <div className="input-div">
-      <div className="input-div">
-        <span className="input-label noSelect">
-          Lägg till druvor
-          <FontAwesomeIcon
-            onClick={() => fields.pop()}
-            icon={faPlusSquare}
-            size="lg"
-            aria-hidden="true"
-          />
-          <FontAwesomeIcon
-            onClick={() => fields.push()}
-            icon={faMinusSquare}
-            size="lg"
-            aria-hidden="true"
-          />
-        </span>
-      </div>
-    </div>
-    {fields.map((grape, index) => (
-      <div className="input-div" key={index}>
-        <Field
-          name={grape}
-          autoComplete="off"
-          autocompleteData={autocompleteData}
-          validate={required}
-          type="text"
-          placeholder="ex. Chardonnay"
-          focusedField={focusedField}
-          component={renderField}
-          label=""
-          onChange={e => {
-            loadFieldAutocomplete('grape', e.target.value);
-          }}
-          onBlur={() => {
-            onClearFieldFocus();
-          }}
-          onFocus={() => {
-            onFieldFocus('grape');
-          }}
+  const requiredFields = [
+    'name',
+    'color',
+    'score',
+    'comment',
+  ];
+
+  const validateInputs = () => {
+    for (let key of requiredFields) {
+      if (!formdata[key]) {
+        alert('Du måste fylla i fälten Namn, Färg, betyg samt Recension.');
+        return null;
+      }
+    };
+    loadAddReview(formdata);
+    resetForm();
+  }
+
+  useEffect(
+    () => {
+      if (initialValues) {
+        setInitialValues(initialValues);
+      }
+    },
+    [initialValues],
+  );
+
+  const autocompleteField = (field, value, action) => {
+    loadFieldAutocomplete(field, value);
+  };
+
+  useEffect(
+    () => {
+      if (autocompleteFieldData) {
+        setAutoCompleteResponse(autocompleteFieldData.match.map(val => ({
+          value: val,
+          label: val,
+        })));
+      } else {
+        setAutoCompleteResponse(null);
+      }
+    },
+    [autocompleteFieldData],
+  );
+
+
+  return (
+    <div className="addWineForm">
+      <InputTextField
+        onChange={val => setFormData({ ...formdata, 'name': val })}
+        label="Namn"
+        variant="outlined"
+        value={formdata.name}
+        required
+        placeholder="ex Spier signature"
+      />
+      <Autocomplete
+        onInputChange={(inputValue) => autocompleteField('producer', inputValue)}
+        handleChange={selectedValue => setFormData({ ...formdata, 'producer': selectedValue ? selectedValue.value : "" })}
+        label="Producent"
+        variant="outlined"
+        onBlur={e => setFormData({
+          ...formdata, 'producer':
+            formdata.producer ? formdata.producer :
+              e.target.value ? e.target.value : ""
+        })}
+        value={{ value: formdata.producer, label: formdata.producer }}
+        placeholder="ex. Freixenet"
+        options={autocompleteResponse}
+      />
+      <InputSelect
+        values={colors}
+        value={formdata.color}
+        required
+        label={"Färg"}
+        onChange={val => setFormData({ ...formdata, 'color': val })}
+      />
+      <InputTextField
+        onChange={val => setFormData({ ...formdata, 'year': val.replace(/\D/g, '') })}
+        variant="outlined"
+        value={formdata.year}
+        label="År"
+        placeholder="ex. 2012"
+      />
+      <Autocomplete
+        onInputChange={(inputValue) => autocompleteField('country', inputValue)}
+        handleChange={selectedValue => setFormData({ ...formdata, 'country': selectedValue ? selectedValue.value : "" })}
+        onBlur={e => setFormData({
+          ...formdata, 'country':
+            formdata.country ? formdata.country :
+              e.target.value ? e.target.value : ""
+        })}
+        variant="outlined"
+        label="Land"
+        value={{ value: formdata.country, label: formdata.country }}
+        placeholder="ex. Sydafrika"
+        options={autocompleteResponse}
+      />
+      <Autocomplete
+        onInputChange={(inputValue) => autocompleteField('boughtFrom', inputValue)}
+        handleChange={selectedValue => setFormData({ ...formdata, 'boughtFrom': selectedValue ? selectedValue.value : "" })}
+        onBlur={e => setFormData({
+          ...formdata, 'boughtFrom':
+            formdata.boughtFrom ? formdata.boughtFrom :
+              e.target.value ? e.target.value : ""
+        })}
+        variant="outlined"
+        value={{ value: formdata.boughtFrom, label: formdata.boughtFrom }}
+        label="Inköpsplats"
+        placeholder="ex. Systembolaget"
+        options={autocompleteResponse}
+      />
+      {formdata.nr && (
+        <InputTextField
+          onChange={val => setFormData({ ...formdata, 'nr': val })}
+          variant="outlined"
+          readOnly
+          value={formdata.nr}
+          label="Artikelnummer"
         />
+      )}
+      {formdata.boughtFrom && (
+        <InputTextField
+          onChange={val => setFormData({ ...formdata, 'price': val })}
+          variant="outlined"
+          value={formdata.price}
+          label="Pris"
+        />
+      )}
+      <Autocomplete
+        variant="outlined"
+        label="Druva"
+        isMulti
+        inputType="single"
+        selectedValue={formdata.grapes}
+        placeholder="Ex. Chardonnay"
+        value={formdata.grapes.length > 0 ? formdata.grapes.map(grape => ({ 'value': grape, 'label': grape })) : []}
+        onBlur={e => setFormData({ ...formdata, 'grapes': e.target.value ? formdata.grapes.map(grapes => grapes.value) : formdata.grapes })}
+        formatCreateLabel={val => `${val} (ny)`}
+        onInputChange={(inputValue, action) => autocompleteField('grape', inputValue, action)}
+        handleChange={selectedValue => setFormData({ ...formdata, 'grapes': selectedValue ? selectedValue.map(grapes => grapes.value) : [] })}
+        options={autocompleteResponse}
+      />
+      <SliderRegular
+        step={1}
+        max={10}
+        min={0}
+        required
+        value={formdata.score}
+        displayValue={"auto"}
+        onChange={(element, value) => setFormData({ ...formdata, 'score': value })}
+        label={`Betyg: ${formdata.score && formdata.score}`}
+      />
+      <InputTextField
+        onChange={val => setFormData({ ...formdata, 'comment': val})}
+        variant="outlined"
+        value={formdata.comment}
+        label="Recension"
+        multiline
+        required
+        wide
+        multiRows={7}
+        required
+      />
+      <div className="buttonDiv">
+        <ButtonRegular variant="outlined" color="secondary" onClick={() => resetForm()}>
+          <i>Rensa</i>
+        </ButtonRegular>
+        <ButtonRegular variant="contained" color="primary" onClick={() => validateInputs()}>
+          <i>Lägg till</i>
+        </ButtonRegular>
       </div>
-    ))}
-  </div>
-);
-renderGrapes.propTypes = {
-  fields: PropTypes.object.isRequired,
-  autocompleteData: PropTypes.object,
-  focusedField: PropTypes.string,
-  loadFieldAutocomplete: PropTypes.func,
-  onClearFieldFocus: PropTypes.func,
-  onFieldFocus: PropTypes.func,
-};
+    </div>
+  );
+}
 
-let AddReviewForm = props => (
-  <form onSubmit={props.handleSubmit}>
-    <Field
-      {...props}
-      type="text"
-      autoComplete="off"
-      label="Namn"
-      name="name"
-      component={renderField}
-      validate={required}
-      placeholder="ex. Bolla Le Poiane"
-      onChange={e => {
-        props.loadFieldAutocomplete('name', e.target.value);
-      }}
-      onBlur={() => {
-        props.onClearFieldFocus();
-      }}
-      onFocus={() => {
-        props.onFieldFocus('name');
-      }}
-    />
-    <Field
-      {...props}
-      type="text"
-      autoComplete="off"
-      label="Producent"
-      name="producer"
-      component={renderField}
-      placeholder="ex. Barolo"
-      onChange={e => {
-        props.loadFieldAutocomplete('producer', e.target.value);
-      }}
-      onBlur={() => {
-        props.onClearFieldFocus();
-      }}
-      onFocus={() => {
-        props.onFieldFocus('producer');
-      }}
-    />
-    <Field
-      name="color"
-      label="Färg"
-      component={renderSelect}
-      validate={required}
-      options={[
-        '',
-        'Rött',
-        'Vitt',
-        'Rosé',
-        'Orange',
-        'Vitt bubbel',
-        'Rött bubbel',
-      ]}
-    />
-    <Field
-      type="text"
-      label="År"
-      name="year"
-      component={renderField}
-      validate={[maxValueCurrentYear, minValue1950, numeric]}
-      placeholder="ex. 2012"
-    />
-    <Field
-      type="text"
-      autoComplete="off"
-      {...props}
-      label="Land"
-      name="country"
-      component={renderField}
-      placeholder="ex. Italien"
-      onChange={e => {
-        props.loadFieldAutocomplete('country', e.target.value);
-      }}
-      onBlur={() => {
-        props.onClearFieldFocus();
-      }}
-      onFocus={() => {
-        props.onFieldFocus('country');
-      }}
-    />
-    <Field
-      {...props}
-      type="text"
-      autoComplete="off"
-      label="Inköpsplats"
-      name="boughtFrom"
-      component={renderField}
-      placeholder="ex. Systembolaget"
-      onChange={e => {
-        props.loadFieldAutocomplete('boughtFrom', e.target.value);
-      }}
-      onBlur={() => {
-        props.onClearFieldFocus();
-      }}
-      onFocus={() => {
-        props.onFieldFocus('boughtFrom');
-      }}
-    />
-    {props.initialValues && props.initialValues.nr && (
-      <Field
-        type="text"
-        label="Systembolagets art.nr"
-        validate={numeric}
-        name="nr"
-        component={renderField}
-        placeholder="ex. 139kr"
-      />
-    )}
-    <Field
-      type="text"
-      label="Pris"
-      normalize={addKr}
-      name="price"
-      component={renderField}
-      placeholder="ex. 139kr"
-    />
-    <Field
-      name="container"
-      label="Förpackning"
-      component={renderSelect}
-      options={[
-        '',
-        'Helflaska',
-        'Glas',
-        'Box',
-        'Halvflaska',
-        'Liten box',
-        'Piccolo',
-        'Magnum',
-        'Tetra',
-        'Stor flaska',
-        'Annan',
-      ]}
-    />
-    {props.initialValues && props.initialValues.sizeml && (
-      <Field
-        type="text"
-        label="Volym"
-        normalize={addMl}
-        name="sizeml"
-        component={renderField}
-        placeholder=""
-      />
-    )}
-    <Field
-      {...props}
-      type="text"
-      autoComplete="off"
-      label={props.score ? `Betyg: ${props.score}` : 'Sätt betyg'}
-      name="score"
-      component={renderRange}
-      min="0"
-      max="10"
-      step="1"
-      validate={required}
-    />
-    <FieldArray name="grapes" component={renderGrapes} props={props} />
-    <div className="input-div block">
-      <span className="input-label noSelect">Kommentarer</span>
-      <Field name="comment" validate={required} component="textarea" />
-    </div>
-    <div className="button-div">
-      <button type="submit" disabled={props.pristine || props.submitting}>
-        Lägg till
-      </button>
-      <button
-        className="clearForm"
-        type="button"
-        onClick={() => props.resetForm('WineReview')}
-        disabled={props.submitting}
-      >
-        Rensa
-      </button>
-    </div>
-  </form>
-);
 AddReviewForm.propTypes = {
-  resetForm: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-  initialValues: PropTypes.object,
-  pristine: PropTypes.bool.isRequired,
-  submitting: PropTypes.bool.isRequired,
+  navigatedInitialValues: PropTypes.object,
+  autocompleteFieldData: PropTypes.object,
 };
 
-const selector = formValueSelector('WineReview');
 const mapStateToProps = state => ({
-  autocompleteData: state.addReducer.fieldData,
-  focusedField: state.addReducer.focusedField,
-  score: selector(state, 'score'),
   initialValues: state.addReducer.initialValue,
+  autocompleteFieldData: state.addReducer.fieldData,
 });
 
-const mapDispatchToProps = {
-  loadFieldAutocomplete,
-  onClearFieldFocus,
-  onFieldFocus,
-  resetForm,
-};
-
-AddReviewForm = reduxForm({
-  form: 'WineReview',
-})(AddReviewForm);
-
-AddReviewForm = connect(
+export default connect(
   mapStateToProps,
-  mapDispatchToProps,
-)(AddReviewForm);
-
-export default AddReviewForm;
+  null,
+)(AddReviewForm);;

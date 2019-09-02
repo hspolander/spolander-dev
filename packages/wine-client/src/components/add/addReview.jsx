@@ -13,10 +13,6 @@ import {
   sendLoadSystembolagetImage,
   showImageOfWine,
   hideImageOfWine,
-  setInitialValues,
-  loadSysWines,
-  loadAddReview,
-  resetForm,
 } from './actions';
 import './add.scss';
 
@@ -24,7 +20,6 @@ export const AddReview = ({
   systemWineData,
   isSmallScreen,
   formValues,
-  navigatedInitialValues,
 }) => {
   const resultNode = useRef();
   const formNode = useRef();
@@ -33,18 +28,13 @@ export const AddReview = ({
   useEffect(
     () => {
       authUser();
-      if (navigatedInitialValues) {
-        setInitialValues(navigatedInitialValues);
-      } else {
-        resetForm('WineReview');
-      }
       if (window.innerWidth <= 1024) {
         setScreenSize(true);
       } else {
         setScreenSize(false);
       }
     },
-    [navigatedInitialValues],
+    [],
   );
 
   const scrollTo = node => {
@@ -68,21 +58,11 @@ export const AddReview = ({
   useEffect(
     () => {
       if (prevData) {
-        if (!prevData.formValues) {
-          scrollTo(formNode);
-        }
+        scrollTo(formNode);
       }
     },
     [formValues],
   );
-
-  const handleSendAddReviewRequest = values => {
-    loadAddReview(values);
-  };
-
-  const handleSendGetSystembolagetRequest = values => {
-    loadSysWines(values);
-  };
 
   return (
     <div className="content">
@@ -90,14 +70,11 @@ export const AddReview = ({
         <div className="formtitle" ref={formNode}>
           <span>Skriv recension</span>
         </div>
-        <AddReviewForm
-          onSubmit={handleSendAddReviewRequest}
-          enableReinitialize
-        />
+        <AddReviewForm />
         <div className="formtitle">
           <span>Sök i systembolagets sortiment</span>
         </div>
-        <SearchSysForm onSubmit={handleSendGetSystembolagetRequest} />
+        <SearchSysForm />
         {systemWineData && (
           <div ref={resultNode}>
             {systemWineData.length > 0 ? (
