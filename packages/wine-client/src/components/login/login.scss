@@ -18,13 +18,16 @@ $break-large: 1024px;
 	border-radius: 10px;
   z-index: 100;
   background-color: white;
-  .MuiTextField-root {
+  .MuiTextField-root, .button-div {
     display: block;
     margin: 20px;
   }
-  @include respond-to(small-screens) { 
-    border: 10px #54799B solid;
-    font-size: 50px;
+  @include respond-to(small-screens) {
+    border: none;
+    padding: 0;
+    &>div {
+      width: 100vw - 20 px;
+    }
   }
   .sessionExpired {
     border-bottom: 3px #54799B solid;
