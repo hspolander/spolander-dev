@@ -4,30 +4,45 @@ import Slider from '@material-ui/core/Slider';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 
-const SliderRegular = props => {
-  const { displayValue, classes, min, max, step, onChange, value, label } = props;
+const SliderRegular = (props) => {
+  const {
+    displayValue, classes, min, max, step, onChange, value, label,
+  } = props;
 
   return (
     <FormControl className={classes.root}>
-        <InputLabel className={classes.resize} shrink variant={'outlined'}>
-            {label}
-        </InputLabel>
-          <Slider
-              aria-labelledby="slider"
-              valueLabelDisplay={displayValue || "auto"}
-              step={step}
-              onChange={onChange}
-              value={typeof value === 'number' ? value : 0}
-              marks
-              min={min}
-              max={max}
-          />
+      <InputLabel className={classes.resize} shrink variant="outlined">
+        {label}
+      </InputLabel>
+      <Slider
+        aria-labelledby="slider"
+        valueLabelDisplay={displayValue || 'auto'}
+        step={step}
+        onChange={onChange}
+        value={typeof value === 'number' ? value : 0}
+        marks
+        min={min}
+        max={max}
+      />
     </FormControl>
   );
 };
 
 SliderRegular.propTypes = {
-  children: PropTypes.node,
+  displayValue: PropTypes.string,
+  value: PropTypes.string.isRequired,
+  step: PropTypes.string.isRequired,
+  max: PropTypes.string.isRequired,
+  min: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  classes: PropTypes.any,
+  onChange: PropTypes.func.isRequired,
+};
+
+SliderRegular.defaultProps = {
+  label: '',
+  classes: {},
+  displayValue: '',
 };
 
 export default SliderRegular;

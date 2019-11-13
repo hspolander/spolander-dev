@@ -1,0 +1,1537 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Autocomplete Creatable multi select 1`] = `
+<div>
+  <div
+    className="Autocomplete-root-137 makeStyles-root-149 makeStyles-root-150"
+  >
+    <div
+      className=" css-2b097c-container"
+      onKeyDown={[Function]}
+    >
+      <div
+        className="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+      >
+        <label
+          className="MuiFormLabel-root MuiInputLabel-root resize MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined Mui-required Mui-required"
+          data-shrink={true}
+        >
+          Label
+          <span
+            className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+          >
+             
+            *
+          </span>
+        </label>
+        <div
+          className="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl"
+          onClick={[Function]}
+        >
+          <div
+            aria-invalid={false}
+            autoFocus={false}
+            className="MuiInputBase-input MuiOutlinedInput-input Autocomplete-resize-138 Autocomplete-input-139"
+            disabled={false}
+            onAnimationStart={[Function]}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            onMouseDown={[Function]}
+            onTouchEnd={[Function]}
+            required={true}
+            type="text"
+          >
+            <div
+              className="Autocomplete-valueContainer-140"
+            >
+              <p
+                className="MuiTypography-root Autocomplete-placeholder-146 MuiTypography-body1 MuiTypography-colorTextSecondary"
+              >
+                
+              </p>
+              <div
+                className="css-b8ldur-Input"
+              >
+                <div
+                  className=""
+                  style={
+                    Object {
+                      "display": "inline-block",
+                    }
+                  }
+                >
+                  <input
+                    aria-autocomplete="list"
+                    autoCapitalize="none"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    disabled={false}
+                    id="react-select-3-input"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onFocus={[Function]}
+                    spellCheck="false"
+                    style={
+                      Object {
+                        "background": 0,
+                        "border": 0,
+                        "boxSizing": "content-box",
+                        "color": "inherit",
+                        "fontSize": "inherit",
+                        "label": "input",
+                        "opacity": 1,
+                        "outline": 0,
+                        "padding": 0,
+                        "width": "1px",
+                      }
+                    }
+                    tabIndex="0"
+                    type="text"
+                    value=""
+                  />
+                  <div
+                    style={
+                      Object {
+                        "height": 0,
+                        "left": 0,
+                        "overflow": "scroll",
+                        "position": "absolute",
+                        "top": 0,
+                        "visibility": "hidden",
+                        "whiteSpace": "pre",
+                      }
+                    }
+                  >
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className=" css-1hb7zxy-IndicatorsContainer"
+            />
+          </div>
+          <fieldset
+            aria-hidden={true}
+            className="PrivateNotchedOutline-root-243 MuiOutlinedInput-notchedOutline"
+            style={
+              Object {
+                "paddingLeft": 8,
+              }
+            }
+          >
+            <legend
+              className="PrivateNotchedOutline-legend-244"
+              style={
+                Object {
+                  "width": 0,
+                }
+              }
+            >
+              <span
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "&#8203;",
+                  }
+                }
+              />
+            </legend>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Autocomplete Loading creatable 1`] = `
+<div>
+  <div
+    className="Autocomplete-root-15 makeStyles-root-27 makeStyles-root-28"
+  >
+    <div
+      className=" css-2b097c-container"
+      onKeyDown={[Function]}
+    >
+      <div
+        className="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+      >
+        <label
+          className="MuiFormLabel-root MuiInputLabel-root resize MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined Mui-required Mui-required"
+          data-shrink={true}
+        >
+          Label
+          <span
+            className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+          >
+             
+            *
+          </span>
+        </label>
+        <div
+          className="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-fullWidth MuiInputBase-formControl"
+          onClick={[Function]}
+        >
+          <div
+            aria-invalid={false}
+            autoFocus={false}
+            className="MuiInputBase-input MuiOutlinedInput-input Autocomplete-resize-16 Autocomplete-input-17"
+            disabled={false}
+            onAnimationStart={[Function]}
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            onMouseDown={[Function]}
+            onTouchEnd={[Function]}
+            required={true}
+            type="text"
+          >
+            <div
+              className="Autocomplete-valueContainer-18"
+            >
+              <p
+                className="MuiTypography-root Autocomplete-placeholder-24 MuiTypography-body1 MuiTypography-colorTextSecondary"
+              >
+                
+              </p>
+              <div
+                className="css-b8ldur-Input"
+              >
+                <div
+                  className=""
+                  style={
+                    Object {
+                      "display": "inline-block",
+                    }
+                  }
+                >
+                  <input
+                    aria-autocomplete="list"
+                    autoCapitalize="none"
+                    autoComplete="off"
+                    autoCorrect="off"
+                    disabled={false}
+                    id="react-select-2-input"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onFocus={[Function]}
+                    spellCheck="false"
+                    style={
+                      Object {
+                        "background": 0,
+                        "border": 0,
+                        "boxSizing": "content-box",
+                        "color": "inherit",
+                        "fontSize": "inherit",
+                        "label": "input",
+                        "opacity": 1,
+                        "outline": 0,
+                        "padding": 0,
+                        "width": "1px",
+                      }
+                    }
+                    tabIndex="0"
+                    type="text"
+                    value=""
+                  />
+                  <div
+                    style={
+                      Object {
+                        "height": 0,
+                        "left": 0,
+                        "overflow": "scroll",
+                        "position": "absolute",
+                        "top": 0,
+                        "visibility": "hidden",
+                        "whiteSpace": "pre",
+                      }
+                    }
+                  >
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className=" css-1hb7zxy-IndicatorsContainer"
+            >
+              <div
+                aria-hidden="true"
+                className=" css-at12u2-loadingIndicator"
+              >
+                <span
+                  className="css-1yvy2vo-LoadingDot"
+                />
+                <span
+                  className="css-zoievk-LoadingDot"
+                />
+                <span
+                  className="css-x748d8-LoadingDot"
+                />
+              </div>
+            </div>
+          </div>
+          <fieldset
+            aria-hidden={true}
+            className="PrivateNotchedOutline-root-121 MuiOutlinedInput-notchedOutline"
+            style={
+              Object {
+                "paddingLeft": 8,
+              }
+            }
+          >
+            <legend
+              className="PrivateNotchedOutline-legend-122"
+              style={
+                Object {
+                  "width": 0,
+                }
+              }
+            >
+              <span
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "&#8203;",
+                  }
+                }
+              />
+            </legend>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots ButtonRegular Contained default 1`] = `
+<button
+  className="MuiButtonBase-root MuiButton-root MuiButton-contained"
+  disabled={false}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onDragLeave={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyUp={[Function]}
+  onMouseDown={[Function]}
+  onMouseLeave={[Function]}
+  onMouseUp={[Function]}
+  onTouchEnd={[Function]}
+  onTouchMove={[Function]}
+  onTouchStart={[Function]}
+  tabIndex={0}
+  type="button"
+>
+  <span
+    className="MuiButton-label"
+  >
+    Contained default
+  </span>
+</button>
+`;
+
+exports[`Storyshots ButtonRegular Contained primary 1`] = `
+<button
+  className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
+  disabled={false}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onDragLeave={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyUp={[Function]}
+  onMouseDown={[Function]}
+  onMouseLeave={[Function]}
+  onMouseUp={[Function]}
+  onTouchEnd={[Function]}
+  onTouchMove={[Function]}
+  onTouchStart={[Function]}
+  tabIndex={0}
+  type="button"
+>
+  <span
+    className="MuiButton-label"
+  >
+    Contained primary
+  </span>
+</button>
+`;
+
+exports[`Storyshots ButtonRegular Contained secondary 1`] = `
+<button
+  className="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary"
+  disabled={false}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onDragLeave={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyUp={[Function]}
+  onMouseDown={[Function]}
+  onMouseLeave={[Function]}
+  onMouseUp={[Function]}
+  onTouchEnd={[Function]}
+  onTouchMove={[Function]}
+  onTouchStart={[Function]}
+  tabIndex={0}
+  type="button"
+>
+  <span
+    className="MuiButton-label"
+  >
+    Contained secondary
+  </span>
+</button>
+`;
+
+exports[`Storyshots ButtonRegular Outlined default 1`] = `
+<button
+  className="MuiButtonBase-root MuiButton-root MuiButton-outlined"
+  disabled={false}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onDragLeave={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyUp={[Function]}
+  onMouseDown={[Function]}
+  onMouseLeave={[Function]}
+  onMouseUp={[Function]}
+  onTouchEnd={[Function]}
+  onTouchMove={[Function]}
+  onTouchStart={[Function]}
+  tabIndex={0}
+  type="button"
+>
+  <span
+    className="MuiButton-label"
+  >
+    Outlined default
+  </span>
+</button>
+`;
+
+exports[`Storyshots ButtonRegular Outlined primary 1`] = `
+<button
+  className="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary"
+  disabled={false}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onDragLeave={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyUp={[Function]}
+  onMouseDown={[Function]}
+  onMouseLeave={[Function]}
+  onMouseUp={[Function]}
+  onTouchEnd={[Function]}
+  onTouchMove={[Function]}
+  onTouchStart={[Function]}
+  tabIndex={0}
+  type="button"
+>
+  <span
+    className="MuiButton-label"
+  >
+    Outlined primary
+  </span>
+</button>
+`;
+
+exports[`Storyshots ButtonRegular Outlined secondary 1`] = `
+<button
+  className="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedSecondary"
+  disabled={false}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onDragLeave={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyUp={[Function]}
+  onMouseDown={[Function]}
+  onMouseLeave={[Function]}
+  onMouseUp={[Function]}
+  onTouchEnd={[Function]}
+  onTouchMove={[Function]}
+  onTouchStart={[Function]}
+  tabIndex={0}
+  type="button"
+>
+  <span
+    className="MuiButton-label"
+  >
+    Outlined secondary
+  </span>
+</button>
+`;
+
+exports[`Storyshots ButtonRegular Text default 1`] = `
+<button
+  className="MuiButtonBase-root MuiButton-root MuiButton-text"
+  disabled={false}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onDragLeave={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyUp={[Function]}
+  onMouseDown={[Function]}
+  onMouseLeave={[Function]}
+  onMouseUp={[Function]}
+  onTouchEnd={[Function]}
+  onTouchMove={[Function]}
+  onTouchStart={[Function]}
+  tabIndex={0}
+  type="button"
+>
+  <span
+    className="MuiButton-label"
+  >
+    Text default
+  </span>
+</button>
+`;
+
+exports[`Storyshots ButtonRegular Text primary 1`] = `
+<button
+  className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary"
+  disabled={false}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onDragLeave={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyUp={[Function]}
+  onMouseDown={[Function]}
+  onMouseLeave={[Function]}
+  onMouseUp={[Function]}
+  onTouchEnd={[Function]}
+  onTouchMove={[Function]}
+  onTouchStart={[Function]}
+  tabIndex={0}
+  type="button"
+>
+  <span
+    className="MuiButton-label"
+  >
+    Text primary
+  </span>
+</button>
+`;
+
+exports[`Storyshots ButtonRegular Text secondary 1`] = `
+<button
+  className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textSecondary"
+  disabled={false}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onDragLeave={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+  onKeyUp={[Function]}
+  onMouseDown={[Function]}
+  onMouseLeave={[Function]}
+  onMouseUp={[Function]}
+  onTouchEnd={[Function]}
+  onTouchMove={[Function]}
+  onTouchStart={[Function]}
+  tabIndex={0}
+  type="button"
+>
+  <span
+    className="MuiButton-label"
+  >
+    Text secondary
+  </span>
+</button>
+`;
+
+exports[`Storyshots InputRegular Filled 1`] = `
+<div
+  className="MuiFormControl-root MuiTextField-root InputRegular-root-663"
+  onKeyPress={[Function]}
+>
+  <label
+    className="MuiFormLabel-root MuiInputLabel-root InputRegular-resize-664 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-filled"
+    data-shrink={true}
+  >
+    Label
+  </label>
+  <div
+    className="MuiInputBase-root MuiFilledInput-root InputRegular-resize-664 MuiFilledInput-underline MuiInputBase-formControl"
+    onClick={[Function]}
+  >
+    <input
+      aria-invalid={false}
+      autoFocus={false}
+      className="MuiInputBase-input MuiFilledInput-input"
+      disabled={false}
+      onAnimationStart={[Function]}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      required={false}
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Storyshots InputRegular Filled required error 1`] = `
+<div
+  className="MuiFormControl-root MuiTextField-root InputRegular-root-858"
+  onKeyPress={[Function]}
+>
+  <label
+    className="MuiFormLabel-root MuiInputLabel-root InputRegular-resize-859 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-filled Mui-required Mui-required"
+    data-shrink={true}
+  >
+    Label
+    <span
+      className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+    >
+       
+      *
+    </span>
+  </label>
+  <div
+    className="MuiInputBase-root MuiFilledInput-root InputRegular-resize-859 MuiFilledInput-underline MuiInputBase-formControl"
+    onClick={[Function]}
+  >
+    <input
+      aria-invalid={false}
+      autoFocus={false}
+      className="MuiInputBase-input MuiFilledInput-input"
+      disabled={false}
+      onAnimationStart={[Function]}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      required={true}
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Storyshots InputRegular Multirow(Text area) 1`] = `
+<div
+  className="MuiFormControl-root MuiTextField-root InputRegular-root-924"
+  onKeyPress={[Function]}
+>
+  <label
+    className="MuiFormLabel-root MuiInputLabel-root InputRegular-resize-925 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined Mui-required Mui-required"
+    data-shrink={true}
+  >
+    Label
+    <span
+      className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+    >
+       
+      *
+    </span>
+  </label>
+  <div
+    className="MuiInputBase-root MuiOutlinedInput-root InputRegular-resize-925 MuiInputBase-formControl MuiInputBase-multiline MuiOutlinedInput-multiline"
+    onClick={[Function]}
+  >
+    <textarea
+      aria-invalid={false}
+      autoFocus={false}
+      className="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputMultiline MuiOutlinedInput-inputMultiline"
+      disabled={false}
+      onAnimationStart={[Function]}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      required={true}
+      rows={5}
+    />
+    <fieldset
+      aria-hidden={true}
+      className="PrivateNotchedOutline-root-988 MuiOutlinedInput-notchedOutline"
+      style={
+        Object {
+          "paddingLeft": 8,
+        }
+      }
+    >
+      <legend
+        className="PrivateNotchedOutline-legend-989"
+        style={
+          Object {
+            "width": 0,
+          }
+        }
+      >
+        <span
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "&#8203;",
+            }
+          }
+        />
+      </legend>
+    </fieldset>
+  </div>
+</div>
+`;
+
+exports[`Storyshots InputRegular Outlined 1`] = `
+<div
+  className="MuiFormControl-root MuiTextField-root InputRegular-root-596"
+  onKeyPress={[Function]}
+>
+  <label
+    className="MuiFormLabel-root MuiInputLabel-root InputRegular-resize-597 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined"
+    data-shrink={true}
+  >
+    Label
+  </label>
+  <div
+    className="MuiInputBase-root MuiOutlinedInput-root InputRegular-resize-597 MuiInputBase-formControl"
+    onClick={[Function]}
+  >
+    <input
+      aria-invalid={false}
+      autoFocus={false}
+      className="MuiInputBase-input MuiOutlinedInput-input"
+      disabled={false}
+      onAnimationStart={[Function]}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      required={false}
+      type="text"
+    />
+    <fieldset
+      aria-hidden={true}
+      className="PrivateNotchedOutline-root-660 MuiOutlinedInput-notchedOutline"
+      style={
+        Object {
+          "paddingLeft": 8,
+        }
+      }
+    >
+      <legend
+        className="PrivateNotchedOutline-legend-661"
+        style={
+          Object {
+            "width": 0,
+          }
+        }
+      >
+        <span
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "&#8203;",
+            }
+          }
+        />
+      </legend>
+    </fieldset>
+  </div>
+</div>
+`;
+
+exports[`Storyshots InputRegular Outlined required error 1`] = `
+<div
+  className="MuiFormControl-root MuiTextField-root InputRegular-root-791"
+  onKeyPress={[Function]}
+>
+  <label
+    className="MuiFormLabel-root MuiInputLabel-root InputRegular-resize-792 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined Mui-required Mui-required"
+    data-shrink={true}
+  >
+    Label
+    <span
+      className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+    >
+       
+      *
+    </span>
+  </label>
+  <div
+    className="MuiInputBase-root MuiOutlinedInput-root InputRegular-resize-792 MuiInputBase-formControl"
+    onClick={[Function]}
+  >
+    <input
+      aria-invalid={false}
+      autoFocus={false}
+      className="MuiInputBase-input MuiOutlinedInput-input"
+      disabled={false}
+      onAnimationStart={[Function]}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      required={true}
+      type="text"
+    />
+    <fieldset
+      aria-hidden={true}
+      className="PrivateNotchedOutline-root-855 MuiOutlinedInput-notchedOutline"
+      style={
+        Object {
+          "paddingLeft": 8,
+        }
+      }
+    >
+      <legend
+        className="PrivateNotchedOutline-legend-856"
+        style={
+          Object {
+            "width": 0,
+          }
+        }
+      >
+        <span
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "&#8203;",
+            }
+          }
+        />
+      </legend>
+    </fieldset>
+  </div>
+</div>
+`;
+
+exports[`Storyshots InputRegular Several textfields 1`] = `
+<div>
+  <div
+    className="MuiFormControl-root MuiTextField-root InputRegular-root-991"
+    onKeyPress={[Function]}
+  >
+    <label
+      className="MuiFormLabel-root MuiInputLabel-root InputRegular-resize-992 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined"
+      data-shrink={true}
+    >
+      Label
+    </label>
+    <div
+      className="MuiInputBase-root MuiOutlinedInput-root InputRegular-resize-992 MuiInputBase-formControl"
+      onClick={[Function]}
+    >
+      <input
+        aria-invalid={false}
+        autoFocus={false}
+        className="MuiInputBase-input MuiOutlinedInput-input"
+        disabled={false}
+        onAnimationStart={[Function]}
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        required={false}
+        type="text"
+      />
+      <fieldset
+        aria-hidden={true}
+        className="PrivateNotchedOutline-root-1055 MuiOutlinedInput-notchedOutline"
+        style={
+          Object {
+            "paddingLeft": 8,
+          }
+        }
+      >
+        <legend
+          className="PrivateNotchedOutline-legend-1056"
+          style={
+            Object {
+              "width": 0,
+            }
+          }
+        >
+          <span
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "&#8203;",
+              }
+            }
+          />
+        </legend>
+      </fieldset>
+    </div>
+  </div>
+  <div
+    className="MuiFormControl-root MuiTextField-root InputRegular-root-991"
+    onKeyPress={[Function]}
+  >
+    <label
+      className="MuiFormLabel-root MuiInputLabel-root InputRegular-resize-992 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined"
+      data-shrink={true}
+    >
+      Label
+    </label>
+    <div
+      className="MuiInputBase-root MuiOutlinedInput-root InputRegular-resize-992 MuiInputBase-formControl"
+      onClick={[Function]}
+    >
+      <input
+        aria-invalid={false}
+        autoFocus={false}
+        className="MuiInputBase-input MuiOutlinedInput-input"
+        disabled={false}
+        onAnimationStart={[Function]}
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        required={false}
+        type="text"
+      />
+      <fieldset
+        aria-hidden={true}
+        className="PrivateNotchedOutline-root-1055 MuiOutlinedInput-notchedOutline"
+        style={
+          Object {
+            "paddingLeft": 8,
+          }
+        }
+      >
+        <legend
+          className="PrivateNotchedOutline-legend-1056"
+          style={
+            Object {
+              "width": 0,
+            }
+          }
+        >
+          <span
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "&#8203;",
+              }
+            }
+          />
+        </legend>
+      </fieldset>
+    </div>
+  </div>
+  <div
+    className="MuiFormControl-root MuiTextField-root InputRegular-root-991"
+    onKeyPress={[Function]}
+  >
+    <label
+      className="MuiFormLabel-root MuiInputLabel-root InputRegular-resize-992 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined"
+      data-shrink={true}
+    >
+      Label
+    </label>
+    <div
+      className="MuiInputBase-root MuiOutlinedInput-root InputRegular-resize-992 MuiInputBase-formControl"
+      onClick={[Function]}
+    >
+      <input
+        aria-invalid={false}
+        autoFocus={false}
+        className="MuiInputBase-input MuiOutlinedInput-input"
+        disabled={false}
+        onAnimationStart={[Function]}
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        required={false}
+        type="text"
+      />
+      <fieldset
+        aria-hidden={true}
+        className="PrivateNotchedOutline-root-1055 MuiOutlinedInput-notchedOutline"
+        style={
+          Object {
+            "paddingLeft": 8,
+          }
+        }
+      >
+        <legend
+          className="PrivateNotchedOutline-legend-1056"
+          style={
+            Object {
+              "width": 0,
+            }
+          }
+        >
+          <span
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "&#8203;",
+              }
+            }
+          />
+        </legend>
+      </fieldset>
+    </div>
+  </div>
+  <div
+    className="MuiFormControl-root MuiTextField-root InputRegular-root-991"
+    onKeyPress={[Function]}
+  >
+    <label
+      className="MuiFormLabel-root MuiInputLabel-root InputRegular-resize-992 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined"
+      data-shrink={true}
+    >
+      Label
+    </label>
+    <div
+      className="MuiInputBase-root MuiOutlinedInput-root InputRegular-resize-992 MuiInputBase-formControl"
+      onClick={[Function]}
+    >
+      <input
+        aria-invalid={false}
+        autoFocus={false}
+        className="MuiInputBase-input MuiOutlinedInput-input"
+        disabled={false}
+        onAnimationStart={[Function]}
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        required={false}
+        type="text"
+      />
+      <fieldset
+        aria-hidden={true}
+        className="PrivateNotchedOutline-root-1055 MuiOutlinedInput-notchedOutline"
+        style={
+          Object {
+            "paddingLeft": 8,
+          }
+        }
+      >
+        <legend
+          className="PrivateNotchedOutline-legend-1056"
+          style={
+            Object {
+              "width": 0,
+            }
+          }
+        >
+          <span
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "&#8203;",
+              }
+            }
+          />
+        </legend>
+      </fieldset>
+    </div>
+  </div>
+  <div
+    className="MuiFormControl-root MuiTextField-root InputRegular-root-991"
+    onKeyPress={[Function]}
+  >
+    <label
+      className="MuiFormLabel-root MuiInputLabel-root InputRegular-resize-992 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined"
+      data-shrink={true}
+    >
+      Label
+    </label>
+    <div
+      className="MuiInputBase-root MuiOutlinedInput-root InputRegular-resize-992 MuiInputBase-formControl"
+      onClick={[Function]}
+    >
+      <input
+        aria-invalid={false}
+        autoFocus={false}
+        className="MuiInputBase-input MuiOutlinedInput-input"
+        disabled={false}
+        onAnimationStart={[Function]}
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        required={false}
+        type="text"
+      />
+      <fieldset
+        aria-hidden={true}
+        className="PrivateNotchedOutline-root-1055 MuiOutlinedInput-notchedOutline"
+        style={
+          Object {
+            "paddingLeft": 8,
+          }
+        }
+      >
+        <legend
+          className="PrivateNotchedOutline-legend-1056"
+          style={
+            Object {
+              "width": 0,
+            }
+          }
+        >
+          <span
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "&#8203;",
+              }
+            }
+          />
+        </legend>
+      </fieldset>
+    </div>
+  </div>
+  <div
+    className="MuiFormControl-root MuiTextField-root InputRegular-root-991"
+    onKeyPress={[Function]}
+  >
+    <label
+      className="MuiFormLabel-root MuiInputLabel-root InputRegular-resize-992 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined"
+      data-shrink={true}
+    >
+      Label
+    </label>
+    <div
+      className="MuiInputBase-root MuiOutlinedInput-root InputRegular-resize-992 MuiInputBase-formControl"
+      onClick={[Function]}
+    >
+      <input
+        aria-invalid={false}
+        autoFocus={false}
+        className="MuiInputBase-input MuiOutlinedInput-input"
+        disabled={false}
+        onAnimationStart={[Function]}
+        onBlur={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        required={false}
+        type="text"
+      />
+      <fieldset
+        aria-hidden={true}
+        className="PrivateNotchedOutline-root-1055 MuiOutlinedInput-notchedOutline"
+        style={
+          Object {
+            "paddingLeft": 8,
+          }
+        }
+      >
+        <legend
+          className="PrivateNotchedOutline-legend-1056"
+          style={
+            Object {
+              "width": 0,
+            }
+          }
+        >
+          <span
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": "&#8203;",
+              }
+            }
+          />
+        </legend>
+      </fieldset>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots InputRegular Standard 1`] = `
+<div
+  className="MuiFormControl-root MuiTextField-root InputRegular-root-534"
+  onKeyPress={[Function]}
+>
+  <label
+    className="MuiFormLabel-root MuiInputLabel-root InputRegular-resize-535 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink"
+    data-shrink={true}
+  >
+    Label
+  </label>
+  <div
+    className="MuiInputBase-root MuiInput-root InputRegular-resize-535 MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+    onClick={[Function]}
+  >
+    <input
+      aria-invalid={false}
+      autoFocus={false}
+      className="MuiInputBase-input MuiInput-input"
+      disabled={false}
+      onAnimationStart={[Function]}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      required={false}
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Storyshots InputRegular Standard required error 1`] = `
+<div
+  className="MuiFormControl-root MuiTextField-root InputRegular-root-729"
+  onKeyPress={[Function]}
+>
+  <label
+    className="MuiFormLabel-root MuiInputLabel-root InputRegular-resize-730 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink Mui-required Mui-required"
+    data-shrink={true}
+  >
+    Label
+    <span
+      className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+    >
+       
+      *
+    </span>
+  </label>
+  <div
+    className="MuiInputBase-root MuiInput-root InputRegular-resize-730 MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+    onClick={[Function]}
+  >
+    <input
+      aria-invalid={false}
+      autoFocus={false}
+      className="MuiInputBase-input MuiInput-input"
+      disabled={false}
+      onAnimationStart={[Function]}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      required={true}
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Storyshots Select Regular 1`] = `
+<div
+  className="MuiFormControl-root SelectRegular-root-1108"
+>
+  <label
+    className="MuiFormLabel-root MuiInputLabel-root SelectRegular-resize-1109 SelectRegular-label-1110 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink Mui-required Mui-required"
+    data-shrink={true}
+  >
+    Label
+    <span
+      className="MuiFormLabel-asterisk MuiInputLabel-asterisk"
+    >
+       
+      *
+    </span>
+  </label>
+  <div
+    className="MuiInputBase-root MuiOutlinedInput-root SelectRegular-resize-1109 MuiInputBase-formControl"
+    onClick={[Function]}
+  >
+    <div
+      aria-haspopup="listbox"
+      aria-labelledby=" "
+      className="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputSelect MuiOutlinedInput-inputSelect"
+      onBlur={[Function]}
+      onClick={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      role="button"
+      tabIndex={0}
+    >
+      <span
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "&#8203;",
+          }
+        }
+      />
+    </div>
+    <input
+      onAnimationStart={[Function]}
+      type="hidden"
+    />
+    <svg
+      aria-hidden="true"
+      className="MuiSvgIcon-root MuiSelect-icon"
+      focusable="false"
+      role="presentation"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M7 10l5 5 5-5z"
+      />
+    </svg>
+    <fieldset
+      aria-hidden={true}
+      className="PrivateNotchedOutline-root-1195 MuiOutlinedInput-notchedOutline"
+      style={
+        Object {
+          "paddingLeft": 8,
+        }
+      }
+    >
+      <legend
+        className="PrivateNotchedOutline-legend-1196"
+        style={
+          Object {
+            "width": 0,
+          }
+        }
+      >
+        <span
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "&#8203;",
+            }
+          }
+        />
+      </legend>
+    </fieldset>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Slider Regular 1`] = `
+<div
+  className="MuiFormControl-root SliderRegular-root-1057"
+>
+  <label
+    className="MuiFormLabel-root MuiInputLabel-root SliderRegular-resize-1058 MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined"
+    data-shrink={true}
+  >
+    Label
+  </label>
+  <span
+    className="MuiSlider-root MuiSlider-colorPrimary"
+    onMouseDown={[Function]}
+  >
+    <span
+      className="MuiSlider-rail"
+    />
+    <span
+      className="MuiSlider-track"
+      style={
+        Object {
+          "left": "0%",
+          "width": "50%",
+        }
+      }
+    />
+    <input
+      type="hidden"
+      value="5"
+    />
+    <span
+      className="MuiSlider-mark MuiSlider-markActive"
+      style={
+        Object {
+          "left": "0%",
+        }
+      }
+    />
+    <span
+      aria-hidden={true}
+      className="MuiSlider-markLabel MuiSlider-markLabelActive"
+      style={
+        Object {
+          "left": "0%",
+        }
+      }
+    />
+    <span
+      className="MuiSlider-mark MuiSlider-markActive"
+      style={
+        Object {
+          "left": "10%",
+        }
+      }
+    />
+    <span
+      aria-hidden={true}
+      className="MuiSlider-markLabel MuiSlider-markLabelActive"
+      style={
+        Object {
+          "left": "10%",
+        }
+      }
+    />
+    <span
+      className="MuiSlider-mark MuiSlider-markActive"
+      style={
+        Object {
+          "left": "20%",
+        }
+      }
+    />
+    <span
+      aria-hidden={true}
+      className="MuiSlider-markLabel MuiSlider-markLabelActive"
+      style={
+        Object {
+          "left": "20%",
+        }
+      }
+    />
+    <span
+      className="MuiSlider-mark MuiSlider-markActive"
+      style={
+        Object {
+          "left": "30%",
+        }
+      }
+    />
+    <span
+      aria-hidden={true}
+      className="MuiSlider-markLabel MuiSlider-markLabelActive"
+      style={
+        Object {
+          "left": "30%",
+        }
+      }
+    />
+    <span
+      className="MuiSlider-mark MuiSlider-markActive"
+      style={
+        Object {
+          "left": "40%",
+        }
+      }
+    />
+    <span
+      aria-hidden={true}
+      className="MuiSlider-markLabel MuiSlider-markLabelActive"
+      style={
+        Object {
+          "left": "40%",
+        }
+      }
+    />
+    <span
+      className="MuiSlider-mark MuiSlider-markActive"
+      style={
+        Object {
+          "left": "50%",
+        }
+      }
+    />
+    <span
+      aria-hidden={true}
+      className="MuiSlider-markLabel MuiSlider-markLabelActive"
+      style={
+        Object {
+          "left": "50%",
+        }
+      }
+    />
+    <span
+      className="MuiSlider-mark"
+      style={
+        Object {
+          "left": "60%",
+        }
+      }
+    />
+    <span
+      aria-hidden={true}
+      className="MuiSlider-markLabel"
+      style={
+        Object {
+          "left": "60%",
+        }
+      }
+    />
+    <span
+      className="MuiSlider-mark"
+      style={
+        Object {
+          "left": "70%",
+        }
+      }
+    />
+    <span
+      aria-hidden={true}
+      className="MuiSlider-markLabel"
+      style={
+        Object {
+          "left": "70%",
+        }
+      }
+    />
+    <span
+      className="MuiSlider-mark"
+      style={
+        Object {
+          "left": "80%",
+        }
+      }
+    />
+    <span
+      aria-hidden={true}
+      className="MuiSlider-markLabel"
+      style={
+        Object {
+          "left": "80%",
+        }
+      }
+    />
+    <span
+      className="MuiSlider-mark"
+      style={
+        Object {
+          "left": "90%",
+        }
+      }
+    />
+    <span
+      aria-hidden={true}
+      className="MuiSlider-markLabel"
+      style={
+        Object {
+          "left": "90%",
+        }
+      }
+    />
+    <span
+      className="MuiSlider-mark"
+      style={
+        Object {
+          "left": "100%",
+        }
+      }
+    />
+    <span
+      aria-hidden={true}
+      className="MuiSlider-markLabel"
+      style={
+        Object {
+          "left": "100%",
+        }
+      }
+    />
+    <span
+      aria-labelledby="slider"
+      aria-orientation="horizontal"
+      aria-valuemax={10}
+      aria-valuemin={0}
+      aria-valuenow={5}
+      className="MuiSlider-thumb MuiSlider-thumbColorPrimary PrivateValueLabel-open-1104 PrivateValueLabel-thumb-1103"
+      data-index={0}
+      onBlur={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseOver={[Function]}
+      role="slider"
+      style={
+        Object {
+          "left": "50%",
+        }
+      }
+      tabIndex={0}
+    >
+      <span
+        className="PrivateValueLabel-offset-1105 MuiSlider-valueLabel"
+      >
+        <span
+          className="PrivateValueLabel-circle-1106"
+        >
+          <span
+            className="PrivateValueLabel-label-1107"
+          >
+            5
+          </span>
+        </span>
+      </span>
+    </span>
+  </span>
+</div>
+`;

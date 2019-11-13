@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import PropTypes from 'prop-types';
 import MaterialTable from 'material-table';
 
@@ -26,3 +26,4 @@ Table.propTypes = {
 };
 
 export default Table;
+*/

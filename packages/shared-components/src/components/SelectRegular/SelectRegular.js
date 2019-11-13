@@ -7,8 +7,10 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 
-const SelectRegular = props => {
-  const { values, value, label, classes, onChange } = props;
+const SelectRegular = (props) => {
+  const {
+    values, value, label, classes, onChange,
+  } = props;
   const inputLabel = React.useRef(null);
   const [labelWidth, setLabelWidth] = React.useState(0);
 
@@ -22,14 +24,16 @@ const SelectRegular = props => {
         {label}
       </InputLabel>
       <Select
-        onChange={e => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         value={value}
         notched
-        input={<OutlinedInput labelWidth={labelWidth} className={classes.resize} />}
+        input={
+          <OutlinedInput labelWidth={labelWidth} className={classes.resize} />
+        }
       >
-        {values.map(value => (
-          <MenuItem key={value.value} value={value.value}>
-            {value.name}
+        {values.map((val) => (
+          <MenuItem key={val.value} value={val.value}>
+            {val.name}
           </MenuItem>
         ))}
       </Select>

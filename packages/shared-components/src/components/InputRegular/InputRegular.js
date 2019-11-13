@@ -4,7 +4,23 @@ import clsx from 'clsx';
 import TextField from '@material-ui/core/TextField';
 
 const InputRegular = props => {
-  const { type, multiline, multiRows, wide, onChange, readOnly, onEnterPress, required, value, label, children, color, classes, variant, ...other } = props;
+  const {
+    type,
+    multiline,
+    multiRows,
+    wide,
+    onChange,
+    readOnly,
+    onEnterPress,
+    required,
+    value,
+    label,
+    children,
+    color,
+    classes,
+    variant,
+    ...other
+  } = props;
   const [error, setError] = useState(false);
   const onKeyPress = (e) => {
     if (e.key === "Enter" && onEnterPress) {
