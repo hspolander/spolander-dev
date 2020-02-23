@@ -1,0 +1,12 @@
+{
+  "name": "@spolander/graphql-server",
+  "version": "1.0.0",
+  "description": "A project for learning graphql.",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^2.9.9",
+    "graphql": "^14.5.8"
+  },
+  "devDependencies": {}
+}
