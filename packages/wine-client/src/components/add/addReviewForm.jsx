@@ -10,6 +10,7 @@ import ButtonRegular from '@spolander/shared-components/src/components/ButtonReg
 import {
   loadFieldAutocomplete,
   loadAddReview,
+  clearInitialValues,
 } from './actions';
 
 const AddReviewForm = ({
@@ -70,7 +71,7 @@ const AddReviewForm = ({
       'price': "",
       'container': "",
       'nr': "",
-      'score': '',
+      'score': "",
       'comment': "",
       'sizeml': "",
       'grapes': [],
@@ -100,6 +101,7 @@ const AddReviewForm = ({
     () => {
       if (initialValues) {
         setInitialValues(initialValues);
+        clearInitialValues();
       }
     },
     [initialValues],
@@ -214,7 +216,7 @@ const AddReviewForm = ({
         inputType="single"
         selectedValue={formdata.grapes}
         placeholder="Ex. Chardonnay"
-        value={formdata.grapes.length > 0 ? formdata.grapes.map(grape => ({ 'value': grape, 'label': grape })) : []}
+        value={formdata.grapes && formdata.grapes.length > 0 ? formdata.grapes.map(grape => ({ 'value': grape, 'label': grape })) : []}
         onBlur={e => setFormData({ ...formdata, 'grapes': e.target.value ? formdata.grapes.map(grapes => grapes.value) : formdata.grapes })}
         formatCreateLabel={val => `${val} (ny)`}
         onInputChange={(inputValue, action) => autocompleteField('grape', inputValue, action)}
@@ -240,7 +242,6 @@ const AddReviewForm = ({
         required
         wide
         multiRows={7}
-        required
       />
       <div className="buttonDiv">
         <ButtonRegular variant="outlined" color="secondary" onClick={() => resetForm()}>

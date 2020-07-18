@@ -67,7 +67,7 @@ export default function reducer(state = initialState, action) {
       return { ...state, initialValue: action.payload };
     }
     case CLEAR_INITIAL_VALUES: {
-      return { ...state, payload: null };
+      return { ...state, initialValue: null };
     }
     case FIELD_AUTOCOMPLETE_FETCHING: {
       return { ...state, fetched: false, fetching: true };
@@ -90,7 +90,7 @@ export default function reducer(state = initialState, action) {
       return { ...state, fetched: false, fetching: true, systemWineData: null };
     }
     case SYSTEMBOLAGET_CLEAR_VALUES: {
-      return { ...state, systemWineData: action.payload };
+      return { ...state, systemWineData: null };
     }
     case FETCH_SYSTEMBOLAGET_FULFILLED: {
       return {

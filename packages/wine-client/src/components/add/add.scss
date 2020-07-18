@@ -140,11 +140,11 @@ $break-large: 1024px;
             font-weight: bold;
             color: #CFCCCC;
           }
-          .fa {
+          svg {
               font-size: 60px;
           }
         }
-        .fa {
+        svg {
           color: $darkblue;
           font-weight: bold;
           cursor: pointer;
@@ -160,7 +160,7 @@ $break-large: 1024px;
           margin: 0px;
           @include respond-to(small-screens) {
             font-size: 25px;
-            .fa {
+            svg {
               font-size: 60px;
             }
             .title {

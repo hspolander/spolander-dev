@@ -10,6 +10,7 @@ import ButtonRegular from '@spolander/shared-components/src/components/ButtonReg
 import {
   loadFieldAutocomplete,
   loadAddWine,
+  clearInitialValues,
 } from './actions';
 
 import './add.scss';
@@ -79,6 +80,7 @@ export const AddWineForm = ({
     () => {
       if (initialValues) {
         setInitialValues(initialValues);
+        clearInitialValues();
       }
     },
     [initialValues],
@@ -204,7 +206,7 @@ export const AddWineForm = ({
         inputType="single"
         selectedValue={formdata.grapes}
         placeholder="Ex. Chardonnay"
-        value={formdata.grapes.length > 0 ? formdata.grapes.map(grape => ({'value': grape, 'label': grape})) : []}
+        value={formdata.grapes && formdata.grapes.length > 0 ? formdata.grapes.map(grape => ({'value': grape, 'label': grape})) : []}
         onBlur={e => setFormData({...formdata, 'grapes': e.target.value ? formdata.grapes.map(grapes => grapes.value) : formdata.grapes})}
         formatCreateLabel={val => `${val} (ny)`}
         onInputChange={(inputValue, action) => autocompleteField('grape', inputValue, action)}
