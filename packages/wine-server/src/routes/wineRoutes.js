@@ -85,8 +85,8 @@ export default (server) => {
               });
             } else {
               result.sort(function(a, b) {
-                var nameA = a.wine[query.orderedProp].toUpperCase(); // ignore upper and lowercase
-                var nameB = b.wine[query.orderedProp].toUpperCase(); // ignore upper and lowercase
+                var nameA = a.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase
+                var nameB = b.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase
                 if (nameA < nameB) {
                   return -1;
                 }
@@ -143,12 +143,12 @@ export default (server) => {
               });
             } else if (query.orderedProp === 'score') {
               result.sort(function(a, b) {
-                return b.wine.reviews[0][query.orderedProp] - a.wine.reviews[0][query.orderedProp];
+                return b.wine?.reviews[0][query.orderedProp] - a.wine?.reviews[0][query.orderedProp];
               });
             } else {
               result.sort(function(a, b) {
-                var nameA = a.wine[query.orderedProp].toUpperCase(); // ignore upper and lowercase
-                var nameB = b.wine[query.orderedProp].toUpperCase(); // ignore upper and lowercase
+                var nameA = a.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase
+                var nameB = b.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase
                 if (nameA < nameB) {
                   return -1;
                 }
@@ -197,8 +197,8 @@ export default (server) => {
               });
             } else {
               result.sort(function(a, b) {
-                var nameA = a.wine[query.orderedProp].toUpperCase(); // ignore upper and lowercase
-                var nameB = b.wine[query.orderedProp].toUpperCase(); // ignore upper and lowercase
+                var nameA = a.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase
+                var nameB = b.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase
                 if (nameA < nameB) {
                   return -1;
                 }
@@ -248,8 +248,8 @@ export default (server) => {
               });
             } else {
               result.sort(function(a, b) {
-                var nameA = a.wine[query.orderedProp].toUpperCase(); // ignore upper and lowercase
-                var nameB = b.wine[query.orderedProp].toUpperCase(); // ignore upper and lowercase
+                var nameA = a.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase
+                var nameB = b.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase
                 if (nameA < nameB) {
                   return -1;
                 }
@@ -280,9 +280,7 @@ export default (server) => {
       const cookies = req.cookies;
       if (cookies && cookies.WINE_UUID && await validateSession(cookies.WINE_UUID)) {
         const body = req.body;
-        console.log(body);
         const wineUrl = await getWineUrl(body.nr, body.name, body.year, body.country);
-        console.log(wineUrl);
         const wineId = await insertWine(body.year, body.name, body.boughtFrom, body.price, body.glass, body.country, body.color, body.producerbody, 0, body.sizeml, body.nr, wineUrl);
         let user = await getUserByUsername(cookies.username);
         await insertReview(wineId, user.name, body.comment, body.score);
@@ -335,11 +333,9 @@ export default (server) => {
             allrows = liItem.find('p');
             liItem.find('div').remove();
             allrows = liItem.html().replace(/<\/button>|samt|och|\.|,|\d%|\d\d%|\d\d\d%|<p>|<\/p>/g, "\r\n");
-            console.log(allrows);
             allrows = allrows.split(/\r\n|<\/button>|<button /);
             for (var i = 0; i < allrows.length; i++) {
               allrows[i] = allrows[i].trim();
-              console.log(allrows);
               if (allrows[i] && allrows[i].startsWith("class")) {
                 allrows.splice(i, 1);
                 i = i - 1;
@@ -367,9 +363,8 @@ export default (server) => {
           allrows = [];
         }
         for (var i = 0; i < allrows.length; i++) {
-          allrows[i] = allrows[i].charAt(0).toUpperCase() + allrows[i].slice(1).replace('&#xE8;', 'é').replace('&#xD1;', 'Ñ').replace('&#xC9;', 'É').replace('&#xF1;', 'ñ');
+          allrows[i] = allrows[i].charAt(0)?.toUpperCase() + allrows[i].slice(1).replace('&#xE8;', 'é').replace('&#xD1;', 'Ñ').replace('&#xC9;', 'É').replace('&#xF1;', 'ñ');
         }
-            console.log(allrows);
         res.json({"error" : false, "message" : "Allt väl", "data" : allrows});
       } else {
         res.clearCookie("WINE_UUID");

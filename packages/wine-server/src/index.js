@@ -1,7 +1,7 @@
 let restify = require('restify');
 let mysql = require('mysql2');
 let bodyParser = require('body-parser');
-let md5 = require('MD5');
+let md5 = require('md5');
 var CookieParser = require('restify-cookies');
 
 import routes from './routes/wineRoutes';
