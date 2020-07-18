@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { reset } from 'redux-form';
 import { jsonToQueryString, removeFalsy } from '../global/helpfunctions';
 import { dispatch } from '../../configureStore';
 
@@ -32,8 +31,6 @@ import {
   FIELD_AUTOCOMPLETE_FULFILLED,
   FIELD_AUTOCOMPLETE_REJECTED,
   FIELD_AUTOCOMPLETE_NO_MATCH,
-  FIELD_AUTOCOMPLETE_CLEAR_FOCUS,
-  FIELD_AUTOCOMPLETE_FOCUS_FIELD,
 } from './constants';
 
 export const hideImageOfWine = rowId => {
@@ -56,7 +53,6 @@ const addWine = values => {
       dispatch({ type: ADD_WINE_FULFILLED, payload: response.data });
       alert('Vi har lagt till ditt vin i vinkällaren');
       dispatch(setInitialValues(null));
-      dispatch(reset('AddWineForm'));
     })
     .catch(err => {
       dispatch({ type: ADD_WINE_REJECTED, payload: err });
@@ -71,7 +67,6 @@ const addReview = values => {
       dispatch({ type: ADD_REVIEW_FULFILLED, payload: response.data });
       alert('Vi har lagt till ditt vin');
       dispatch(setInitialValues(null));
-      dispatch(reset('WineReview'));
     })
     .catch(err => {
       dispatch({ type: ADD_REVIEW_REJECTED, payload: err });
@@ -211,12 +206,11 @@ export const loadSysWines = values => {
 };
 
 export const clearSysWines = () => {
-  dispatch({ type: SYSTEMBOLAGET_CLEAR_VALUES, payload: null });
+  dispatch({ type: SYSTEMBOLAGET_CLEAR_VALUES });
 };
 
-export const resetForm = name => {
+export const resetForm = () => {
   dispatch(setInitialValues(null));
-  dispatch(reset(name));
 };
 
 export const setInitialValuesResult = values => {

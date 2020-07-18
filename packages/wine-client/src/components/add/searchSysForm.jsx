@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import InputTextField from '@spolander/shared-components/src/components/InputRegular';
-import Autocomplete from '@spolander/shared-components/src/components/Autocomplete';
 import InputSelect from '@spolander/shared-components/src/components/SelectRegular';
 import ButtonRegular from '@spolander/shared-components/src/components/ButtonRegular';
 

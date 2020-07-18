@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import promise from 'redux-promise-middleware';
 import authMiddleware from './authMiddleware';
 import invariant from 'redux-immutable-state-invariant';
 

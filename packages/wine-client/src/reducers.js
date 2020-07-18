@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form';
 
 import searchbarReducer from './components/banner/search/reducer';
 import resultReducer from './components/result/reducer';
@@ -13,5 +12,4 @@ export default combineReducers({
   resultReducer,
   loginReducer,
   globalReducer,
-  form: formReducer,
 });

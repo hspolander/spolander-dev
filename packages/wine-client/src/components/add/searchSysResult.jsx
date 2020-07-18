@@ -122,8 +122,7 @@ const Row = ({
                     size="lg"
                     icon={faImage}
                     className="disabled"
-
-                    Spolandearia-hidden="true" />
+                    aria-hidden="true" />
                 </i>
               )}
             {wine.image && wine.imageVisible && (

@@ -16,7 +16,7 @@ const LoginForm = props => {
         value={username}
         variant="outlined"
         label="Användarnamn"
-        onEnterKeyPress={() => handleSubmit({ username, password })}
+        onEnterPress={() => handleSubmit({ username, password })}
       />
       <InputTextField
         onChange={val => setPassword(val)}
@@ -24,7 +24,7 @@ const LoginForm = props => {
         type="password"
         value={password}
         label="Lösenord"
-        onEnterKeyPress={() => handleSubmit({ username, password })}
+        onEnterPress={() => handleSubmit({ username, password })}
       />
 
       <div className="button-div">

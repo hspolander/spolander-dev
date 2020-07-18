@@ -13,7 +13,6 @@ export const SearchResult = ({
   removeFromCellar,
   loadValuesReview,
 }) => {
-  console.log(wine);
   const rows = wine.data.map(singleWine => (
     <Row
       key={`singleWine${singleWine.wine.id}`}
@@ -125,7 +124,7 @@ const Row = ({
       </td>
       <td>
         <div>
-          {color.indexOf('bubbel') > -1 ? color : `${color} vin`}
+          {color && color.indexOf('bubbel') > -1 ? color : `${color} vin`}
           {color === 'Rött' && (
             <FontAwesomeIcon icon={faWineGlassAlt} className="red" />
           )}

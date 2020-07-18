@@ -131,7 +131,7 @@ ValueContainer.propTypes = {
   selectProps: PropTypes.object.isRequired,
 };
 
-const MultiValue = props => (
+const MultiValue = (props) => (
   <Chip
     tabIndex={-1}
     label={props.children}
@@ -150,7 +150,7 @@ MultiValue.propTypes = {
   selectProps: PropTypes.object.isRequired,
 };
 
-const Menu = props => (
+const Menu = (props) => (
   <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
     {props.children}
   </Paper>
@@ -177,12 +177,12 @@ const components = {
 };
 
 const wideMultiStyle = makeStyles({
-  root: isMulti => ({
+  root: (isMulti) => ({
     minWidth: isMulti ? '50vw' : '19vw',
   }),
 });
 
-const Autocomplete = props => {
+const Autocomplete = (props) => {
   const { options, label, handleChange, isMulti, classes, required, variant, onInputChange, isLoading, value } = props;
 
   const multiClasses = wideMultiStyle(isMulti);
@@ -191,7 +191,7 @@ const Autocomplete = props => {
     <div className={clsx(classes.root, multiClasses.root)}>
       <NoSsr>
         <Creatable
-          onChange={selected => handleChange(selected)}
+          onChange={(selected) => handleChange(selected)}
           placeholder=""
           components={components}
           options={options}
@@ -205,15 +205,15 @@ const Autocomplete = props => {
           required={required}
           openMenuOnClick={false}
           loadingMessage={() => 'Laddar förslag...'}
-          formatCreateLabel={val => `${val} (Ny)`}
+          formatCreateLabel={(val) => `${val} (Ny)`}
           createOptionPosition="first"
           TextFieldProps={{
-            label: label,
+            label,
             variant: variant || 'outlined',
             required,
             InputLabelProps: {
               shrink: true,
-              className: "resize",
+              className: 'resize',
             },
           }}
         />
