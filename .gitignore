@@ -19,4 +19,4 @@ bundle_dev.js
 bundle_prod.js
 npm-debug.log
 assets/*.woff
-release/
+dist/
