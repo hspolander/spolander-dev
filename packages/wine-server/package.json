@@ -21,7 +21,7 @@
     "restify-cookies": "^0.2.2",
     "restify-plugins": "^1.6.0",
     "sql-template-strings": "^2.2.2",
-    "tinyreq": "^3.2.2"
+    "tinyreq": "^3.4.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
