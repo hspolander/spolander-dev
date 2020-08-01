@@ -1,4 +1,4 @@
-import update from 'immutability-helper';
+import update from "immutability-helper";
 
 import {
   ADD_REVIEW_FETCHING,
@@ -31,7 +31,7 @@ import {
   FIELD_AUTOCOMPLETE_NO_MATCH,
   FIELD_AUTOCOMPLETE_CLEAR_FOCUS,
   FIELD_AUTOCOMPLETE_FOCUS_FIELD,
-} from './constants';
+} from "./constants";
 
 const initialState = {
   data: null,
@@ -109,74 +109,75 @@ export default function reducer(state = initialState, action) {
     case FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_FULFILLED: {
       return {
         ...state,
-        initialValue: update(action.payload.values,
-          { $merge: { comment: `\r\nAlk.: ${action.payload.values.Alkoholhalt}`, boughtFrom: 'Systembolaget', grapes: action.payload.grapes, score: 5 } })
+        initialValue: update(action.payload.values, {
+          $merge: {
+            comment: `\r\nAlk.: ${action.payload.values.Alkoholhalt}`,
+            boughtFrom: "Systembolaget",
+            grapes: action.payload.grapes,
+            score: 5,
+          },
+        }),
       };
     }
     case FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_REJECTED: {
       return {
         ...state,
-        initialValue: update(action.payload,
-          {
-            $merge: {
-              comment: `\r\nAlk.: ${action.payload.Alkoholhalt}`,
-              boughtFrom: 'Systembolaget',
-              score: 5,
-            },
-          }),
+        initialValue: update(action.payload, {
+          $merge: {
+            comment: `\r\nAlk.: ${action.payload.Alkoholhalt}`,
+            boughtFrom: "Systembolaget",
+            score: 5,
+          },
+        }),
       };
     }
     case FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_NO_MATCH: {
       return {
         ...state,
-        initialValue: update(action.payload,
-          {
-            $merge: {
-              comment: `\r\nAlk.: ${action.payload.Alkoholhalt}`,
-              boughtFrom: 'Systembolaget',
-              score: 5,
-            },
-          }),
+        initialValue: update(action.payload, {
+          $merge: {
+            comment: `\r\nAlk.: ${action.payload.Alkoholhalt}`,
+            boughtFrom: "Systembolaget",
+            score: 5,
+          },
+        }),
       };
     }
     case FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_FULFILLED: {
       return {
         ...state,
-        initialValue: update(action.payload.values,
-          {
-            $merge: {
-              comment: `\r\nAlk.: ${action.payload.values.Alkoholhalt}`,
-              boughtFrom: 'Systembolaget',
-              grapes: action.payload.grapes,
-              score: 5,
-            },
-          }),
+        initialValue: update(action.payload.values, {
+          $merge: {
+            comment: `\r\nAlk.: ${action.payload.values.Alkoholhalt}`,
+            boughtFrom: "Systembolaget",
+            grapes: action.payload.grapes,
+            score: 5,
+          },
+        }),
       };
     }
     case FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_REJECTED: {
       return {
         ...state,
-        initialValue: update(action.payload,
-          {
-            $merge: {
-              comment: `\r\nAlk.: ${action.payload.Alkoholhalt}`,
-              boughtFrom: 'Systembolaget',
-              score: 5,
-            },
-          }),
+        initialValue: update(action.payload, {
+          $merge: {
+            comment: `\r\nAlk.: ${action.payload.Alkoholhalt}`,
+            boughtFrom: "Systembolaget",
+            score: 5,
+          },
+        }),
       };
     }
     case FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_NO_MATCH: {
       return {
         ...state,
-        initialValue: update(action.payload,
-          {
-            $merge: {
-              comment: `\r\nAlk.: ${action.payload.Alkoholhalt}`,
-              boughtFrom: 'Systembolaget',
-              score: 5,
-            },
-          }),
+        initialValue: update(action.payload, {
+          $merge: {
+            comment: `\r\nAlk.: ${action.payload.Alkoholhalt}`,
+            boughtFrom: "Systembolaget",
+            score: 5,
+          },
+        }),
       };
     }
     case FETCH_SYSTEMBOLAGET_IMAGE_INFO_FULFILLED: {

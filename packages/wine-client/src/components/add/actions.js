@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { jsonToQueryString, removeFalsy } from '../global/helpfunctions';
-import { dispatch } from '../../configureStore';
+import axios from "axios";
+import { jsonToQueryString, removeFalsy } from "../global/helpfunctions";
+import { dispatch } from "../../configureStore";
 
 import {
   ADD_WINE_FETCHING,
@@ -31,9 +31,9 @@ import {
   FIELD_AUTOCOMPLETE_FULFILLED,
   FIELD_AUTOCOMPLETE_REJECTED,
   FIELD_AUTOCOMPLETE_NO_MATCH,
-} from './constants';
+} from "./constants";
 
-export const hideImageOfWine = rowId => {
+export const hideImageOfWine = (rowId) => {
   dispatch({ type: HIDE_WINE_IMAGE, payload: rowId });
 };
 
@@ -41,43 +41,43 @@ export const clearInitialValues = () => {
   dispatch({ type: CLEAR_INITIAL_VALUES });
 };
 
-export const setInitialValues = values => ({
+export const setInitialValues = (values) => ({
   type: SET_INITIAL_VALUES,
   payload: values,
 });
 
-const addWine = values => {
+const addWine = (values) => {
   axios
-    .post('/api/insertWineToCellar', values)
-    .then(response => {
+    .post("/api/insertWineToCellar", values)
+    .then((response) => {
       dispatch({ type: ADD_WINE_FULFILLED, payload: response.data });
-      alert('Vi har lagt till ditt vin i vinkällaren');
+      alert("Vi har lagt till ditt vin i vinkällaren");
       dispatch(setInitialValues(null));
     })
-    .catch(err => {
+    .catch((err) => {
       dispatch({ type: ADD_WINE_REJECTED, payload: err });
-      alert('Något gick fel, vänligen sök hjälp hos din make');
+      alert("Något gick fel, vänligen sök hjälp hos din make");
     });
 };
 
-const addReview = values => {
+const addReview = (values) => {
   axios
-    .post('/api/insertWineReview', values)
-    .then(response => {
+    .post("/api/insertWineReview", values)
+    .then((response) => {
       dispatch({ type: ADD_REVIEW_FULFILLED, payload: response.data });
-      alert('Vi har lagt till ditt vin');
+      alert("Vi har lagt till ditt vin");
       dispatch(setInitialValues(null));
     })
-    .catch(err => {
+    .catch((err) => {
       dispatch({ type: ADD_REVIEW_REJECTED, payload: err });
-      alert('Något gick fel, vänligen sök hjälp hos din make');
+      alert("Något gick fel, vänligen sök hjälp hos din make");
     });
 };
 
-const fieldAutocomplete = value => {
+const fieldAutocomplete = (value) => {
   axios
     .get(`/api/autocompleteAddWine${value}`)
-    .then(response => {
+    .then((response) => {
       if (response.data && response.data.data) {
         dispatch({
           type: FIELD_AUTOCOMPLETE_FULFILLED,
@@ -87,15 +87,15 @@ const fieldAutocomplete = value => {
         dispatch({ type: FIELD_AUTOCOMPLETE_NO_MATCH });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       dispatch({ type: FIELD_AUTOCOMPLETE_REJECTED, payload: err });
     });
 };
 
-const getSysWines = values => {
+const getSysWines = (values) => {
   axios
     .get(`/api/getSysWines${values}`)
-    .then(response => {
+    .then((response) => {
       if (response.data && response.data.data.length > 0) {
         dispatch({
           type: FETCH_SYSTEMBOLAGET_FULFILLED,
@@ -105,15 +105,15 @@ const getSysWines = values => {
         dispatch({ type: FETCH_SYSTEMBOLAGET_NO_MATCH });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       dispatch({ type: FETCH_SYSTEMBOLAGET_REJECTED, payload: err });
     });
 };
 
-const getSysWineGrapesReviewInfo = values => {
+const getSysWineGrapesReviewInfo = (values) => {
   axios
-    .post('/api/getSysWineGrapesInfo', { url: values.url })
-    .then(response => {
+    .post("/api/getSysWineGrapesInfo", { url: values.url })
+    .then((response) => {
       if (response.data && response.data.data.length > 0) {
         dispatch({
           type: FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_FULFILLED,
@@ -126,7 +126,7 @@ const getSysWineGrapesReviewInfo = values => {
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       dispatch({
         type: FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_REJECTED,
         payload: values,
@@ -135,10 +135,10 @@ const getSysWineGrapesReviewInfo = values => {
     });
 };
 
-const getSysWineGrapesAddInfo = values => {
+const getSysWineGrapesAddInfo = (values) => {
   axios
-    .post('/api/getSysWineGrapesInfo', { url: values.url })
-    .then(response => {
+    .post("/api/getSysWineGrapesInfo", { url: values.url })
+    .then((response) => {
       if (response.data && response.data.data.length > 0) {
         dispatch({
           type: FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_FULFILLED,
@@ -151,7 +151,7 @@ const getSysWineGrapesAddInfo = values => {
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       dispatch({
         type: FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_REJECTED,
         payload: values,
@@ -162,8 +162,8 @@ const getSysWineGrapesAddInfo = values => {
 
 const getSysWineImageInfo = async (values, rowId) => {
   await axios
-    .post('/api/getSysWineImageInfo', { url: values.url })
-    .then(response => {
+    .post("/api/getSysWineImageInfo", { url: values.url })
+    .then((response) => {
       if (response.data && response.data.data) {
         dispatch({
           type: FETCH_SYSTEMBOLAGET_IMAGE_INFO_FULFILLED,
@@ -176,7 +176,7 @@ const getSysWineImageInfo = async (values, rowId) => {
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       dispatch({
         type: FETCH_SYSTEMBOLAGET_IMAGE_INFO_REJECTED,
         payload: values,
@@ -185,21 +185,21 @@ const getSysWineImageInfo = async (values, rowId) => {
     });
 };
 
-export const loadAddReview = values => {
+export const loadAddReview = (values) => {
   dispatch({ type: ADD_REVIEW_FETCHING });
   addReview(values);
 };
 
-export const loadAddWine = values => {
+export const loadAddWine = (values) => {
   values = removeFalsy(values);
   if (values.price) {
-    values.price = values.price.replace(/\D/g,'') + ' kr';
+    values.price = values.price.replace(/\D/g, "") + " kr";
   }
   dispatch({ type: ADD_WINE_FETCHING });
   addWine(values);
 };
 
-export const loadSysWines = values => {
+export const loadSysWines = (values) => {
   values = removeFalsy(values);
   dispatch({ type: SYSTEMBOLAGET_FETCHING });
   getSysWines(jsonToQueryString(values));
@@ -213,15 +213,15 @@ export const resetForm = () => {
   dispatch(setInitialValues(null));
 };
 
-export const setInitialValuesResult = values => {
+export const setInitialValuesResult = (values) => {
   dispatch(setInitialValues(values));
 };
 
-export const sendLoadSystembolagetAddRow = values => {
+export const sendLoadSystembolagetAddRow = (values) => {
   getSysWineGrapesAddInfo(values);
 };
 
-export const sendLoadSystembolagetReviewRow = values => {
+export const sendLoadSystembolagetReviewRow = (values) => {
   getSysWineGrapesReviewInfo(values);
 };
 
@@ -239,7 +239,7 @@ export const showImageOfWine = async (values, rowId) => {
 export const loadFieldAutocomplete = (prop, value) => {
   if (value.length > 1) {
     dispatch({ type: FIELD_AUTOCOMPLETE_FETCHING });
-    if (prop === 'grape') {
+    if (prop === "grape") {
       fieldAutocomplete(`?&startsWith=${value}`);
     } else {
       fieldAutocomplete(`?&startsWith=${value}&prop=${prop}`);

@@ -11,9 +11,17 @@ import {
   REMOVE_FROM_CELLAR_REJECTED,
   REMOVE_FROM_CELLAR,
   TOGGLE_DETAILED_RESULT_VIEW,
-} from './constants';
+} from "./constants";
 
-const initialState = { wines: null, reviews: null, error: null, fetching: false, fetched: false, detailedView: true, initialValues: null };
+const initialState = {
+  wines: null,
+  reviews: null,
+  error: null,
+  fetching: false,
+  fetched: false,
+  detailedView: true,
+  initialValues: null,
+};
 
 export default function wineResultReducer(state = initialState, action) {
   switch (action.type) {
@@ -21,13 +29,23 @@ export default function wineResultReducer(state = initialState, action) {
       return { ...state, fetching: true, wines: null };
     }
     case FETCH_WINES_NO_MATCH: {
-      return { ...state, fetching: false, fetched: false, wines: action.payload };
+      return {
+        ...state,
+        fetching: false,
+        fetched: false,
+        wines: action.payload,
+      };
     }
     case FETCH_WINES_REJECTED: {
       return { ...state, fetching: false, error: action.payload };
     }
     case FETCH_WINES_FULFILLED: {
-      return { ...state, fetching: false, fetched: true, wines: action.payload };
+      return {
+        ...state,
+        fetching: false,
+        fetched: true,
+        wines: action.payload,
+      };
     }
     case REMOVE_FROM_CELLAR_FULFILLED: {
       return { ...state };
@@ -45,13 +63,23 @@ export default function wineResultReducer(state = initialState, action) {
       return { ...state, fetching: true, reviews: null };
     }
     case FETCH_REVIEWS_NO_MATCH: {
-      return { ...state, fetching: false, fetched: true, reviews: action.payload };
+      return {
+        ...state,
+        fetching: false,
+        fetched: true,
+        reviews: action.payload,
+      };
     }
     case FETCH_REVIEWS_REJECTED: {
       return { ...state, fetching: false, error: action.payload };
     }
     case FETCH_REVIEWS_FULFILLED: {
-      return { ...state, fetching: false, fetched: true, reviews: action.payload };
+      return {
+        ...state,
+        fetching: false,
+        fetched: true,
+        reviews: action.payload,
+      };
     }
     default: {
       return { ...state };

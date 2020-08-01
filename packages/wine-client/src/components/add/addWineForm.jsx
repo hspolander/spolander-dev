@@ -1,129 +1,118 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import InputSelect from '@spolander/shared-components/src/components/SelectRegular';
-import InputTextField from '@spolander/shared-components/src/components/InputRegular';
-import Autocomplete from '@spolander/shared-components/src/components/Autocomplete';
-import ButtonRegular from '@spolander/shared-components/src/components/ButtonRegular';
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import InputSelect from "@spolander/shared-components/src/components/SelectRegular";
+import InputTextField from "@spolander/shared-components/src/components/InputRegular";
+import Autocomplete from "@spolander/shared-components/src/components/Autocomplete";
+import ButtonRegular from "@spolander/shared-components/src/components/ButtonRegular";
 
 import {
   loadFieldAutocomplete,
   loadAddWine,
   clearInitialValues,
-} from './actions';
+} from "./actions";
 
-import './add.scss';
+import "./add.scss";
 
-export const AddWineForm = ({
-  autocompleteFieldData,
-  initialValues,
-}) => {
-
+export const AddWineForm = ({ autocompleteFieldData, initialValues }) => {
   const colors = [
-    {name: "Rött", value: "Rött"},
-    {name: "Rosé", value: "Rosé"},
-    {name: "Vitt", value: "Vitt"},
-    {name: "Mousserande vin", value: "Mousserande vin"},
+    { name: "Rött", value: "Rött" },
+    { name: "Rosé", value: "Rosé" },
+    { name: "Vitt", value: "Vitt" },
+    { name: "Mousserande vin", value: "Mousserande vin" },
   ];
 
   const sizes = [
-    {name: "Helflaska", value: "Helflaska"},
-    {name: "Rött", value: "Rött"},
-    {name: "Glas", value: "Glas"},
-    {name: "Box", value: "Box"},
-    {name: "Halvflaska", value: "Halvflaska"},
-    {name: "Liten box", value: "Liten box"},
-    {name: "Piccolo", value: "Piccolo"},
-    {name: "Magnum", value: "Magnum"},
-    {name: "Tetra", value: "Tetra"},
-    {name: "Stor flaska", value: "Stor flaska"},
-    {name: "Annan", value: "Annan"},
+    { name: "Helflaska", value: "Helflaska" },
+    { name: "Rött", value: "Rött" },
+    { name: "Glas", value: "Glas" },
+    { name: "Box", value: "Box" },
+    { name: "Halvflaska", value: "Halvflaska" },
+    { name: "Liten box", value: "Liten box" },
+    { name: "Piccolo", value: "Piccolo" },
+    { name: "Magnum", value: "Magnum" },
+    { name: "Tetra", value: "Tetra" },
+    { name: "Stor flaska", value: "Stor flaska" },
+    { name: "Annan", value: "Annan" },
   ];
 
   const [formdata, setFormData] = useState({
-    'name': "",
-    'producer': "",
-    'color': "",
-    'year': "",
-    'country': "",
-    'boughtFrom': "",
-    'price': "",
-    'container': "",
-    'nr': "",
-    'sizeml': "",
-    'grapes': [],
+    name: "",
+    producer: "",
+    color: "",
+    year: "",
+    country: "",
+    boughtFrom: "",
+    price: "",
+    container: "",
+    nr: "",
+    sizeml: "",
+    grapes: [],
   });
   const [autocompleteResponse, setAutoCompleteResponse] = useState(null);
 
-  const setInitialValues = values => {
+  const setInitialValues = (values) => {
     setFormData(values);
   };
 
   const resetForm = () => {
     setFormData({
-      'name': "",
-      'producer': "",
-      'color': "",
-      'year': "",
-      'country': "",
-      'boughtFrom': "",
-      'price': "",
-      'container': "",
-      'nr': "",
-      'sizeml': "",
-      'grapes': [],
+      name: "",
+      producer: "",
+      color: "",
+      year: "",
+      country: "",
+      boughtFrom: "",
+      price: "",
+      container: "",
+      nr: "",
+      sizeml: "",
+      grapes: [],
     });
   };
 
-  useEffect(
-    () => {
-      if (initialValues) {
-        setInitialValues(initialValues);
-        clearInitialValues();
-      }
-    },
-    [initialValues],
-  );
+  useEffect(() => {
+    if (initialValues) {
+      setInitialValues(initialValues);
+      clearInitialValues();
+    }
+  }, [initialValues]);
 
   const autocompleteField = (field, value, action) => {
     loadFieldAutocomplete(field, value);
   };
 
-  useEffect(
-    () => {
-      if (autocompleteFieldData) {
-        setAutoCompleteResponse(autocompleteFieldData.match.map(val => ({
+  useEffect(() => {
+    if (autocompleteFieldData) {
+      setAutoCompleteResponse(
+        autocompleteFieldData.match.map((val) => ({
           value: val,
           label: val,
-        })));
-      } else {
-        setAutoCompleteResponse(null);
-      }
-    },
-    [autocompleteFieldData],
-  );
+        }))
+      );
+    } else {
+      setAutoCompleteResponse(null);
+    }
+  }, [autocompleteFieldData]);
 
-  const requiredFields = [
-    'name',
-    'color',
-  ];
+  const requiredFields = ["name", "color"];
 
   const validateInputs = () => {
     for (let key of requiredFields) {
       if (!formdata[key]) {
-        alert('Du måste fylla i fälten Namn & Färg.');
+        alert("Du måste fylla i fälten Namn & Färg.");
         return null;
       }
-    };
+    }
     loadAddWine(formdata);
     resetForm();
-  }
+  };
 
   return (
     <div className="addWineForm">
       <InputTextField
-        onChange={val => setFormData({...formdata, 'name': val})}
+        onChange={(val) => setFormData({ ...formdata, name: val })}
         label="Namn"
         variant="outlined"
         value={formdata.name}
@@ -131,15 +120,28 @@ export const AddWineForm = ({
         placeholder="ex Spier signature"
       />
       <Autocomplete
-        onInputChange={(inputValue) => autocompleteField('producer', inputValue)}
-        handleChange={selectedValue => setFormData({...formdata, 'producer': selectedValue ? selectedValue.value : ""})}
+        onInputChange={(inputValue) =>
+          autocompleteField("producer", inputValue)
+        }
+        handleChange={(selectedValue) =>
+          setFormData({
+            ...formdata,
+            producer: selectedValue ? selectedValue.value : "",
+          })
+        }
         label="Producent"
         variant="outlined"
-        onBlur={e => setFormData({...formdata, 'producer':
-          formdata.producer ? formdata.producer :
-          e.target.value ? e.target.value : ""
-        })}
-        value={{value: formdata.producer, label: formdata.producer}}
+        onBlur={(e) =>
+          setFormData({
+            ...formdata,
+            producer: formdata.producer
+              ? formdata.producer
+              : e.target.value
+              ? e.target.value
+              : "",
+          })
+        }
+        value={{ value: formdata.producer, label: formdata.producer }}
         placeholder="ex. Freixenet"
         options={autocompleteResponse}
       />
@@ -147,44 +149,70 @@ export const AddWineForm = ({
         values={colors}
         value={formdata.color}
         label={"Färg"}
-        onChange={val => setFormData({...formdata, 'color': val})}
+        onChange={(val) => setFormData({ ...formdata, color: val })}
       />
       <InputTextField
-        onChange={val => setFormData({...formdata, 'year': val.replace(/\D/g,'')})}
+        onChange={(val) =>
+          setFormData({ ...formdata, year: val.replace(/\D/g, "") })
+        }
         variant="outlined"
         value={formdata.year}
         label="År"
         placeholder="ex. 2012"
       />
       <Autocomplete
-        onInputChange={(inputValue) => autocompleteField('country', inputValue)}
-        handleChange={selectedValue => setFormData({...formdata, 'country': selectedValue ? selectedValue.value : ""})}
-        onBlur={e => setFormData({...formdata, 'country':
-          formdata.country ? formdata.country :
-          e.target.value ? e.target.value : ""
-        })}
+        onInputChange={(inputValue) => autocompleteField("country", inputValue)}
+        handleChange={(selectedValue) =>
+          setFormData({
+            ...formdata,
+            country: selectedValue ? selectedValue.value : "",
+          })
+        }
+        onBlur={(e) =>
+          setFormData({
+            ...formdata,
+            country: formdata.country
+              ? formdata.country
+              : e.target.value
+              ? e.target.value
+              : "",
+          })
+        }
         variant="outlined"
         label="Land"
-        value={{value: formdata.country, label: formdata.country}}
+        value={{ value: formdata.country, label: formdata.country }}
         placeholder="ex. Sydafrika"
         options={autocompleteResponse}
       />
       <Autocomplete
-        onInputChange={(inputValue) => autocompleteField('boughtFrom', inputValue)}
-        handleChange={selectedValue => setFormData({...formdata, 'boughtFrom': selectedValue ? selectedValue.value : ""})}
-        onBlur={e => setFormData({...formdata, 'boughtFrom':
-          formdata.boughtFrom ? formdata.boughtFrom :
-          e.target.value ? e.target.value : ""
-        })}
+        onInputChange={(inputValue) =>
+          autocompleteField("boughtFrom", inputValue)
+        }
+        handleChange={(selectedValue) =>
+          setFormData({
+            ...formdata,
+            boughtFrom: selectedValue ? selectedValue.value : "",
+          })
+        }
+        onBlur={(e) =>
+          setFormData({
+            ...formdata,
+            boughtFrom: formdata.boughtFrom
+              ? formdata.boughtFrom
+              : e.target.value
+              ? e.target.value
+              : "",
+          })
+        }
         variant="outlined"
-        value={{value: formdata.boughtFrom, label: formdata.boughtFrom}}
+        value={{ value: formdata.boughtFrom, label: formdata.boughtFrom }}
         label="Inköpsplats"
         placeholder="ex. Systembolaget"
         options={autocompleteResponse}
       />
       {formdata.nr && (
         <InputTextField
-          onChange={val => setFormData({...formdata, 'nr': val})}
+          onChange={(val) => setFormData({ ...formdata, nr: val })}
           variant="outlined"
           readOnly
           value={formdata.nr}
@@ -193,7 +221,7 @@ export const AddWineForm = ({
       )}
       {formdata.boughtFrom && (
         <InputTextField
-          onChange={val => setFormData({...formdata, 'price': val})}
+          onChange={(val) => setFormData({ ...formdata, price: val })}
           variant="outlined"
           value={formdata.price}
           label="Pris"
@@ -206,18 +234,46 @@ export const AddWineForm = ({
         inputType="single"
         selectedValue={formdata.grapes}
         placeholder="Ex. Chardonnay"
-        value={formdata.grapes && formdata.grapes.length > 0 ? formdata.grapes.map(grape => ({'value': grape, 'label': grape})) : []}
-        onBlur={e => setFormData({...formdata, 'grapes': e.target.value ? formdata.grapes.map(grapes => grapes.value) : formdata.grapes})}
-        formatCreateLabel={val => `${val} (ny)`}
-        onInputChange={(inputValue, action) => autocompleteField('grape', inputValue, action)}
-        handleChange={selectedValue => setFormData({...formdata, 'grapes': selectedValue ? selectedValue.map(grapes => grapes.value) : []})}
+        value={
+          formdata.grapes && formdata.grapes.length > 0
+            ? formdata.grapes.map((grape) => ({ value: grape, label: grape }))
+            : []
+        }
+        onBlur={(e) =>
+          setFormData({
+            ...formdata,
+            grapes: e.target.value
+              ? formdata.grapes.map((grapes) => grapes.value)
+              : formdata.grapes,
+          })
+        }
+        formatCreateLabel={(val) => `${val} (ny)`}
+        onInputChange={(inputValue, action) =>
+          autocompleteField("grape", inputValue, action)
+        }
+        handleChange={(selectedValue) =>
+          setFormData({
+            ...formdata,
+            grapes: selectedValue
+              ? selectedValue.map((grapes) => grapes.value)
+              : [],
+          })
+        }
         options={autocompleteResponse}
       />
       <div className="buttonDiv">
-        <ButtonRegular variant="outlined" color="secondary" onClick={() => resetForm()}>
+        <ButtonRegular
+          variant="outlined"
+          color="secondary"
+          onClick={() => resetForm()}
+        >
           <i>Rensa</i>
         </ButtonRegular>
-        <ButtonRegular variant="contained" color="primary" onClick={() => validateInputs()}>
+        <ButtonRegular
+          variant="contained"
+          color="primary"
+          onClick={() => validateInputs()}
+        >
           <i>Lägg till</i>
         </ButtonRegular>
       </div>
@@ -229,12 +285,9 @@ AddWineForm.propTypes = {
   autocompleteFieldData: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   initialValues: state.addReducer.initialValue,
   autocompleteFieldData: state.addReducer.fieldData,
 });
 
-export default connect(
-  mapStateToProps,
-  null,
-)(AddWineForm);
+export default connect(mapStateToProps, null)(AddWineForm);

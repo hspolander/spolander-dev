@@ -1,68 +1,55 @@
-import React, { useEffect, useRef } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { useEffect, useRef } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-import AddReviewForm from './addReviewForm';
-import SearchSysForm from './searchSysForm';
-import SearchSysResult from './searchSysResult';
-import { setScreenSize } from '../global/actions';
-import { usePrevious } from '../../hooks';
-import { authUser } from '../login/actions';
+import AddReviewForm from "./addReviewForm";
+import SearchSysForm from "./searchSysForm";
+import SearchSysResult from "./searchSysResult";
+import { setScreenSize } from "../global/actions";
+import { usePrevious } from "../../hooks";
+import { authUser } from "../login/actions";
 import {
   sendLoadSystembolagetReviewRow,
   sendLoadSystembolagetImage,
   showImageOfWine,
   hideImageOfWine,
-} from './actions';
-import './add.scss';
+} from "./actions";
+import "./add.scss";
 
-export const AddReview = ({
-  systemWineData,
-  isSmallScreen,
-  formValues,
-}) => {
+export const AddReview = ({ systemWineData, isSmallScreen, formValues }) => {
   const resultNode = useRef();
   const formNode = useRef();
   const prevData = usePrevious({ systemWineData, formValues });
 
-  useEffect(
-    () => {
-      authUser();
-      if (window.innerWidth <= 1024) {
-        setScreenSize(true);
-      } else {
-        setScreenSize(false);
-      }
-    },
-    [],
-  );
+  useEffect(() => {
+    authUser();
+    if (window.innerWidth <= 1024) {
+      setScreenSize(true);
+    } else {
+      setScreenSize(false);
+    }
+  }, []);
 
-  const scrollTo = node => {
+  const scrollTo = (node) => {
     node.current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
+      behavior: "smooth",
+      block: "start",
     });
   };
 
-  useEffect(
-    () => {
-      if (prevData) {
-        if (!prevData.systemWineData) {
-          scrollTo(resultNode);
-        }
+  useEffect(() => {
+    if (prevData) {
+      if (!prevData.systemWineData) {
+        scrollTo(resultNode);
       }
-    },
-    [systemWineData],
-  );
+    }
+  }, [systemWineData]);
 
-  useEffect(
-    () => {
-      if (prevData) {
-        scrollTo(formNode);
-      }
-    },
-    [formValues],
-  );
+  useEffect(() => {
+    if (prevData) {
+      scrollTo(formNode);
+    }
+  }, [formValues]);
 
   return (
     <div className="content">
@@ -102,7 +89,7 @@ AddReview.propTypes = {
   systemWineData: PropTypes.array,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.addReducer.data,
   error: state.addReducer.error,
   fetching: state.addReducer.fetching,
@@ -112,7 +99,4 @@ const mapStateToProps = state => ({
   isSmallScreen: state.globalReducer.isSmallScreen,
 });
 
-export default connect(
-  mapStateToProps,
-  null,
-)(AddReview);
+export default connect(mapStateToProps, null)(AddReview);

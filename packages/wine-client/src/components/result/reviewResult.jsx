@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-import SortWines from './sortWines';
-import { SearchResult, SearchResultDetailed, Loader, Noresult } from './result';
+import SortWines from "./sortWines";
+import { SearchResult, SearchResultDetailed, Loader, Noresult } from "./result";
 import {
   loadClickedReview,
   loadOrderedClickedReview,
   toggleDetailedView,
-} from './actions';
-import { setInitialValuesResult } from '../add/actions';
-import { usePrevious } from '../../hooks';
-import { authUser } from '../login/actions';
+} from "./actions";
+import { setInitialValuesResult } from "../add/actions";
+import { usePrevious } from "../../hooks";
+import { authUser } from "../login/actions";
 
-import './result.scss';
+import "./result.scss";
 
 const ReviewResult = ({
   match,
@@ -36,21 +36,18 @@ const ReviewResult = ({
     });
   }, []);
 
-  useEffect(
-    () => {
-      if (location !== prevLocation) {
-        const { property, value, table } = match.params;
-        loadClickedReview({
-          property,
-          value,
-          table,
-        });
-      }
-    },
-    [location],
-  );
+  useEffect(() => {
+    if (location !== prevLocation) {
+      const { property, value, table } = match.params;
+      loadClickedReview({
+        property,
+        value,
+        table,
+      });
+    }
+  }, [location]);
 
-  const sortWines = e => {
+  const sortWines = (e) => {
     if (e.target.value) {
       loadOrderedClickedReview({
         property: match.params.property,
@@ -61,7 +58,7 @@ const ReviewResult = ({
     }
   };
 
-  const loadValuesReview = values => {
+  const loadValuesReview = (values) => {
     const initialValues = { ...values };
     const grapes = [];
     for (let i = 0; i < values.grapes.length; i += 1) {
@@ -71,10 +68,10 @@ const ReviewResult = ({
     delete initialValues.id;
     delete initialValues.reviews;
     setInitialValuesResult(initialValues);
-    history.push('/addReview');
+    history.push("/addReview");
   };
 
-  const loadValuesAddWine = values => {
+  const loadValuesAddWine = (values) => {
     const initialValues = { ...values };
     const grapes = [];
     for (let i = 0; i < values.grapes.length; i += 1) {
@@ -84,7 +81,7 @@ const ReviewResult = ({
     delete initialValues.id;
     delete initialValues.reviews;
     setInitialValuesResult(initialValues);
-    history.push('/addWine');
+    history.push("/addWine");
   };
 
   return (
@@ -96,7 +93,7 @@ const ReviewResult = ({
           onClick={() => {
             toggleDetailedView();
           }}
-          className={detailedView ? 'activeButton' : 'notActiveButton'}
+          className={detailedView ? "activeButton" : "notActiveButton"}
         >
           Detaljerad vy
         </button>
@@ -135,7 +132,7 @@ ReviewResult.propTypes = {
   history: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   reviews: state.resultReducer.reviews,
   error: state.resultReducer.error,
   fetching: state.resultReducer.fetching,
@@ -144,7 +141,4 @@ const mapStateToProps = state => ({
   isSmallScreen: true,
 });
 
-export default connect(
-  mapStateToProps,
-  null,
-)(ReviewResult);
+export default connect(mapStateToProps, null)(ReviewResult);

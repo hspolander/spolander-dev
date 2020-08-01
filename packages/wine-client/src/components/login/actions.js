@@ -1,7 +1,7 @@
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import axios from "axios";
+import Cookies from "js-cookie";
 
-import { dispatch } from '../../configureStore';
+import { dispatch } from "../../configureStore";
 
 import {
   USER_LOGIN_FETCHING,
@@ -13,17 +13,17 @@ import {
   SET_USER_UNAUTHORIZED,
   KILL_SESSION_FULFILLED,
   KILL_SESSION_REJECTED,
-} from './constants';
+} from "./constants";
 
-const sendLoginRequest = values => {
+const sendLoginRequest = (values) => {
   axios
-    .post('/api/login', values)
-    .then(response => {
-      Cookies.set('username', response.data.data.login.username);
-      Cookies.set('WINE_UUID', response.data.data.UUID);
+    .post("/api/login", values)
+    .then((response) => {
+      Cookies.set("username", response.data.data.login.username);
+      Cookies.set("WINE_UUID", response.data.data.UUID);
       dispatch({ type: USER_LOGIN_FULFILLED, payload: response.data });
     })
-    .catch(err => {
+    .catch((err) => {
       dispatch({ type: USER_LOGIN_REJECTED, payload: err });
     });
 };
@@ -31,16 +31,16 @@ const sendLoginRequest = values => {
 const sendAuthRequest = () => {
   dispatch({ type: USER_AUTH_FETCHING });
   axios
-    .get('/api/keepalive')
-    .then(response => {
+    .get("/api/keepalive")
+    .then((response) => {
       dispatch({ type: USER_AUTH_FULFILLED, payload: response.data });
     })
-    .catch(err => {
+    .catch((err) => {
       dispatch({ type: USER_AUTH_REJECTED, payload: err });
     });
 };
 
-export const loginUser = values => {
+export const loginUser = (values) => {
   dispatch({ type: USER_LOGIN_FETCHING });
   sendLoginRequest(values);
 };
@@ -51,11 +51,11 @@ export const authUser = () => {
 
 export const killSession = () => {
   axios
-    .get('/api/killSession')
-    .then(response => {
+    .get("/api/killSession")
+    .then((response) => {
       dispatch({ type: KILL_SESSION_FULFILLED, payload: response.data });
     })
-    .catch(err => {
+    .catch((err) => {
       dispatch({ type: KILL_SESSION_REJECTED, payload: err });
     });
 };

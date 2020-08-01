@@ -1,9 +1,13 @@
-import React from 'react';
-import moment from 'moment';
-import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusSquare, faComment } from '@fortawesome/free-regular-svg-icons'
-import { faCartPlus, faWineGlassAlt, faTimes } from '@fortawesome/free-solid-svg-icons'
+import React from "react";
+import moment from "moment";
+import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusSquare, faComment } from "@fortawesome/free-regular-svg-icons";
+import {
+  faCartPlus,
+  faWineGlassAlt,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const SearchResult = ({
   wine,
@@ -12,7 +16,7 @@ export const SearchResult = ({
   loadValuesReview,
 }) => {
   const { data } = wine;
-  const rows = data.map(singleWine => (
+  const rows = data.map((singleWine) => (
     <Row
       key={`wine${singleWine.wine.id}`}
       wine={singleWine}
@@ -63,7 +67,7 @@ export const SearchResultDetailed = ({
   const { data } = wine;
   let rows;
   if (isSmallScreen) {
-    rows = data.map(singleWine => (
+    rows = data.map((singleWine) => (
       <RowMobile
         key={`wine${singleWine.wine.id}`}
         wine={singleWine}
@@ -73,7 +77,7 @@ export const SearchResultDetailed = ({
       />
     ));
   } else {
-    rows = data.map(singleWine => (
+    rows = data.map((singleWine) => (
       <RowDetailed
         key={`wine${singleWine.wine.id}`}
         wine={singleWine}
@@ -102,10 +106,10 @@ SearchResultDetailed.propTypes = {
   removeFromCellar: PropTypes.func.isRequired,
 };
 
-const Row = ({ wine,  }) => {
+const Row = ({ wine }) => {
   const { grapes } = wine.wine;
   const grapes = wine.grapes;
-  const graperows = grapes.map(grape => (
+  const graperows = grapes.map((grape) => (
     <div key={`grape${grape.id}`} className="grape">
       {grape.grape}
     </div>
@@ -120,15 +124,27 @@ const Row = ({ wine,  }) => {
       </td>
       <td>
         <div>
-          {wine.color.indexOf('bubbel') > -1 ? wine.color : `${wine.color} vin`}
-          {wine.color === 'Rött' && (
-            <FontAwesomeIcon icon={faWineGlassAlt} className="red" aria-hidden="true" />
+          {wine.color.indexOf("bubbel") > -1 ? wine.color : `${wine.color} vin`}
+          {wine.color === "Rött" && (
+            <FontAwesomeIcon
+              icon={faWineGlassAlt}
+              className="red"
+              aria-hidden="true"
+            />
           )}
-          {wine.color === 'Rosé' && (
-            <FontAwesomeIcon icon={faWineGlassAlt} className="rosa" aria-hidden="true" />
+          {wine.color === "Rosé" && (
+            <FontAwesomeIcon
+              icon={faWineGlassAlt}
+              className="rosa"
+              aria-hidden="true"
+            />
           )}
-          {wine.color === 'Vitt' && (
-            <FontAwesomeIcon icon={faWineGlassAlt} className="white" aria-hidden="true" />
+          {wine.color === "Vitt" && (
+            <FontAwesomeIcon
+              icon={faWineGlassAlt}
+              className="white"
+              aria-hidden="true"
+            />
           )}
         </div>
       </td>
@@ -152,15 +168,18 @@ const Row = ({ wine,  }) => {
         <FontAwesomeIcon
           icon={faPlusSquare}
           aria-hidden="true"
-          onClick={() => props.loadValuesReview(wine)}/>
+          onClick={() => props.loadValuesReview(wine)}
+        />
         <FontAwesomeIcon
           icon={faCartPlus}
           aria-hidden="true"
-          onClick={() => props.loadValuesAddWine(wine)}/>
+          onClick={() => props.loadValuesAddWine(wine)}
+        />
         <FontAwesomeIcon
           icon={faTimes}
           aria-hidden="true"
-          onClick={() => props.removeFromCellar(wine.id)}/>
+          onClick={() => props.removeFromCellar(wine.id)}
+        />
       </td>
     </tr>
   );
@@ -172,7 +191,7 @@ Row.propTypes = {
   removeFromCellar: PropTypes.func.isRequired,
 };
 
-const RowDetailed = props => {
+const RowDetailed = (props) => {
   const wine = props.wine.wine;
   const grapes = wine.grapes;
   let reviews;
@@ -180,7 +199,7 @@ const RowDetailed = props => {
 
   if (wine.reviews) {
     reviews = wine.reviews;
-    reviewrows = reviews.map(review => (
+    reviewrows = reviews.map((review) => (
       <div key={`review${review.id}`} className="review">
         <div className="result-header">Recension:</div>
         <div className="comment">{review.comment}</div>
@@ -188,7 +207,7 @@ const RowDetailed = props => {
     ));
   }
 
-  const graperows = grapes.map(grape => (
+  const graperows = grapes.map((grape) => (
     <div key={`grape${grape.id}`} className="grape">
       {grape.grape}
     </div>
@@ -200,7 +219,7 @@ const RowDetailed = props => {
         <div className="header">
           <div className="reviewer">{reviews[0].reviewer}</div>
           <div className="date-time">
-            {moment(reviews[0].added).format('YYYY-MM-DD HH:mm')}
+            {moment(reviews[0].added).format("YYYY-MM-DD HH:mm")}
           </div>
           <div className="score">{reviews[0].score} av 10</div>
         </div>
@@ -224,11 +243,19 @@ const RowDetailed = props => {
               <div className="result-header">Färg:</div>
               <div>
                 {wine.color}
-                {wine.color === 'Rött' && (
-                  <FontAwesomeIcon icon={faWineGlassAlt} className="red" aria-hidden="true" />
+                {wine.color === "Rött" && (
+                  <FontAwesomeIcon
+                    icon={faWineGlassAlt}
+                    className="red"
+                    aria-hidden="true"
+                  />
                 )}
-                {wine.color === 'Vitt' && (
-                  <FontAwesomeIcon icon={faWineGlassAlt} className="white" aria-hidden="true" />
+                {wine.color === "Vitt" && (
+                  <FontAwesomeIcon
+                    icon={faWineGlassAlt}
+                    className="white"
+                    aria-hidden="true"
+                  />
                 )}
               </div>
             </td>
@@ -281,25 +308,28 @@ const RowDetailed = props => {
             <td>
               <div
                 className="add-new-button"
-                onClick={() => props.loadValuesReview(wine)}>
-                <FontAwesomeIcon icon={faComment} aria-hidden="true" />{' '}
+                onClick={() => props.loadValuesReview(wine)}
+              >
+                <FontAwesomeIcon icon={faComment} aria-hidden="true" />{" "}
                 Recensera
               </div>
             </td>
             <td>
               <div
                 className="add-new-button"
-                onClick={() => props.loadValuesAddWine(wine)}>
-                <FontAwesomeIcon icon={faCartPlus} aria-hidden="true" /> Lägg till i
-                förråd
+                onClick={() => props.loadValuesAddWine(wine)}
+              >
+                <FontAwesomeIcon icon={faCartPlus} aria-hidden="true" /> Lägg
+                till i förråd
               </div>
             </td>
             <td>
               <div
                 className="add-new-button"
-                onClick={() => props.removeFromCellar(wine.id)}>
-                <FontAwesomeIcon icon={faTimes} aria-hidden="true" /> Ta bort från
-                vinkällare
+                onClick={() => props.removeFromCellar(wine.id)}
+              >
+                <FontAwesomeIcon icon={faTimes} aria-hidden="true" /> Ta bort
+                från vinkällare
               </div>
             </td>
           </tr>
@@ -315,7 +345,7 @@ RowDetailed.propTypes = {
   removeFromCellar: PropTypes.func.isRequired,
 };
 
-const RowMobile = props => {
+const RowMobile = (props) => {
   const wine = props.wine.wine;
   const grapes = wine.grapes;
   let reviews;
@@ -323,14 +353,14 @@ const RowMobile = props => {
 
   if (wine.reviews) {
     reviews = wine.reviews;
-    reviewrows = reviews.map(review => (
+    reviewrows = reviews.map((review) => (
       <div key={`review${review.id}`} className="review">
         <div className="result-header">Recension:</div>
         <div className="comment">{review.comment}</div>
       </div>
     ));
   }
-  const graperows = grapes.map(grape => (
+  const graperows = grapes.map((grape) => (
     <div key={`grape${grape.id}`} className="grape">
       {grape.grape}
     </div>
@@ -341,7 +371,7 @@ const RowMobile = props => {
         <div className="header">
           <div className="wine-name">{wine.name}</div>
           <div className="date-time">
-            {moment(reviews[0].added).format('YYYY-MM-DD HH:mm')}
+            {moment(reviews[0].added).format("YYYY-MM-DD HH:mm")}
           </div>
           <div className="score">{reviews[0].score} av 10</div>
         </div>
@@ -409,17 +439,19 @@ const RowMobile = props => {
               <td>
                 <div
                   className="add-new-button"
-                  onClick={() => props.loadValuesReview(wine)}>
-                  <FontAwesomeIcon icon={faComment} aria-hidden="true" />{' '}
+                  onClick={() => props.loadValuesReview(wine)}
+                >
+                  <FontAwesomeIcon icon={faComment} aria-hidden="true" />{" "}
                   Recensera
                 </div>
               </td>
               <td>
                 <div
                   className="add-new-button"
-                  onClick={() => props.loadValuesAddWine(wine)}>
-                  <FontAwesomeIcon icon={faCartPlus} aria-hidden="true" /> Lägg till
-                  i förråd
+                  onClick={() => props.loadValuesAddWine(wine)}
+                >
+                  <FontAwesomeIcon icon={faCartPlus} aria-hidden="true" /> Lägg
+                  till i förråd
                 </div>
               </td>
             </tr>

@@ -1,9 +1,9 @@
-import React from 'react';
-import { Provider } from 'react-redux';
+import React from "react";
+import { Provider } from "react-redux";
 
-import Main from './Main';
-import store from './configureStore';
-import './App.css';
+import Main from "./Main";
+import store from "./configureStore";
+import "./App.css";
 
 const App = () => {
   return (
@@ -11,5 +11,5 @@ const App = () => {
       <Main />
     </Provider>
   );
-}
+};
 export default App;

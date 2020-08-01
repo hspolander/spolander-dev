@@ -1,23 +1,23 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-import AddWineForm from './addWineForm';
-import { usePrevious } from '../../hooks';
-import SearchSysForm from './searchSysForm';
-import SearchSysResult from './searchSysResult';
+import AddWineForm from "./addWineForm";
+import { usePrevious } from "../../hooks";
+import SearchSysForm from "./searchSysForm";
+import SearchSysResult from "./searchSysResult";
 import {
   sendLoadSystembolagetAddRow,
   sendLoadSystembolagetImage,
   showImageOfWine,
   hideImageOfWine,
-} from './actions';
+} from "./actions";
 
-import { authUser } from '../login/actions';
-import { setScreenSize } from '../global/actions';
+import { authUser } from "../login/actions";
+import { setScreenSize } from "../global/actions";
 
-import './add.scss';
+import "./add.scss";
 
 export const AddWine = ({ systemWineData, isSmallScreen, formValues }) => {
   const resultNode = useRef();
@@ -33,34 +33,28 @@ export const AddWine = ({ systemWineData, isSmallScreen, formValues }) => {
     }
   }, []);
 
-  const scrollTo = node => {
+  const scrollTo = (node) => {
     node.current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
+      behavior: "smooth",
+      block: "start",
     });
   };
 
-  useEffect(
-    () => {
-      if (prevData) {
-        if (!prevData.systemWineData) {
-          scrollTo(resultNode);
-        }
+  useEffect(() => {
+    if (prevData) {
+      if (!prevData.systemWineData) {
+        scrollTo(resultNode);
       }
-    },
-    [systemWineData],
-  );
+    }
+  }, [systemWineData]);
 
-  useEffect(
-    () => {
-      if (prevData) {
-        if (!prevData.formValues) {
-          scrollTo(formNode);
-        }
+  useEffect(() => {
+    if (prevData) {
+      if (!prevData.formValues) {
+        scrollTo(formNode);
       }
-    },
-    [formValues],
-  );
+    }
+  }, [formValues]);
 
   return (
     <div className="content">
@@ -100,7 +94,7 @@ AddWine.propTypes = {
   isSmallScreen: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   data: state.addReducer.data,
   error: state.addReducer.error,
   fetching: state.addReducer.fetching,
@@ -110,7 +104,4 @@ const mapStateToProps = state => ({
   systemWineData: state.addReducer.systemWineData,
 });
 
-export default connect(
-  mapStateToProps,
-  null,
-)(AddWine);
+export default connect(mapStateToProps, null)(AddWine);

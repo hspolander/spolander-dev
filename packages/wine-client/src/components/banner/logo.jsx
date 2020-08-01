@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import logo from '../../img/winereviewer.png';
+import React from "react";
+import { Link } from "react-router-dom";
+import logo from "../../img/winereviewer.png";
 
-import './logo.scss';
+import "./logo.scss";
 
 const Logo = () => (
   <div className="banner-logo">

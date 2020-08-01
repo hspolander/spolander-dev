@@ -1,5 +1,5 @@
 .center-parent {
-	position: relative;
+  position: relative;
 }
 
 .center {
@@ -29,12 +29,12 @@
 }
 
 .noSelect {
-	-webkit-touch-callout: none; 
-    -webkit-user-select: none; 
-    -khtml-user-select: none; 
-    -moz-user-select: none; 
-    -ms-user-select: none; 
-    user-select: none; 
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .normalize-button {
@@ -42,8 +42,9 @@
   background: none;
   outline: none;
   padding: 0;
-  
-  &:focus, &:active {
+
+  &:focus,
+  &:active {
     border: none;
     background: none;
     outline: none;

@@ -4,7 +4,7 @@ import {
   FETCH_AUTOCOMPLETE_REJECTED,
   FETCH_AUTOCOMPLETE_TYPING,
   FETCH_AUTOCOMPLETE,
-} from './constants';
+} from "./constants";
 
 export default function searchbarReducer(
   state = {
@@ -14,23 +14,23 @@ export default function searchbarReducer(
     typing: false,
     match: true,
   },
-  action,
+  action
 ) {
   switch (action.type) {
-  case FETCH_AUTOCOMPLETE: {
-    return { ...state, fetching: true, fetched: false };
-  }
-  case FETCH_AUTOCOMPLETE_TYPING: {
-    return {
-      ...state,
+    case FETCH_AUTOCOMPLETE: {
+      return { ...state, fetching: true, fetched: false };
+    }
+    case FETCH_AUTOCOMPLETE_TYPING: {
+      return {
+        ...state,
         fetching: false,
         fetched: false,
         typing: true,
         match: true,
       };
     }
-  case FETCH_AUTOCOMPLETE_NO_MATCH: {
-    return {
+    case FETCH_AUTOCOMPLETE_NO_MATCH: {
+      return {
         ...state,
         fetching: false,
         fetched: false,
@@ -38,21 +38,21 @@ export default function searchbarReducer(
         match: false,
         data: action.payload,
       };
-  }
-    case FETCH_AUTOCOMPLETE_REJECTED: {
-    return { ...state, fetching: false, match: false, data: null };
     }
-  case FETCH_AUTOCOMPLETE_FULFILLED: {
-    return {
-      ...state,
+    case FETCH_AUTOCOMPLETE_REJECTED: {
+      return { ...state, fetching: false, match: false, data: null };
+    }
+    case FETCH_AUTOCOMPLETE_FULFILLED: {
+      return {
+        ...state,
         fetching: false,
-      fetched: true,
+        fetched: true,
         match: true,
         data: action.payload,
       };
-  }
-  default: {
+    }
+    default: {
       return { ...state };
-  }
+    }
   }
 }

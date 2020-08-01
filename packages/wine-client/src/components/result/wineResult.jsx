@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-import SortWines from './sortWines';
-import { SearchResult, SearchResultDetailed, Loader, Noresult } from './result';
+import SortWines from "./sortWines";
+import { SearchResult, SearchResultDetailed, Loader, Noresult } from "./result";
 import {
   loadCellarOrdered,
   loadCellar,
   removeWineFromCellar,
   toggleDetailedView,
-} from './actions';
-import { setInitialValuesResult } from '../add/actions';
-import { setScreenSize } from '../global/actions';
+} from "./actions";
+import { setInitialValuesResult } from "../add/actions";
+import { setScreenSize } from "../global/actions";
 
-import './result.scss';
+import "./result.scss";
 
 const WineResult = ({
   isSmallScreen,
@@ -32,7 +32,7 @@ const WineResult = ({
     }
   }, []);
 
-  const sortWines = e => {
+  const sortWines = (e) => {
     if (e.target.value) {
       loadCellarOrdered({ orderedProp: e.target.value });
     }
@@ -47,7 +47,7 @@ const WineResult = ({
     delete wine.id;
     delete wine.reviews;
     setInitialValuesResult(wine);
-    history.push('/addReview');
+    history.push("/addReview");
   };
 
   const loadValuesAddWine = ({ wine }) => {
@@ -59,10 +59,10 @@ const WineResult = ({
     delete wine.id;
     delete wine.reviews;
     setInitialValuesResult(wine);
-    history.push('/addWine');
+    history.push("/addWine");
   };
 
-  const removeFromCellar = id => {
+  const removeFromCellar = (id) => {
     removeWineFromCellar(id);
     loadCellar();
   };
@@ -76,7 +76,7 @@ const WineResult = ({
           onClick={() => {
             toggleDetailedView();
           }}
-          className={detailedView ? 'activeButton' : 'notActiveButton'}
+          className={detailedView ? "activeButton" : "notActiveButton"}
         >
           Detaljerad vy
         </button>
@@ -115,7 +115,7 @@ WineResult.propTypes = {
   history: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   wines: state.resultReducer.wines,
   error: state.resultReducer.error,
   fetching: state.resultReducer.fetching,
@@ -125,7 +125,4 @@ const mapStateToProps = state => ({
   setScreenSize: true,
 });
 
-export default connect(
-  mapStateToProps,
-  null,
-)(WineResult);
+export default connect(mapStateToProps, null)(WineResult);

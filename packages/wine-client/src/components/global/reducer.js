@@ -1,4 +1,4 @@
-import { SET_SCREEN_SIZE } from './constants';
+import { SET_SCREEN_SIZE } from "./constants";
 
 const initialState = {
   isSmallScreen: false,
@@ -7,7 +7,7 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case SET_SCREEN_SIZE: {
-    return { ...state, isSmallScreen: action.payload };
+      return { ...state, isSmallScreen: action.payload };
     }
     default: {
       return { ...state };

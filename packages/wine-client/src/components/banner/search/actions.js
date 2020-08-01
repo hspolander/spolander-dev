@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { dispatch } from '../../../configureStore';
+import axios from "axios";
+import { dispatch } from "../../../configureStore";
 
 import {
   FETCH_AUTOCOMPLETE_FULFILLED,
@@ -7,9 +7,9 @@ import {
   FETCH_AUTOCOMPLETE_REJECTED,
   FETCH_AUTOCOMPLETE_TYPING,
   FETCH_AUTOCOMPLETE,
-} from './constants';
+} from "./constants";
 
-const fetchAutocompleteSearch = input => {
+const fetchAutocompleteSearch = (input) => {
   axios
     .get(`/api/autocompleteSearch?startsWith=${input}`)
     .then(({ data }) => {
@@ -24,12 +24,12 @@ const fetchAutocompleteSearch = input => {
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       dispatch({ type: FETCH_AUTOCOMPLETE_REJECTED, payload: err });
     });
 };
 
-const loadAutocompleteSearch = input => {
+const loadAutocompleteSearch = (input) => {
   if (input.length > 1) {
     dispatch({ type: FETCH_AUTOCOMPLETE });
     fetchAutocompleteSearch(input);

@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-import { loginUser, authUser } from './actions';
-import LoginForm from './loginform';
+import { loginUser, authUser } from "./actions";
+import LoginForm from "./loginform";
 
-import './login.scss';
+import "./login.scss";
 
 const LoginOverlay = ({ isAuthenticated }) => {
-  const handleSendLoginRequest = values => {
+  const handleSendLoginRequest = (values) => {
     loginUser(values);
   };
 
@@ -22,7 +22,7 @@ const LoginOverlay = ({ isAuthenticated }) => {
       {!isAuthenticated && (
         <div className="login overlay">
           <div className="sessionExpired">
-            {' '}
+            {" "}
             Din session har tagit slut. Vänligen logga in igen för att
             fortsätta.
           </div>
@@ -36,7 +36,7 @@ LoginOverlay.propTypes = {
   isAuthenticated: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   redirectToReferrer: state.loginReducer.redirectToReferrer,
   isAuthenticated: state.loginReducer.isAuthenticated,
   fetching: state.loginReducer.fetching,
@@ -45,7 +45,4 @@ const mapStateToProps = state => ({
   redirectedToLogin: state.loginReducer.redirectedToLogin,
 });
 
-export default connect(
-  mapStateToProps,
-  null,
-)(LoginOverlay);
+export default connect(mapStateToProps, null)(LoginOverlay);

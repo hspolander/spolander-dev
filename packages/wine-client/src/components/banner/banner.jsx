@@ -1,12 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-import Logout from './logout';
-import Logo from './logo';
-import Search from './search/search';
+import Logout from "./logout";
+import Logo from "./logo";
+import Search from "./search/search";
 
-import './banner.scss';
+import "./banner.scss";
 
 const Banner = ({ isAuthenticated, isSmallScreen }) => (
   <div className="banner-main">
@@ -20,12 +20,9 @@ Banner.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isSmallScreen: state.globalReducer.isSmallScreen,
   isAuthenticated: state.loginReducer.isAuthenticated,
 });
 
-export default connect(
-  mapStateToProps,
-  null,
-)(Banner);
+export default connect(mapStateToProps, null)(Banner);

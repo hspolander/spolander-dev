@@ -4,168 +4,176 @@
 $break-small: 640px;
 $break-large: 1024px;
 @mixin respond-to($media) {
-    @if $media == mini-screens {
-      @media only screen and (max-width: $break-small) { @content; }
+  @if $media == mini-screens {
+    @media only screen and (max-width: $break-small) {
+      @content;
     }
-    @if $media == small-screens {
-      @media only screen and (max-width: $break-large) { @content; }
+  }
+  @if $media == small-screens {
+    @media only screen and (max-width: $break-large) {
+      @content;
     }
-  @else if $media == wide-screens {
-    @media only screen and (min-width: $break-large) { @content; }
+  } @else if $media == wide-screens {
+    @media only screen and (min-width: $break-large) {
+      @content;
+    }
   }
 }
 
 .mobile-dropdown {
-    width: 40em;
-    color: $darkblue;
-    padding: 10px;
-    .MuiList-root {
-        padding: 0;
-        border: 1px $darkblue solid;
-        border-radius: 5px;
-        a {
-            text-decoration: none;
-            .menu-item {
-                border-bottom: 1px $darkblue solid;
-                padding: 5px 5px;
-                &:last-child {
-                    border-bottom-width: 0px;
-                }
-                svg {
-                    color: darkblue;
-                    min-width: 50px;
-                }
-                &:hover, &:active {
-                    color: rgb(246, 251, 255);
-                    svg, .icon-title {
-                        color: rgb(124, 189, 243);
-                    }
-
-                }
-                .icon-title {
-                    color: $darkblue;
-                    font-size: 2em;
-                    padding: 0 10px
-                }
-            }
+  width: 40em;
+  color: $darkblue;
+  padding: 10px;
+  .MuiList-root {
+    padding: 0;
+    border: 1px $darkblue solid;
+    border-radius: 5px;
+    a {
+      text-decoration: none;
+      .menu-item {
+        border-bottom: 1px $darkblue solid;
+        padding: 5px 5px;
+        &:last-child {
+          border-bottom-width: 0px;
         }
+        svg {
+          color: darkblue;
+          min-width: 50px;
+        }
+        &:hover,
+        &:active {
+          color: rgb(246, 251, 255);
+          svg,
+          .icon-title {
+            color: rgb(124, 189, 243);
+          }
+        }
+        .icon-title {
+          color: $darkblue;
+          font-size: 2em;
+          padding: 0 10px;
+        }
+      }
     }
+  }
 }
 
 .banner-search {
-	width: 89%;
-    @include respond-to(small-screens) { width: 100% ;}
-    @extend .center-vertically;
-    .menu-items {
-        display: inline-block;
-        .menu-item {
-            color: $darkblue;
-            display: inline-block;
-            margin-top: 16px;
-            padding: 0 40px;
-            text-align: center;
-            i {
-                display: block;
-                &.fa {
-                    color: $darkblue;
-
-                }
-                &.icon-title {
-                    font-weight: normal;
-                    font-size: 15px;
-                }
-            }
-        }
-    }
-	input {
-        @extend .center-vertically;
-        display: inline-block;
-        size: 16px;
-        left: 80%;
-        padding: 8px;
-        color: #000000;
-        border: 1px solid $darkblue;
-        border-radius: 4px;
-        outline: none;
-        @include respond-to(small-screens) {
-          font-size: 32px;
-          left: 1%;
-          width: 80vw;
-        }
-		&:focus, &:active {
-			border: 2px solid $darkblue;
-		}
-		&.noMatch {
-			border: 2px solid #cf2020;
-		}
-    }
-    
-    .mobile-menu {
-        @extend .center-vertically;
+  width: 89%;
+  @include respond-to(small-screens) {
+    width: 100%;
+  }
+  @extend .center-vertically;
+  .menu-items {
+    display: inline-block;
+    .menu-item {
+      color: $darkblue;
+      display: inline-block;
+      margin-top: 16px;
+      padding: 0 40px;
+      text-align: center;
+      i {
         display: block;
-        right: 3vw;
-        @include respond-to(mini-screens) {
-            .fa-5x {
-                font-size: 4em;
-            }
+        &.fa {
+          color: $darkblue;
         }
+        &.icon-title {
+          font-weight: normal;
+          font-size: 15px;
+        }
+      }
+    }
+  }
+  input {
+    @extend .center-vertically;
+    display: inline-block;
+    size: 16px;
+    left: 80%;
+    padding: 8px;
+    color: #000000;
+    border: 1px solid $darkblue;
+    border-radius: 4px;
+    outline: none;
+    @include respond-to(small-screens) {
+      font-size: 32px;
+      left: 1vw;
+      width: calc(100% - 56px - 12vw);
+    }
+    &:focus,
+    &:active {
+      border: 2px solid $darkblue;
+    }
+    &.noMatch {
+      border: 2px solid #cf2020;
+    }
+  }
+
+  .mobile-menu {
+    @extend .center-vertically;
+    display: block;
+    right: 3vw;
+    @include respond-to(mini-screens) {
+      .fa-5x {
+        font-size: 4em;
+      }
+    }
+  }
+
+  .autocomplete-select {
+    position: absolute;
+    display: inline-block;
+    left: 80%;
+    top: 72%;
+    width: 20%;
+    background: whitesmoke;
+    opacity: 0.9;
+    @include respond-to(small-screens) {
+      left: 1%;
+      top: 82%;
+      width: 50vh;
     }
 
-	.autocomplete-select {
-        position: absolute;
-        display: inline-block;
-        left: 80%;
-        top: 72%;
-        width: 20%;
-        background: whitesmoke;
-        opacity: 0.9;
+    .autocomplete-result {
+      overflow: auto;
+      width: 100%;
+      text-align: left;
+      padding: 0;
+      max-height: 400px;
+      @include respond-to(small-screens) {
+        max-height: 70vh;
+        width: 50vh;
+      }
+    }
+
+    ul {
+      li {
+        list-style: none;
+        color: gray;
+        margin: 5px 0px 5px 10px;
+      }
+
+      .autocomplete-item {
+        margin: 5px 0px 0px 5px;
+        cursor: pointer;
         @include respond-to(small-screens) {
-            left: 1%;
-            top: 82%;
-            width: 50vh;
+          font-size: 40px;
+          margin: 20px 0px;
+          list-style-type: square;
         }
+        &:hover {
+          color: $darkgray;
+        }
+      }
 
-    	.autocomplete-result {
-    		overflow: auto;
-    		width: 100%;
-    		text-align: left;
-    		padding: 0;
-    		max-height: 400px;
-            @include respond-to(small-screens) {
-                max-height: 70vh;
-                width: 50vh;
-            }
-    	}
-
-    	ul {
-    		li {
-    			list-style: none;
-    			color: gray;
-    			margin: 5px 0px 5px 10px;
-    		}
-
-    		.autocomplete-item {
-    			margin: 5px 0px 0px 5px;
-    			cursor: pointer;
-                @include respond-to(small-screens) {
-                    font-size: 40px;
-                    margin: 20px 0px;
-                    list-style-type: square;
-                }
-    			&:hover {
-    				color: $darkgray;
-    			}
-    		}
-
-    		p {
-                font-size: 16px;
-                color: black;
-                text-decoration: underline;
-                cursor: default;
-                @include respond-to(small-screens) {
-                    font-size: 40px;
-                }
-    		}
-    	}
-	}
+      p {
+        font-size: 16px;
+        color: black;
+        text-decoration: underline;
+        cursor: default;
+        @include respond-to(small-screens) {
+          font-size: 40px;
+        }
+      }
+    }
+  }
 }

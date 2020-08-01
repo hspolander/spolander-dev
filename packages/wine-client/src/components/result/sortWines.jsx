@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import './sortWines.scss';
+import "./sortWines.scss";
 
 const SortWines = ({ sortWines }) => (
   <div className="input-div search">
