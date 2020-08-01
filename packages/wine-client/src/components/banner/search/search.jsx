@@ -1,45 +1,53 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faComment } from '@fortawesome/free-regular-svg-icons'
-import { faCartPlus, faFlask, faSearch } from '@fortawesome/free-solid-svg-icons'
+import React from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment } from "@fortawesome/free-regular-svg-icons";
+import {
+  faCartPlus,
+  faFlask,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
 
-import MobileMenu from './mobileMenu';
-import AutocompleteSelect from './autocompleteSelect';
-import loadAutocompleteSearch from './actions';
+import MobileMenu from "./mobileMenu";
+import AutocompleteSelect from "./autocompleteSelect";
+import loadAutocompleteSearch from "./actions";
 
-import './search.scss';
+import "./search.scss";
 
-class Search extends React.Component {
-  constructor() {
-    super();
-    this.handleChange = this.handleChange.bind(this);
-  }
+const Search = (props) => {
+  const { match, data, fetched, isSmallScreen } = props;
 
-  handleChange(e) {
-    const { ...props } = this.props;
-    props.loadAutocompleteSearch(e.target.value);
-  }
+  const handleChange = (e) => {
+    loadAutocompleteSearch(e.target.value);
+  };
 
-  render() {
-    const { match, data, fetched, isSmallScreen } = this.props;
-    return (
-      <div className="banner-search center-parent">
-        <input
-          type="text"
-          placeholder="Sök"
-          onChange={this.handleChange}
-          className={match ? 'match' : 'noMatch'}
-        />
-        {fetched && <AutocompleteSelect autocompleteSelect={data} />}
-        { isSmallScreen ?
-          <MobileMenu />
-        :
+  return (
+    <div className="banner-search center-parent">
+      <input
+        type="text"
+        placeholder="Sök"
+        onChange={handleChange}
+        className={match ? "match" : "noMatch"}
+      />
+      {fetched && <AutocompleteSelect autocompleteSelect={data} />}
+      {isSmallScreen ? (
+        <MobileMenu />
+      ) : (
         <div className="menu-items">
-          <MenuIcon faFamily="fas" icon={faSearch} text="Recensioner" navTo="/reviews" />
-          <MenuIcon faFamily="fas" icon={faFlask} text="Vinförråd" navTo="/wines" />
+          <MenuIcon
+            faFamily="fas"
+            icon={faSearch}
+            text="Recensioner"
+            navTo="/reviews"
+          />
+          <MenuIcon
+            faFamily="fas"
+            icon={faFlask}
+            text="Vinförråd"
+            navTo="/wines"
+          />
           <MenuIcon
             faFamily="far"
             icon={faComment}
@@ -52,11 +60,11 @@ class Search extends React.Component {
             text="Lägg till i vinförråd"
             navTo="/addWine"
           />
-        </div>}
-      </div>
-    );
-  }
-}
+        </div>
+      )}
+    </div>
+  );
+};
 Search.propTypes = {
   match: PropTypes.bool,
   data: PropTypes.object,
@@ -64,7 +72,7 @@ Search.propTypes = {
   fetched: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isSmallScreen: state.globalReducer.isSmallScreen,
   data: state.searchbarReducer.data,
   error: state.searchbarReducer.error,
@@ -80,7 +88,7 @@ const mapDispatchToProps = {
 const MenuIcon = ({ navTo, icon, text }) => (
   <Link className="nostyle-link" to={navTo}>
     <div className="menu-item">
-      <FontAwesomeIcon icon={icon} size='3x' />
+      <FontAwesomeIcon icon={icon} size="3x" />
       <i className="icon-title">{text}</i>
     </div>
   </Link>
@@ -91,7 +99,4 @@ MenuIcon.propTypes = {
   navTo: PropTypes.string,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Search);
+export default connect(mapStateToProps, mapDispatchToProps)(Search);
