@@ -1,12 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Slider from '@material-ui/core/Slider';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
+import React from "react";
+import PropTypes from "prop-types";
+import Slider from "@material-ui/core/Slider";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
 
 const SliderRegular = (props) => {
   const {
-    displayValue, classes, min, max, step, onChange, value, label,
+    displayValue,
+    classes,
+    min,
+    max,
+    step,
+    onChange,
+    value,
+    label,
   } = props;
 
   return (
@@ -16,10 +23,10 @@ const SliderRegular = (props) => {
       </InputLabel>
       <Slider
         aria-labelledby="slider"
-        valueLabelDisplay={displayValue || 'auto'}
+        valueLabelDisplay={displayValue || "auto"}
         step={step}
         onChange={onChange}
-        value={typeof value === 'number' ? value : 0}
+        value={typeof value === "number" ? value : 0}
         marks
         min={min}
         max={max}
@@ -40,9 +47,9 @@ SliderRegular.propTypes = {
 };
 
 SliderRegular.defaultProps = {
-  label: '',
+  label: "",
   classes: {},
-  displayValue: '',
+  displayValue: "",
 };
 
 export default SliderRegular;

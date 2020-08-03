@@ -1,17 +1,19 @@
-import React from 'react';
-import Creatable from 'react-select/creatable';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import NoSsr from '@material-ui/core/NoSsr';
-import Paper from '@material-ui/core/Paper';
-import Chip from '@material-ui/core/Chip';
-import MenuItem from '@material-ui/core/MenuItem';
-import CancelIcon from '@material-ui/icons/Cancel';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
+import React from "react";
+import Creatable from "react-select/creatable";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import NoSsr from "@material-ui/core/NoSsr";
+import Paper from "@material-ui/core/Paper";
+import Chip from "@material-ui/core/Chip";
+import MenuItem from "@material-ui/core/MenuItem";
+import CancelIcon from "@material-ui/icons/Cancel";
+import PropTypes from "prop-types";
+import clsx from "clsx";
 
-const inputComponent = ({ inputRef, ...props }) => <div ref={inputRef} {...props} />;
+const inputComponent = ({ inputRef, ...props }) => (
+  <div ref={inputRef} {...props} />
+);
 
 inputComponent.propTypes = {
   inputRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
@@ -52,7 +54,7 @@ Control.propTypes = {
   selectProps: PropTypes.object.isRequired,
 };
 
-const LoadingMessage = props => (
+const LoadingMessage = (props) => (
   <Typography
     color="textSecondary"
     className={props.selectProps.classes.loadingMessage}
@@ -62,7 +64,7 @@ const LoadingMessage = props => (
   </Typography>
 );
 
-const NoOptionsMessage = props => (
+const NoOptionsMessage = (props) => (
   <Typography
     color="textSecondary"
     className={props.selectProps.classes.noOptionsMessage}
@@ -78,7 +80,7 @@ NoOptionsMessage.propTypes = {
   selectProps: PropTypes.object.isRequired,
 };
 
-const Option = props => (
+const Option = (props) => (
   <MenuItem
     ref={props.innerRef}
     selected={props.isFocused}
@@ -100,7 +102,7 @@ Option.propTypes = {
   isSelected: PropTypes.bool,
 };
 
-const Placeholder = props => (
+const Placeholder = (props) => (
   <Typography
     color="textSecondary"
     className={props.selectProps.classes.placeholder}
@@ -116,14 +118,19 @@ Placeholder.propTypes = {
   selectProps: PropTypes.object.isRequired,
 };
 
-const SingleValue = props => (
-  <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
+const SingleValue = (props) => (
+  <Typography
+    className={props.selectProps.classes.singleValue}
+    {...props.innerProps}
+  >
     {props.children}
   </Typography>
 );
 
-const ValueContainer = props => (
-  <div className={props.selectProps.classes.valueContainer}>{props.children}</div>
+const ValueContainer = (props) => (
+  <div className={props.selectProps.classes.valueContainer}>
+    {props.children}
+  </div>
 );
 
 ValueContainer.propTypes = {
@@ -151,7 +158,11 @@ MultiValue.propTypes = {
 };
 
 const Menu = (props) => (
-  <Paper square className={props.selectProps.classes.paper} {...props.innerProps}>
+  <Paper
+    square
+    className={props.selectProps.classes.paper}
+    {...props.innerProps}
+  >
     {props.children}
   </Paper>
 );
@@ -178,12 +189,23 @@ const components = {
 
 const wideMultiStyle = makeStyles({
   root: (isMulti) => ({
-    minWidth: isMulti ? '50vw' : '19vw',
+    minWidth: isMulti ? "50vw" : "19vw",
   }),
 });
 
 const Autocomplete = (props) => {
-  const { options, label, handleChange, isMulti, classes, required, variant, onInputChange, isLoading, value } = props;
+  const {
+    options,
+    label,
+    handleChange,
+    isMulti,
+    classes,
+    required,
+    variant,
+    onInputChange,
+    isLoading,
+    value,
+  } = props;
 
   const multiClasses = wideMultiStyle(isMulti);
 
@@ -204,16 +226,16 @@ const Autocomplete = (props) => {
           value={value}
           required={required}
           openMenuOnClick={false}
-          loadingMessage={() => 'Laddar förslag...'}
+          loadingMessage={() => "Laddar förslag..."}
           formatCreateLabel={(val) => `${val} (Ny)`}
           createOptionPosition="first"
           TextFieldProps={{
             label,
-            variant: variant || 'outlined',
+            variant: variant || "outlined",
             required,
             InputLabelProps: {
               shrink: true,
-              className: 'resize',
+              className: "resize",
             },
           }}
         />

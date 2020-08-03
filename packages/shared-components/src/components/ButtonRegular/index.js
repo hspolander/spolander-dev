@@ -1,11 +1,10 @@
-import { withStyles } from '@material-ui/styles';
-import ButtonRegular from './ButtonRegular';
+import { withStyles } from "@material-ui/styles";
+import ButtonRegular from "./ButtonRegular";
 
 const theme = {};
 
 const styles = (theme) => ({
-  root: {
-  }
+  root: {},
 });
 
 export default withStyles(styles)(ButtonRegular);

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import TextField from '@material-ui/core/TextField';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import clsx from "clsx";
+import TextField from "@material-ui/core/TextField";
 
-const InputRegular = props => {
+const InputRegular = (props) => {
   const {
     type,
     multiline,
@@ -34,25 +34,25 @@ const InputRegular = props => {
     } else {
       setError(false);
     }
-  }
+  };
 
   const onFocus = () => {
     setError(false);
-  }
+  };
 
   return (
     <TextField
       {...other}
       className={wide ? clsx(classes.root, classes.wide) : classes.root}
-      onKeyPress={e => onKeyPress(e)}
-      onChange={e => onChange(e.target.value)}
+      onKeyPress={(e) => onKeyPress(e)}
+      onChange={(e) => onChange(e.target.value)}
       classes={{
         contained: classes.contained,
         outlined: classes.outlined,
         text: classes.text,
         disabled: classes.disabled,
       }}
-      onFocus={ () => onFocus()}
+      onFocus={() => onFocus()}
       required={required}
       onBlur={(e) => onBlur(e)}
       variant={variant}
