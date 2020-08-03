@@ -37,10 +37,10 @@ const SliderRegular = (props) => {
 
 SliderRegular.propTypes = {
   displayValue: PropTypes.string,
-  value: PropTypes.string.isRequired,
-  step: PropTypes.string.isRequired,
-  max: PropTypes.string.isRequired,
-  min: PropTypes.string.isRequired,
+  value: PropTypes.number,
+  step: PropTypes.number.isRequired,
+  max: PropTypes.number.isRequired,
+  min: PropTypes.number.isRequired,
   label: PropTypes.string,
   classes: PropTypes.any,
   onChange: PropTypes.func.isRequired,
