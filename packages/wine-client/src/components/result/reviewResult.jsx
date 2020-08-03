@@ -98,7 +98,7 @@ const ReviewResult = ({
           Detaljerad vy
         </button>
       )}
-      {fetched && reviews && reviews.data && (
+      {fetched && reviews?.data && (
         <div>
           {detailedView || isSmallScreen ? (
             <SearchResultDetailed
@@ -117,7 +117,7 @@ const ReviewResult = ({
         </div>
       )}
       {fetching && <Loader />}
-      {reviews && reviews.data && reviews.data.length === 0 && <Noresult />}
+      {reviews?.data && reviews.data.length === 0 && <Noresult />}
     </div>
   );
 };
@@ -138,7 +138,7 @@ const mapStateToProps = (state) => ({
   fetching: state.resultReducer.fetching,
   detailedView: state.resultReducer.detailedView,
   fetched: state.resultReducer.fetched,
-  isSmallScreen: true,
+  isSmallScreen: state.globalReducer.isSmallScreen,
 });
 
 export default connect(mapStateToProps, null)(ReviewResult);

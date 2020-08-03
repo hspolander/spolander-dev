@@ -7,13 +7,13 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 const SimpleMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  function handleClick(event) {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-  }
+  };
 
-  function handleClose() {
+  const handleClose = () => {
     setAnchorEl(null);
-  }
+  };
 
   return (
     <div className="mobile-menu">
@@ -26,18 +26,30 @@ const SimpleMenu = () => {
         onClose={handleClose}
       >
         <div>
-          <MenuItem text="Recensioner" navTo="/reviews" />
-          <MenuItem text="Vinförråd" navTo="/wines" />
-          <MenuItem text="Recensera" navTo="/addReview" />
-          <MenuItem text="Lägg till" navTo="/addWine" />
+          <MenuItem
+            handleClose={handleClose}
+            text="Recensioner"
+            navTo="/reviews"
+          />
+          <MenuItem handleClose={handleClose} text="Vinförråd" navTo="/wines" />
+          <MenuItem
+            handleClose={handleClose}
+            text="Recensera"
+            navTo="/addReview"
+          />
+          <MenuItem
+            handleClose={handleClose}
+            text="Lägg till"
+            navTo="/addWine"
+          />
         </div>
       </Menu>
     </div>
   );
 };
 
-const MenuItem = ({ navTo, icon, text }) => (
-  <Link className="nostyle-link" to={navTo}>
+const MenuItem = ({ navTo, icon, text, handleClose }) => (
+  <Link className="nostyle-link" to={navTo} onClick={() => handleClose()}>
     <div className="menu-item">
       {icon && <FontAwesomeIcon icon={icon} size="3x" />}
       <i className="icon-title">{text}</i>
