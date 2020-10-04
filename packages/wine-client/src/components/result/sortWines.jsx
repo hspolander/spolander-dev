@@ -11,6 +11,7 @@ const SortWines = ({ sortWines }) => (
       <option value="color">Färg</option>
       <option value="country">Land</option>
       <option value="name">Namn</option>
+      <option value="score">Betyg</option>
       <option value="producer">Producent</option>
       <option value="year">År</option>
     </select>

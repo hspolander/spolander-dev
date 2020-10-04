@@ -10,6 +10,8 @@ import {
   faTimes,
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
+import NewRow from "./resultRow";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const SearchResult = ({
@@ -67,7 +69,16 @@ export const SearchResultDetailed = ({
   isSmallScreen,
 }) => {
   let rows;
-  if (isSmallScreen) {
+  rows = wine.data.map((singleWine) => (
+    <NewRow
+      key={`wine${singleWine.wine.id}`}
+      wine={singleWine}
+      loadValuesAddWine={loadValuesAddWine}
+      removeFromCellar={removeFromCellar}
+      loadValuesReview={loadValuesReview}
+    />
+  ));
+  /*if (isSmallScreen) {
     rows = wine.data.map((singleWine) => (
       <RowMobile
         key={`wine${singleWine.wine.id}`}
@@ -87,7 +98,7 @@ export const SearchResultDetailed = ({
         loadValuesReview={loadValuesReview}
       />
     ));
-  }
+  }*/
 
   return (
     <div className="search-result-detailed">

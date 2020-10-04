@@ -26,6 +26,7 @@ const ReviewResult = ({
   fetching,
 }) => {
   const prevLocation = usePrevious(location);
+
   useEffect(() => {
     authUser();
     const { property, value, table } = match.params;
@@ -87,13 +88,23 @@ const ReviewResult = ({
   return (
     <div className="content">
       <SortWines sortWines={sortWines} />
-      {!isSmallScreen && (
+      {detailedView ? (
         <button
           type="button"
           onClick={() => {
             toggleDetailedView();
           }}
-          className={detailedView ? "activeButton" : "notActiveButton"}
+          className={"activeButton"}
+        >
+          Listvy
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => {
+            toggleDetailedView();
+          }}
+          className={"activeButton"}
         >
           Detaljerad vy
         </button>
