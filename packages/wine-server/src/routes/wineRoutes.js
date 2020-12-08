@@ -784,9 +784,8 @@ export default (server) => {
     }
   });
 
-  server.get("/api/getSysWines", async (req, res, next) => {
+  server.get("/api/getSysWines", async (req, res) => {
     const cookies = req.cookies;
-    const associativeArray = {};
     if (
       cookies &&
       cookies.WINE_UUID &&
@@ -795,102 +794,31 @@ export default (server) => {
       const query = req.query;
       let systembolagetWines = await getSystembolagWines(
         query.name,
-        query.color,
+        query.type,
+        query.subType,
+        query.price,
         query.year,
-        query.nr,
-        query.price
+        query.country,
+        query.volume,
+        query.productCode
       );
       systembolagetWines = _.union(
         systembolagetWines[0],
         systembolagetWines[1]
       );
       for (var i = 0; i < systembolagetWines.length; i++) {
-        switch (systembolagetWines[i].sizeml) {
-          case "750.00":
-            systembolagetWines[i].container = "Helflaska";
-            break;
-          case "375.00":
-            systembolagetWines[i].container = "Halvflaska";
-            break;
-          case "1000.00":
-            if (systembolagetWines[i].Forpackning === "Flaska") {
-              systembolagetWines[i].container = "Flaska";
-            } else {
-              systembolagetWines[i].container = "Tetra";
-            }
-            break;
-          case "1500.00":
-            if (systembolagetWines[i].Forpackning === "Flaska") {
-              systembolagetWines[i].container = "Magnum";
-            } else {
-              systembolagetWines[i].container = " Liten box";
-            }
-            break;
-          case "3000.00":
-          case "2250.00":
-          case "12000.00":
-          case "10000.00":
-          case "15000.00":
-          case "5000.00":
-          case "6000.00":
-          case "9000.00":
-            if (systembolagetWines[i].Forpackning === "Flaska") {
-              systembolagetWines[i].container = "Stor flaska";
-            } else {
-              systembolagetWines[i].container = "Box";
-            }
-            break;
-          case "250.00":
-          case "200.00":
-          case "187.00":
-            systembolagetWines[i].container = "Liten flaska";
-            break;
-          default:
-            systembolagetWines[i].container = "Annan";
-        }
-        let tempname = _.deburr(systembolagetWines[i].Namn)
-          .replace(/ /g, "-")
-          .replace("'", "");
-        switch (systembolagetWines[i].color) {
-          case "Rött":
-            systembolagetWines[
-              i
-            ].url = `https://www.systembolaget.se/dryck/roda-viner/${tempname}-${systembolagetWines[i].nr}`;
-            break;
-          case "Vitt":
-            systembolagetWines[
-              i
-            ].url = `https://www.systembolaget.se/dryck/vita-viner/${tempname}-${systembolagetWines[i].nr}`;
-            break;
-          case "Mousserande vin":
-            systembolagetWines[
-              i
-            ].url = `https://www.systembolaget.se/dryck/mousserande-viner/${tempname}-${systembolagetWines[i].nr}`;
-            break;
-          case "Rosé":
-            systembolagetWines[
-              i
-            ].url = `https://www.systembolaget.se/dryck/roseviner/${tempname}-${systembolagetWines[i].nr}`;
-            break;
-          default:
-            systembolagetWines[i].url = "";
-        }
-        if (systembolagetWines[i].Namn2 === null) {
-          systembolagetWines[i].name = systembolagetWines[i].Namn;
-        } else if (systembolagetWines[i].Namn2 === null) {
-          systembolagetWines[i].name = systembolagetWines[i].Namn2;
+        if (systembolagetWines[i].name2 === null) {
+          systembolagetWines[i].name = systembolagetWines[i].name;
+        } else if (systembolagetWines[i].name2 === null) {
+          systembolagetWines[i].name = systembolagetWines[i].name2;
         } else {
           systembolagetWines[
             i
-          ].name = `${systembolagetWines[i].Namn}, ${systembolagetWines[i].Namn2}`;
+          ].name = `${systembolagetWines[i].name}, ${systembolagetWines[i].name2}`;
         }
 
-        delete systembolagetWines[i].Namn;
-        delete systembolagetWines[i].Namn2;
-        systembolagetWines[i].price =
-          systembolagetWines[i].price.slice(0, -3) + " kr";
-        systembolagetWines[i].sizeml =
-          systembolagetWines[i].sizeml.slice(0, -3) + " ml";
+        delete systembolagetWines[i].name;
+        delete systembolagetWines[i].name2;
       }
       res.json({ error: false, message: `Success`, data: systembolagetWines });
     } else {

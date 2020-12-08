@@ -133,27 +133,39 @@ export const insertSystembolagetWines = (wineArray) => {
 
 export const getSystembolagWines = (
   name = "%%",
-  color = "%%",
+  type = "%%",
+  subType = "%%",
+  price = "%%",
   year = "%%",
-  artnr = "%%",
-  price = "%%"
+  country = "%%",
+  volume = "%%",
+  description = "%%",
+  productCode = "%%"
 ) => {
   let autocompleteQueries = [
     getSystembolagWinesQuery(
-      "Namn",
+      "name1",
       "%" + name + "%",
-      color,
+      type,
+      subType,
+      price,
       year,
-      artnr,
-      price + "%"
+      country,
+      volume,
+      description,
+      productCode
     ),
     getSystembolagWinesQuery(
-      "Namn2",
+      "name2",
       "%" + name + "%",
-      color,
+      type,
+      subType,
+      price,
       year,
-      artnr,
-      price + "%"
+      country,
+      volume,
+      "%" + description + "%",
+      productCode
     ),
   ];
   return Promise.all(autocompleteQueries);
@@ -161,10 +173,7 @@ export const getSystembolagWines = (
 
 export const getSystembolagWineBynr = (nr) =>
   query(
-    `SELECT Namn, Namn2, color, country, year, nr, producer, price, Alkoholhalt, sizeml FROM systembolaget_sortiment WHERE ` +
-      ` nr like ` +
-      nr +
-      `; `
+    `SELECT * FROM systembolaget_sortiment WHERE ` + ` nr like ` + nr + `; `
   ).then((cursor) => {
     if (cursor[0][0]) {
       return cursor[0][0];
@@ -187,32 +196,60 @@ export const getSystembolagWineByArtnr = (systembolagetartnr) =>
     }
   });
 
-const getSystembolagWinesQuery = (colNamne, name, color, year, artnr, price) =>
+const getSystembolagWinesQuery = (
+  colName,
+  name,
+  type,
+  subType,
+  price,
+  year,
+  country,
+  volume,
+  description,
+  productCode
+) =>
   query(
-    `SELECT Namn, Namn2, color, country, year, nr, producer, price, Alkoholhalt, sizeml FROM systembolaget_sortiment WHERE ` +
-      colNamne +
+    `SELECT * FROM systembolaget_wines WHERE ` +
+      colName +
       ` like '` +
       name +
       `' AND  ` +
-      `color like '` +
-      color +
+      `type like '` +
+      type +
+      `' AND  ` +
+      `subType like '` +
+      subType +
+      `' AND  ` +
+      `price like '` +
+      price +
       `' AND  ` +
       `year like '` +
       year +
       `' AND  ` +
-      `nr like '` +
-      artnr +
+      `volume like '` +
+      volume +
       `' AND  ` +
-      `price like '` +
-      price +
+      `description like '` +
+      description +
+      `' AND  ` +
+      `productCode like '` +
+      productCode +
+      `' AND  ` +
+      `country
+      like '` +
+      country +
       `'; `
-  ).then((cursor) => {
-    if (cursor[0]) {
-      return cursor[0];
-    } else {
-      return null;
-    }
-  });
+  )
+    .then((cursor) => {
+      if (cursor[0]) {
+        return cursor[0];
+      } else {
+        return null;
+      }
+    })
+    .catch(function (e) {
+      console.log(e);
+    });
 
 export const getDistinctFromWine = (property, value) =>
   query(
