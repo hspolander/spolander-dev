@@ -8,7 +8,7 @@ const scraperObject = {
     for (let pageIndex = 1; pageIndex < 1000; pageIndex++) {
       let winesRawHtml =
         period === "all"
-          ? `https://www.systembolaget.se/sok/?categoryLevel1=Vin&page=${pageIndex}`
+          ? `https://www.systembolaget.se/sok/?categoryLevel1=Vin&categoryLevel2=Mousserande%20vin&page=${pageIndex}`
           : `https://www.systembolaget.se/sok/?categoryLevel1=Vin&newArrivalType=Nytt%20senaste%20månaden&page=${pageIndex}`;
       await page.goto(winesRawHtml);
 

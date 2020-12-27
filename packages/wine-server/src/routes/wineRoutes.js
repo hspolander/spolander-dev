@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import uuidv4 from "uuid/v4";
 import _ from "lodash";
 import cheerio from "cheerio";
+const https = require("https");
 import fetch from "node-fetch";
 import browserObject from "../scrape/browser";
 import scraperController from "../scrape/pageController";
@@ -15,8 +16,7 @@ import {
   getUserByUsername,
   getWineByProperty,
   getWineByForeignProperty,
-  getSystembolagWineBynr,
-  getSystembolagWineByArtnr,
+  getDistinctFromSystembolagetWines,
   getHashByUsername,
   getAllNotCellarWines,
   getAllCellarWines,
@@ -24,6 +24,10 @@ import {
   getDistinctFromGrapes,
   getSystembolagWines,
   getAutocompleteResponse,
+  getSystembolagCountries,
+  getSystembolagSubTypes,
+  getSystembolagVolumes,
+  getSystembolagTypes,
   insertReview,
   insertWine,
   insertGrape,
@@ -34,6 +38,7 @@ import {
   setUuidExpired,
   setWineNotInCellar,
 } from "../controller/queries";
+import Axios from "axios";
 
 const fetchData = async (period) => {
   let browserInstance = browserObject.startBrowser();
@@ -341,25 +346,20 @@ export default (server) => {
       (await validateSession(cookies.WINE_UUID))
     ) {
       const body = req.body;
-      const wineUrl = await getWineUrl(
-        body.nr,
-        body.name,
-        body.year,
-        body.country
-      );
       const wineId = await insertWine(
-        body.year,
         body.name,
+        body.producer,
+        body.type,
+        body.subType,
+        body.year,
+        body.country,
         body.boughtFrom,
         body.price,
-        body.glass,
-        body.country,
-        body.color,
-        body.producerbody,
+        body.container,
         0,
-        body.sizeml,
+        body.volume,
         body.nr,
-        wineUrl
+        body.wineUrl
       );
       let user = await getUserByUsername(cookies.username);
       await insertReview(wineId, user.name, body.comment, body.score);
@@ -465,38 +465,6 @@ export default (server) => {
             .replace("&#xF1;", "ñ");
       }
       res.json({ error: false, message: "Allt väl", data: allrows });
-    } else {
-      res.clearCookie("WINE_UUID");
-      res.json({
-        error: true,
-        session: "nosessionRedirect",
-        message: "Session expired/invalid",
-        data: null,
-      });
-    }
-  });
-
-  server.post("/api/getSysWineImageInfo", async (req, res, next) => {
-    const cookies = req.cookies;
-    if (
-      cookies &&
-      cookies.WINE_UUID &&
-      (await validateSession(cookies.WINE_UUID))
-    ) {
-      const url = req.body.url;
-      let allrows;
-      let body = await fetch(url);
-      body = await body.text();
-      let page = cheerio.load(body);
-      let image = page(".product-image .carousel-container");
-      let regex = "//.*.jpg";
-      if (image.html()) {
-        image = image.html().match(regex);
-        image = image[0];
-      } else {
-        image = null;
-      }
-      res.json({ error: false, message: "Allt väl", data: image });
     } else {
       res.clearCookie("WINE_UUID");
       res.json({
@@ -695,50 +663,6 @@ export default (server) => {
     }
   };
 
-  const getWineUrl = async (nr, name, year, country) => {
-    let url = "";
-    if (nr) {
-      let syswine = await getSystembolagWineByArtnr(nr);
-      if (!syswine) {
-        syswine = await getSystembolagWineBynr(nr);
-      }
-      if (syswine) {
-        let tempname = _.deburr(syswine.Namn)
-          .replace(/ /g, "-")
-          .replace("'", "");
-        switch (syswine.color) {
-          case "Rött":
-            url = `https://www.systembolaget.se/dryck/roda-viner/${tempname}-${syswine.nr}`;
-            break;
-          case "Vitt":
-            url = `https://www.systembolaget.se/dryck/vita-viner/${tempname}-${syswine.nr}`;
-            break;
-          case "Mousserande vin":
-            url = `https://www.systembolaget.se/dryck/mousserande-viner/${tempname}-${syswine.nr}`;
-            break;
-          case "Rosé":
-            url = `https://www.systembolaget.se/dryck/roseviner/${tempname}-${syswine.nr}`;
-            break;
-          default:
-            url = "";
-        }
-      }
-    } else {
-      let searchstring =
-        name.replace(/ /g, "+").replace(/\./g, "").replace(/,/g, "") +
-        "+" +
-        year +
-        "+" +
-        country;
-      searchstring
-        .replace("+NULL", "")
-        .replace("+null", "")
-        .replace("+undefined", "");
-      url = encodeURI(`http://www.google.com/search?q=wine+${searchstring}`);
-    }
-    return url;
-  };
-
   const validateLoginObject = (login) => {
     if (!login) {
       return false;
@@ -796,31 +720,139 @@ export default (server) => {
         query.name,
         query.type,
         query.subType,
+        query.country,
         query.price,
         query.year,
-        query.country,
+        query.description,
         query.volume,
         query.productCode
       );
-      systembolagetWines = _.union(
-        systembolagetWines[0],
-        systembolagetWines[1]
-      );
-      for (var i = 0; i < systembolagetWines.length; i++) {
-        if (systembolagetWines[i].name2 === null) {
-          systembolagetWines[i].name = systembolagetWines[i].name;
-        } else if (systembolagetWines[i].name2 === null) {
-          systembolagetWines[i].name = systembolagetWines[i].name2;
-        } else {
-          systembolagetWines[
-            i
-          ].name = `${systembolagetWines[i].name}, ${systembolagetWines[i].name2}`;
-        }
-
-        delete systembolagetWines[i].name;
-        delete systembolagetWines[i].name2;
-      }
       res.json({ error: false, message: `Success`, data: systembolagetWines });
+    } else {
+      res.clearCookie("WINE_UUID");
+      res.json({
+        error: true,
+        session: "nosessionRedirect",
+        message: "Session expired/invalid",
+        data: null,
+      });
+    }
+  });
+
+  server.get("/api/getAdditionalWineData", async (req, res) => {
+    const cookies = req.cookies;
+    if (
+      cookies &&
+      cookies.WINE_UUID &&
+      (await validateSession(cookies.WINE_UUID))
+    ) {
+      const url = req.query.url;
+
+      const httpsAgent = new https.Agent({
+        rejectUnauthorized: false,
+      });
+
+      let $;
+      await fetch(url, {
+        agent: httpsAgent,
+      })
+        .then((res) => res.text())
+        .then((text) => {
+          $ = cheerio.load(text);
+        });
+
+      res.json({
+        error: false,
+        message: `Success`,
+        data: JSON.parse(
+          $(`div[data-react-component="ProductDetailPageContainer"]`).attr(
+            "data-props"
+          )
+        ),
+      });
+    } else {
+      res.clearCookie("WINE_UUID");
+      res.json({
+        error: true,
+        session: "nosessionRedirect",
+        message: "Session expired/invalid",
+        data: null,
+      });
+    }
+  });
+
+  server.get("/api/getCountries", async (req, res) => {
+    const cookies = req.cookies;
+    if (
+      cookies &&
+      cookies.WINE_UUID &&
+      (await validateSession(cookies.WINE_UUID))
+    ) {
+      let countries = await getSystembolagCountries();
+
+      res.json({ error: false, message: `Success`, data: countries });
+    } else {
+      res.clearCookie("WINE_UUID");
+      res.json({
+        error: true,
+        session: "nosessionRedirect",
+        message: "Session expired/invalid",
+        data: null,
+      });
+    }
+  });
+
+  server.get("/api/getVolumes", async (req, res) => {
+    const cookies = req.cookies;
+    if (
+      cookies &&
+      cookies.WINE_UUID &&
+      (await validateSession(cookies.WINE_UUID))
+    ) {
+      let volumes = await getSystembolagVolumes();
+
+      res.json({ error: false, message: `Success`, data: volumes });
+    } else {
+      res.clearCookie("WINE_UUID");
+      res.json({
+        error: true,
+        session: "nosessionRedirect",
+        message: "Session expired/invalid",
+        data: null,
+      });
+    }
+  });
+
+  server.get("/api/getSubTypes", async (req, res) => {
+    const cookies = req.cookies;
+    if (
+      cookies &&
+      cookies.WINE_UUID &&
+      (await validateSession(cookies.WINE_UUID))
+    ) {
+      let subTypes = await getSystembolagSubTypes();
+
+      res.json({ error: false, message: `Success`, data: subTypes });
+    } else {
+      res.clearCookie("WINE_UUID");
+      res.json({
+        error: true,
+        session: "nosessionRedirect",
+        message: "Session expired/invalid",
+        data: null,
+      });
+    }
+  });
+
+  server.get("/api/getTypes", async (req, res) => {
+    const cookies = req.cookies;
+    if (
+      cookies &&
+      cookies.WINE_UUID &&
+      (await validateSession(cookies.WINE_UUID))
+    ) {
+      let types = await getSystembolagTypes();
+      res.json({ error: false, message: `Success`, data: types });
     } else {
       res.clearCookie("WINE_UUID");
       res.json({
@@ -841,7 +873,12 @@ export default (server) => {
     ) {
       let autocompleteAddWine = "";
       const responseArray = [];
-      if (req.query.prop) {
+      if (req.query.systembolagetWines) {
+        autocompleteAddWine = await getDistinctFromSystembolagetWines(
+          req.query.prop,
+          "%" + req.query.startsWith + "%"
+        );
+      } else if (req.query.prop) {
         autocompleteAddWine = await getDistinctFromWine(
           req.query.prop,
           "%" + req.query.startsWith + "%"

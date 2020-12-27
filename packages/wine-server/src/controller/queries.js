@@ -11,7 +11,7 @@ const getRowValues = (table, prop, displayTitle, data) => {
 };
 const getDistinctYear = (year) =>
   query(
-    SQL`SELECT distinct wine.year FROM wine WHERE wine.year  like ${year}`
+    SQL`SELECT distinct wine.year FROM wine WHERE wine.year like ${year}`
   ).then((cursor) => {
     if (cursor[0][0]) {
       return getRowValues("wine", "year", "År", cursor[0]);
@@ -19,6 +19,7 @@ const getDistinctYear = (year) =>
       return null;
     }
   });
+
 const getDistinctGrape = (grape) =>
   query(
     SQL`SELECT distinct grapes.grape FROM grapes WHERE grapes.grape like ${grape}`
@@ -29,6 +30,7 @@ const getDistinctGrape = (grape) =>
       return null;
     }
   });
+
 const getDistinctProducer = (producer) =>
   query(
     SQL`SELECT distinct wine.producer FROM wine WHERE wine.producer like ${producer}`
@@ -39,9 +41,10 @@ const getDistinctProducer = (producer) =>
       return null;
     }
   });
+
 const getDistinctCountry = (country) =>
   query(
-    SQL`SELECT distinct wine.country FROM wine WHERE wine.country like ${country}`
+    SQL`SELECT distinct wine.country FROM wine WHERE systembolaget_wines.country like ${country}`
   ).then((cursor) => {
     if (cursor[0][0]) {
       return getRowValues("wine", "country", "Land", cursor[0]);
@@ -49,16 +52,18 @@ const getDistinctCountry = (country) =>
       return null;
     }
   });
-const getDistinctColor = (color) =>
+
+const getDistinctType = (type) =>
   query(
-    SQL`SELECT distinct wine.color FROM wine WHERE wine.color like ${color}`
+    SQL`SELECT distinct wine.type FROM wine WHERE wine.type like ${type}`
   ).then((cursor) => {
     if (cursor[0][0]) {
-      return getRowValues("wine", "color", "Färg", cursor[0]);
+      return getRowValues("wine", "type", "Färg", cursor[0]);
     } else {
       return null;
     }
   });
+
 const getDistinctName = (name) =>
   query(
     SQL`SELECT distinct wine.name FROM wine WHERE wine.name like ${name}`
@@ -69,6 +74,7 @@ const getDistinctName = (name) =>
       return null;
     }
   });
+
 const getDistinctReview = (comment) =>
   query(
     SQL`SELECT distinct wine.name FROM reviews, wine WHERE reviews.comment like ${comment} and reviews.fk_wine_id = wine.id `
@@ -86,7 +92,7 @@ export const getAutocompleteResponse = (startsWith) => {
     getDistinctGrape(startsWith),
     getDistinctProducer(startsWith),
     getDistinctCountry(startsWith),
-    getDistinctColor(startsWith),
+    getDistinctType(startsWith),
     getDistinctName(startsWith),
     getDistinctReview(startsWith),
   ];
@@ -131,44 +137,49 @@ export const insertSystembolagetWines = (wineArray) => {
   });
 };
 
-export const getSystembolagWines = (
-  name = "%%",
-  type = "%%",
-  subType = "%%",
-  price = "%%",
-  year = "%%",
-  country = "%%",
-  volume = "%%",
-  description = "%%",
-  productCode = "%%"
+export const getSystembolagWines = async (
+  name,
+  type,
+  subType,
+  country,
+  price,
+  year,
+  description,
+  volume,
+  productCode
 ) => {
-  let autocompleteQueries = [
-    getSystembolagWinesQuery(
-      "name1",
-      "%" + name + "%",
-      type,
-      subType,
-      price,
-      year,
-      country,
-      volume,
-      description,
-      productCode
-    ),
-    getSystembolagWinesQuery(
-      "name2",
-      "%" + name + "%",
-      type,
-      subType,
-      price,
-      year,
-      country,
-      volume,
-      "%" + description + "%",
-      productCode
-    ),
-  ];
-  return Promise.all(autocompleteQueries);
+  let statements = [];
+  if (name) {
+    statements.push(
+      ` (name1 like '%` + name + `%' OR name2 like '%` + name + `%') `
+    );
+  }
+  if (type) {
+    statements.push(` type like '` + type + `' `);
+  }
+  if (subType) {
+    statements.push(` subType like '` + subType + `' `);
+  }
+  if (price) {
+    statements.push(` price like '` + price + `' `);
+  }
+  if (year) {
+    statements.push(` year like '` + year + `' `);
+  }
+  if (volume) {
+    statements.push(` volume like '` + volume + `' `);
+  }
+  if (description) {
+    statements.push(` description like '%` + description + `%' `);
+  }
+  if (productCode) {
+    statements.push(` productCode like '` + productCode + `' `);
+  }
+  if (country) {
+    statements.push(` country like '` + country + `' `);
+  }
+
+  return getSystembolagWinesQuery(statements);
 };
 
 export const getSystembolagWineBynr = (nr) =>
@@ -182,11 +193,83 @@ export const getSystembolagWineBynr = (nr) =>
     }
   });
 
-export const getSystembolagWineByArtnr = (systembolagetartnr) =>
+export const getSystembolagSubTypes = (type = null) =>
   query(
-    `SELECT Namn, Namn2, color, country, year, nr, producer, price, Alkoholhalt, sizeml FROM systembolaget_sortiment WHERE ` +
-      ` systembolagetartnr like ` +
-      systembolagetartnr +
+    `SELECT DISTINCT subType
+      FROM systembolaget_wines
+      WHERE subType IS NOT NULL
+      GROUP BY subType
+      ORDER BY COUNT(subType) DESC;
+      `
+  ).then((cursor) => {
+    if (cursor[0]) {
+      return cursor[0].map((entity) => {
+        return { name: entity.subType, value: entity.subType };
+      });
+    } else {
+      return null;
+    }
+  });
+
+export const getSystembolagCountries = () =>
+  query(
+    `SELECT DISTINCT country
+          FROM systembolaget_wines
+          WHERE country IS NOT NULL
+          GROUP BY country
+          ORDER BY COUNT(country) DESC;
+          `
+  ).then((cursor) => {
+    if (cursor[0]) {
+      return cursor[0].map((entity) => {
+        return { name: entity.country, value: entity.country };
+      });
+    } else {
+      return null;
+    }
+  });
+
+export const getSystembolagVolumes = () =>
+  query(
+    `SELECT DISTINCT volume
+            FROM systembolaget_wines
+            WHERE volume IS NOT NULL
+            GROUP BY volume
+            ORDER BY COUNT(volume) DESC;
+            `
+  ).then((cursor) => {
+    if (cursor[0]) {
+      return cursor[0].map((entity) => {
+        return { name: entity.volume, value: entity.volume };
+      });
+    } else {
+      return null;
+    }
+  });
+
+export const getSystembolagTypes = () =>
+  query(
+    `SELECT DISTINCT type
+      FROM systembolaget_wines 
+      WHERE type IS NOT NULL
+      GROUP BY type
+      ORDER BY COUNT(type) DESC;
+      `
+  ).then((cursor) => {
+    if (cursor[0]) {
+      return cursor[0].map((entity) => {
+        return { name: entity.type, value: entity.type };
+      });
+    } else {
+      return null;
+    }
+  });
+
+export const getSystembolagWineByArtnr = async (productCode) =>
+  query(
+    `SELECT * from systembolager_wines WHERE ` +
+      ` productCode like ` +
+      productCode +
       `; `
   ).then((cursor) => {
     if (cursor[0][0]) {
@@ -196,52 +279,15 @@ export const getSystembolagWineByArtnr = (systembolagetartnr) =>
     }
   });
 
-const getSystembolagWinesQuery = (
-  colName,
-  name,
-  type,
-  subType,
-  price,
-  year,
-  country,
-  volume,
-  description,
-  productCode
-) =>
+const getSystembolagWinesQuery = (statements) =>
   query(
     `SELECT * FROM systembolaget_wines WHERE ` +
-      colName +
-      ` like '` +
-      name +
-      `' AND  ` +
-      `type like '` +
-      type +
-      `' AND  ` +
-      `subType like '` +
-      subType +
-      `' AND  ` +
-      `price like '` +
-      price +
-      `' AND  ` +
-      `year like '` +
-      year +
-      `' AND  ` +
-      `volume like '` +
-      volume +
-      `' AND  ` +
-      `description like '` +
-      description +
-      `' AND  ` +
-      `productCode like '` +
-      productCode +
-      `' AND  ` +
-      `country
-      like '` +
-      country +
-      `'; `
+      statements.join(" AND ") +
+      ` ; `
   )
     .then((cursor) => {
       if (cursor[0]) {
+        console.log(cursor[0]);
         return cursor[0];
       } else {
         return null;
@@ -254,6 +300,19 @@ const getSystembolagWinesQuery = (
 export const getDistinctFromWine = (property, value) =>
   query(
     `SELECT distinct wine.${property} FROM wine WHERE wine.${property} like '` +
+      value +
+      `'`
+  ).then((cursor) => {
+    if (cursor[0][0]) {
+      return cursor[0];
+    } else {
+      return null;
+    }
+  });
+
+export const getDistinctFromSystembolagetWines = (property, value) =>
+  query(
+    `SELECT distinct systembolaget_wines.${property} FROM wine WHERE systembolaget_wines.${property} like '` +
       value +
       `'`
   ).then((cursor) => {
@@ -468,22 +527,23 @@ export const getSystembolagetWineById = (productCode) =>
     });
 
 export const insertWine = (
-  year = null,
   name = null,
+  producer = null,
+  type = null,
+  subType = null,
+  year = null,
+  country = null,
   boughtfrom = null,
   price = null,
   container = null,
-  country = null,
-  color = null,
-  producer = null,
   incellar = null,
-  sizeml = null,
+  volume = null,
   nr = null,
   url = null
 ) =>
   query(
-    `INSERT INTO wine(year, name, boughtfrom, price, container, country, color, producer, incellar, sizeml, nr, url) ` +
-      `VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO wine(year, name, boughtfrom, price, container, country, type, producer, incellar, volume, nr, url, subType) ` +
+      `VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       year,
       name,
@@ -491,12 +551,13 @@ export const insertWine = (
       price,
       container,
       country,
-      color,
+      type,
       producer,
       incellar,
-      sizeml,
+      volume,
       nr,
       url,
+      subType,
     ]
   ).then((cursor) => {
     return cursor[0].insertId;
