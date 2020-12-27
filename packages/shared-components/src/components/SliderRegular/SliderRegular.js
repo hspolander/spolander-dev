@@ -26,7 +26,7 @@ const SliderRegular = (props) => {
         valueLabelDisplay={displayValue || "auto"}
         step={step}
         onChange={onChange}
-        value={typeof value === "number" ? value : 0}
+        value={value}
         marks
         min={min}
         max={max}
@@ -37,7 +37,10 @@ const SliderRegular = (props) => {
 
 SliderRegular.propTypes = {
   displayValue: PropTypes.string,
-  value: PropTypes.number,
+  value: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.arrayOf(PropTypes.number),
+  ]),
   step: PropTypes.number.isRequired,
   max: PropTypes.number.isRequired,
   min: PropTypes.number.isRequired,
