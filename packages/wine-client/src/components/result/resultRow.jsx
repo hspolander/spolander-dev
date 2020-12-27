@@ -44,7 +44,7 @@ const ReviewResultDetailed = (props) => {
     grapes,
     name,
     country,
-    color,
+    type,
     producer,
     year,
     reviews,
@@ -68,12 +68,12 @@ const ReviewResultDetailed = (props) => {
         {name && (
           <Grid item xs={6} sm={6} md={6} lg={8} xl={9}>
             <Paper className={classes.paper}>
-              {color && (
-                <div className={classes.color}>
-                  {color === "Rött" && (
+              {type && (
+                <div className={classes.type}>
+                  {type === "Rött vin" && (
                     <FontAwesomeIcon icon={faWineGlassAlt} className="red" />
                   )}
-                  {color === "Vitt" && (
+                  {type === "Vitt vin" && (
                     <FontAwesomeIcon icon={faWineGlassAlt} className="white" />
                   )}
                 </div>

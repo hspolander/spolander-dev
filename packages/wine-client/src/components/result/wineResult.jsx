@@ -10,7 +10,6 @@ import {
   removeWineFromCellar,
   toggleDetailedView,
 } from "./actions";
-import { setInitialValuesResult } from "../add/actions";
 import { setScreenSize } from "../global/actions";
 
 import "./result.scss";
@@ -46,7 +45,6 @@ const WineResult = ({
     wine.grapes = grapes;
     delete wine.id;
     delete wine.reviews;
-    setInitialValuesResult(wine);
     history.push("/addReview");
   };
 
@@ -58,7 +56,6 @@ const WineResult = ({
     wine.grapes = grapes;
     delete wine.id;
     delete wine.reviews;
-    setInitialValuesResult(wine);
     history.push("/addWine");
   };
 

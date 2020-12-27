@@ -5,79 +5,30 @@ import PropTypes from "prop-types";
 import InputSelect from "@spolander/shared-components/src/components/SelectRegular";
 import InputTextField from "@spolander/shared-components/src/components/InputRegular";
 import Autocomplete from "@spolander/shared-components/src/components/Autocomplete";
-import ButtonRegular from "@spolander/shared-components/src/components/ButtonRegular";
-
+import SliderRegular from "@spolander/shared-components/src/components/SliderRegular";
 import {
   loadFieldAutocomplete,
-  loadAddWine,
-  clearInitialValues,
+  getSystembolagetSubTypes,
+  getSystembolagetTypes,
+  getSystembolagetCountries,
 } from "./actions";
 
-import "./add.scss";
-
-export const AddWineForm = ({ autocompleteFieldData, initialValues }) => {
-  const colors = [
-    { name: "Rött", value: "Rött" },
-    { name: "Rosé", value: "Rosé" },
-    { name: "Vitt", value: "Vitt" },
-    { name: "Mousserande vin", value: "Mousserande vin" },
-  ];
-
-  const sizes = [
-    { name: "Helflaska", value: "Helflaska" },
-    { name: "Rött", value: "Rött" },
-    { name: "Glas", value: "Glas" },
-    { name: "Box", value: "Box" },
-    { name: "Halvflaska", value: "Halvflaska" },
-    { name: "Liten box", value: "Liten box" },
-    { name: "Piccolo", value: "Piccolo" },
-    { name: "Magnum", value: "Magnum" },
-    { name: "Tetra", value: "Tetra" },
-    { name: "Stor flaska", value: "Stor flaska" },
-    { name: "Annan", value: "Annan" },
-  ];
-
-  const [formdata, setFormData] = useState({
-    name: "",
-    producer: "",
-    color: "",
-    year: "",
-    country: "",
-    boughtFrom: "",
-    price: "",
-    container: "",
-    nr: "",
-    sizeml: "",
-    grapes: [],
-  });
+const AddReviewForm = ({
+  autocompleteFieldData,
+  types = [],
+  subTypes = [],
+  countries = [],
+  formdata,
+  fetching,
+  setFormData,
+}) => {
   const [autocompleteResponse, setAutoCompleteResponse] = useState(null);
 
-  const setInitialValues = (values) => {
-    setFormData(values);
-  };
-
-  const resetForm = () => {
-    setFormData({
-      name: "",
-      producer: "",
-      color: "",
-      year: "",
-      country: "",
-      boughtFrom: "",
-      price: "",
-      container: "",
-      nr: "",
-      sizeml: "",
-      grapes: [],
-    });
-  };
-
   useEffect(() => {
-    if (initialValues) {
-      setInitialValues(initialValues);
-      clearInitialValues();
-    }
-  }, [initialValues]);
+    getSystembolagetTypes();
+    getSystembolagetSubTypes();
+    getSystembolagetCountries();
+  }, []);
 
   const autocompleteField = (field, value, action) => {
     loadFieldAutocomplete(field, value);
@@ -95,19 +46,6 @@ export const AddWineForm = ({ autocompleteFieldData, initialValues }) => {
       setAutoCompleteResponse(null);
     }
   }, [autocompleteFieldData]);
-
-  const requiredFields = ["name", "color"];
-
-  const validateInputs = () => {
-    for (let key of requiredFields) {
-      if (!formdata[key]) {
-        alert("Du måste fylla i fälten Namn & Färg.");
-        return null;
-      }
-    }
-    loadAddWine(formdata);
-    resetForm();
-  };
 
   return (
     <div className="addWineForm">
@@ -146,43 +84,31 @@ export const AddWineForm = ({ autocompleteFieldData, initialValues }) => {
         options={autocompleteResponse}
       />
       <InputSelect
-        values={colors}
-        value={formdata.color}
-        label={"Färg"}
-        onChange={(val) => setFormData({ ...formdata, color: val })}
+        values={types}
+        value={formdata.type}
+        label={"Vinkategori"}
+        onChange={(val) => setFormData({ ...formdata, type: val })}
+      />
+      <InputSelect
+        values={subTypes}
+        value={formdata.subType}
+        label={"Vinunderkategori"}
+        onChange={(val) => setFormData({ ...formdata, subType: val })}
+      />
+      <InputSelect
+        values={countries}
+        value={formdata.country}
+        label={"Land"}
+        onChange={(val) => setFormData({ ...formdata, country: val })}
       />
       <InputTextField
-        onChange={(val) =>
-          setFormData({ ...formdata, year: val.replace(/\D/g, "") })
-        }
         variant="outlined"
         value={formdata.year}
         label="År"
         placeholder="ex. 2012"
-      />
-      <Autocomplete
-        onInputChange={(inputValue) => autocompleteField("country", inputValue)}
-        handleChange={(selectedValue) =>
-          setFormData({
-            ...formdata,
-            country: selectedValue ? selectedValue.value : "",
-          })
+        onChange={(val) =>
+          setFormData({ ...formdata, year: val.replace(/\D/g, "") })
         }
-        onBlur={(e) =>
-          setFormData({
-            ...formdata,
-            country: formdata.country
-              ? formdata.country
-              : e.target.value
-              ? e.target.value
-              : "",
-          })
-        }
-        variant="outlined"
-        label="Land"
-        value={{ value: formdata.country, label: formdata.country }}
-        placeholder="ex. Sydafrika"
-        options={autocompleteResponse}
       />
       <Autocomplete
         onInputChange={(inputValue) =>
@@ -236,7 +162,10 @@ export const AddWineForm = ({ autocompleteFieldData, initialValues }) => {
         placeholder="Ex. Chardonnay"
         value={
           formdata.grapes && formdata.grapes.length > 0
-            ? formdata.grapes.map((grape) => ({ value: grape, label: grape }))
+            ? formdata.grapes.map((grape) => ({
+                value: grape,
+                label: grape,
+              }))
             : []
         }
         onBlur={(e) =>
@@ -261,33 +190,42 @@ export const AddWineForm = ({ autocompleteFieldData, initialValues }) => {
         }
         options={autocompleteResponse}
       />
-      <div className="buttonDiv">
-        <ButtonRegular
-          variant="outlined"
-          color="secondary"
-          onClick={() => resetForm()}
-        >
-          <i>Rensa</i>
-        </ButtonRegular>
-        <ButtonRegular
-          variant="contained"
-          color="primary"
-          onClick={() => validateInputs()}
-        >
-          <i>Lägg till</i>
-        </ButtonRegular>
-      </div>
+      <SliderRegular
+        step={1}
+        max={10}
+        min={0}
+        required
+        value={formdata.score}
+        displayValue={"auto"}
+        onChange={(element, value) =>
+          setFormData({ ...formdata, score: value })
+        }
+        label={`Betyg: ${formdata.score && formdata.score}`}
+      />
+      <InputTextField
+        onChange={(val) => setFormData({ ...formdata, comment: val })}
+        variant="outlined"
+        value={formdata.comment}
+        label="Recension"
+        multiline
+        required
+        wide
+        multiRows={7}
+      />
     </div>
   );
 };
-AddWineForm.propTypes = {
-  navigatedInitialValues: PropTypes.object,
+
+AddReviewForm.propTypes = {
   autocompleteFieldData: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
-  initialValues: state.addReducer.initialValue,
   autocompleteFieldData: state.addReducer.fieldData,
+  countries: state.addReducer.countries,
+  subTypes: state.addReducer.subTypes,
+  types: state.addReducer.types,
+  fetching: state.addReducer.fetching,
 });
 
-export default connect(mapStateToProps, null)(AddWineForm);
+export default connect(mapStateToProps, null)(AddReviewForm);

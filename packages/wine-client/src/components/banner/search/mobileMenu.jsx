@@ -31,16 +31,10 @@ const SimpleMenu = () => {
             text="Recensioner"
             navTo="/reviews"
           />
-          <MenuItem handleClose={handleClose} text="Vinförråd" navTo="/wines" />
           <MenuItem
             handleClose={handleClose}
             text="Recensera"
             navTo="/addReview"
-          />
-          <MenuItem
-            handleClose={handleClose}
-            text="Lägg till"
-            navTo="/addWine"
           />
         </div>
       </Menu>

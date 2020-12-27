@@ -40,7 +40,6 @@ const mapStateToProps = (state) => ({
   redirectToReferrer: state.loginReducer.redirectToReferrer,
   isAuthenticated: state.loginReducer.isAuthenticated,
   fetching: state.loginReducer.fetching,
-  fetched: state.loginReducer.fetched,
   error: state.loginReducer.error,
   redirectedToLogin: state.loginReducer.redirectedToLogin,
 });

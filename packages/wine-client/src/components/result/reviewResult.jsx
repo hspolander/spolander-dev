@@ -9,7 +9,6 @@ import {
   loadOrderedClickedReview,
   toggleDetailedView,
 } from "./actions";
-import { setInitialValuesResult } from "../add/actions";
 import { usePrevious } from "../../hooks";
 import { authUser } from "../login/actions";
 
@@ -68,7 +67,6 @@ const ReviewResult = ({
     initialValues.grapes = grapes;
     delete initialValues.id;
     delete initialValues.reviews;
-    setInitialValuesResult(initialValues);
     history.push("/addReview");
   };
 
@@ -81,7 +79,6 @@ const ReviewResult = ({
     initialValues.grapes = grapes;
     delete initialValues.id;
     delete initialValues.reviews;
-    setInitialValuesResult(initialValues);
     history.push("/addWine");
   };
 

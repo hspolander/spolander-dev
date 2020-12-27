@@ -4,9 +4,7 @@ import { connect } from "react-redux";
 import Cookies from "js-cookie";
 
 import Banner from "./components/banner/banner";
-import AddWine from "./components/add/addWine";
-import AddReview from "./components/add/addReview";
-import WineResult from "./components/result/wineResult";
+import AddReview from "./components/add/AddReview";
 import ReviwResult from "./components/result/reviewResult";
 import LoginOverlay from "./components/login/loginOverlay";
 import Login from "./components/login/login";
@@ -15,6 +13,7 @@ import { setScreenSize } from "./components/global/actions";
 import PrivateRoute from "./components/global/PrivateRoute";
 
 import "./client.scss";
+import reviewResult from "./components/result/reviewResult";
 
 const Client = () => {
   useEffect(() => {
@@ -32,15 +31,13 @@ const Client = () => {
         {Cookies.get("WINE_UUID") && <LoginOverlay />}
         <div className="main-content">
           <Switch>
-            <PrivateRoute path="/addwine" component={AddWine} />
-            <PrivateRoute path="/addreview" component={AddReview} />
-            <PrivateRoute path="/wines" component={WineResult} />
+            <PrivateRoute path="/reviews" component={reviewResult} />
             <PrivateRoute
               path="/reviews/:table?/:property?/:value?"
               component={ReviwResult}
             />
             <Route path="/login" component={Login} />
-            <PrivateRoute path="/" component={AddWine} />
+            <PrivateRoute path="/" component={AddReview} />
           </Switch>
         </div>
       </div>

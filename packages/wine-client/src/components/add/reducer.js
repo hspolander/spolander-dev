@@ -1,29 +1,26 @@
-import update from "immutability-helper";
-
 import {
   ADD_REVIEW_FETCHING,
   ADD_REVIEW_FULFILLED,
   ADD_REVIEW_REJECTED,
-  ADD_WINE_FETCHING,
-  ADD_WINE_FULFILLED,
-  ADD_WINE_REJECTED,
-  SET_INITIAL_VALUES,
-  SHOW_WINE_IMAGE,
-  HIDE_WINE_IMAGE,
-  CLEAR_INITIAL_VALUES,
+  CLEAR_SNACKBAR,
+  SET_SNACKBAR,
   SYSTEMBOLAGET_FETCHING,
   FETCH_SYSTEMBOLAGET_FULFILLED,
   FETCH_SYSTEMBOLAGET_REJECTED,
   FETCH_SYSTEMBOLAGET_NO_MATCH,
-  FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_FULFILLED,
-  FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_REJECTED,
-  FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_NO_MATCH,
-  FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_FULFILLED,
-  FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_REJECTED,
-  FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_NO_MATCH,
-  FETCH_SYSTEMBOLAGET_IMAGE_INFO_FULFILLED,
-  FETCH_SYSTEMBOLAGET_IMAGE_INFO_REJECTED,
-  FETCH_SYSTEMBOLAGET_IMAGE_INFO_NO_MATCH,
+  FETCH_SYSTEMBOLAGET_WINE_DATA_FULFILLED,
+  FETCH_SYSTEMBOLAGET_WINE_DATA_REJECTED,
+  FETCH_SYSTEMBOLAGET_WINE_DATA_NO_MATCH,
+  FETCH_SYSTEMBOLAGET_WINE_DATA_FETCHING,
+  FETCH_SYSTEMBOLAGET_COUNTRIES_FULFILLED,
+  FETCH_SYSTEMBOLAGET_COUNTRIES_REJECTED,
+  FETCH_SYSTEMBOLAGET_COUNTRIES_FETCHING,
+  FETCH_SYSTEMBOLAGET_SUBTYPES_FULFILLED,
+  FETCH_SYSTEMBOLAGET_SUBTYPES_REJECTED,
+  FETCH_SYSTEMBOLAGET_SUBTYPES_FETCHING,
+  FETCH_SYSTEMBOLAGET_TYPES_FULFILLED,
+  FETCH_SYSTEMBOLAGET_TYPES_REJECTED,
+  FETCH_SYSTEMBOLAGET_TYPES_FETCHING,
   SYSTEMBOLAGET_CLEAR_VALUES,
   FIELD_AUTOCOMPLETE_FETCHING,
   FIELD_AUTOCOMPLETE_FULFILLED,
@@ -36,41 +33,141 @@ import {
 const initialState = {
   data: null,
   fetching: false,
+  fetchIsBlocking: false,
   fetched: false,
   fieldData: null,
   focusedField: null,
+  countries: [],
+  subTypes: [],
+  types: [],
+  addedWine: null,
+  snackbar: null,
   systemWineData: null,
-  initialValue: null,
+  singleSysWineData: null,
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case ADD_WINE_FETCHING: {
-      return { ...state, fetching: true };
+    case CLEAR_SNACKBAR: {
+      return { ...state, snackbar: null };
     }
-    case ADD_WINE_FULFILLED: {
-      return { ...state, fetched: true, fetching: false, data: action.payload };
+    case SET_SNACKBAR: {
+      return { ...state, snackbar: action.payload };
     }
-    case ADD_WINE_REJECTED: {
-      return { ...state, fetched: true, fetching: false, data: null };
+    case FETCH_SYSTEMBOLAGET_COUNTRIES_FETCHING: {
+      return { ...state, fetching: true, fetchIsBlocking: false };
+    }
+    case FETCH_SYSTEMBOLAGET_COUNTRIES_FULFILLED: {
+      return {
+        ...state,
+        fetching: false,
+        fetchIsBlocking: false,
+        countries: action.payload,
+      };
+    }
+    case FETCH_SYSTEMBOLAGET_COUNTRIES_REJECTED: {
+      return {
+        ...state,
+        fetching: false,
+        fetchIsBlocking: false,
+        countries: [],
+      };
+    }
+    case FETCH_SYSTEMBOLAGET_SUBTYPES_FETCHING: {
+      return { ...state, fetching: true, fetchIsBlocking: false };
+    }
+    case FETCH_SYSTEMBOLAGET_SUBTYPES_FULFILLED: {
+      return {
+        ...state,
+        fetching: false,
+        fetchIsBlocking: false,
+        subTypes: action.payload,
+      };
+    }
+    case FETCH_SYSTEMBOLAGET_SUBTYPES_REJECTED: {
+      return {
+        ...state,
+        fetching: false,
+        fetchIsBlocking: false,
+        subTypes: [],
+      };
+    }
+    case FETCH_SYSTEMBOLAGET_TYPES_FETCHING: {
+      return { ...state, fetching: true, fetchIsBlocking: false };
+    }
+    case FETCH_SYSTEMBOLAGET_TYPES_FULFILLED: {
+      return {
+        ...state,
+        fetching: false,
+        fetchIsBlocking: false,
+        types: action.payload,
+      };
+    }
+    case FETCH_SYSTEMBOLAGET_TYPES_REJECTED: {
+      return { ...state, fetching: false, fetchIsBlocking: false, types: [] };
+    }
+    case FETCH_SYSTEMBOLAGET_WINE_DATA_FETCHING: {
+      return {
+        ...state,
+        fetching: true,
+        fetchIsBlocking: true,
+        singleSysWineData: null,
+      };
+    }
+    case FETCH_SYSTEMBOLAGET_WINE_DATA_FULFILLED: {
+      return {
+        ...state,
+        fetching: false,
+        fetchIsBlocking: false,
+        singleSysWineData: action.payload,
+      };
+    }
+    case FETCH_SYSTEMBOLAGET_WINE_DATA_REJECTED: {
+      return {
+        ...state,
+        fetching: false,
+        fetchIsBlocking: false,
+        error: action.payload,
+      };
     }
     case ADD_REVIEW_FETCHING: {
-      return { ...state, fetching: true };
+      return {
+        ...state,
+        fetching: true,
+        fetchIsBlocking: true,
+      };
     }
     case ADD_REVIEW_FULFILLED: {
-      return { ...state, fetched: true, fetching: false, data: action.payload };
+      return {
+        ...state,
+        fetching: false,
+        addedWine: action.payload,
+        fetchIsBlocking: false,
+      };
     }
     case ADD_REVIEW_REJECTED: {
-      return { ...state, fetched: true, fetching: false, data: null };
+      return {
+        ...state,
+        error: action.payload,
+        fetchIsBlocking: false,
+        fetching: false,
+      };
     }
-    case SET_INITIAL_VALUES: {
-      return { ...state, initialValue: action.payload };
-    }
-    case CLEAR_INITIAL_VALUES: {
-      return { ...state, initialValue: null };
+    case FETCH_SYSTEMBOLAGET_WINE_DATA_NO_MATCH: {
+      return {
+        ...state,
+        fetching: false,
+        fetchIsBlocking: false,
+        singleSysWineData: null,
+      };
     }
     case FIELD_AUTOCOMPLETE_FETCHING: {
-      return { ...state, fetched: false, fetching: true };
+      return {
+        ...state,
+        fetched: false,
+        fetching: true,
+        fetchIsBlocking: false,
+      };
     }
     case FIELD_AUTOCOMPLETE_FULFILLED: {
       return {
@@ -81,13 +178,31 @@ export default function reducer(state = initialState, action) {
       };
     }
     case FIELD_AUTOCOMPLETE_NO_MATCH: {
-      return { ...state, fetched: true, fetching: false, fieldData: null };
+      return {
+        ...state,
+        fetched: true,
+        fetching: false,
+        fetchIsBlocking: false,
+        fieldData: null,
+      };
     }
     case FIELD_AUTOCOMPLETE_REJECTED: {
-      return { ...state, fetched: true, fetching: false, fieldData: null };
+      return {
+        ...state,
+        fetched: true,
+        fetching: false,
+        fetchIsBlocking: false,
+        fieldData: null,
+      };
     }
     case SYSTEMBOLAGET_FETCHING: {
-      return { ...state, fetched: false, fetching: true, systemWineData: null };
+      return {
+        ...state,
+        fetched: false,
+        fetching: true,
+        fetchIsBlocking: true,
+        systemWineData: null,
+      };
     }
     case SYSTEMBOLAGET_CLEAR_VALUES: {
       return { ...state, systemWineData: null };
@@ -97,127 +212,34 @@ export default function reducer(state = initialState, action) {
         ...state,
         fetched: true,
         fetching: false,
+        fetchIsBlocking: false,
         systemWineData: action.payload,
       };
     }
     case FETCH_SYSTEMBOLAGET_REJECTED: {
-      return { ...state, fetched: true, fetching: false, systemWineData: null };
+      return {
+        ...state,
+        fetched: true,
+        fetching: false,
+        fetchIsBlocking: false,
+        systemWineData: null,
+      };
     }
     case FETCH_SYSTEMBOLAGET_NO_MATCH: {
-      return { ...state, fetched: true, fetching: false, systemWineData: [] };
-    }
-    case FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_FULFILLED: {
       return {
         ...state,
-        initialValue: update(action.payload.values, {
-          $merge: {
-            comment: `\r\nAlk.: ${action.payload.values.Alkoholhalt}`,
-            boughtFrom: "Systembolaget",
-            grapes: action.payload.grapes,
-            score: 5,
-          },
-        }),
+        fetched: true,
+        fetching: false,
+        fetchIsBlocking: false,
+        systemWineData: [],
       };
-    }
-    case FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_REJECTED: {
-      return {
-        ...state,
-        initialValue: update(action.payload, {
-          $merge: {
-            comment: `\r\nAlk.: ${action.payload.Alkoholhalt}`,
-            boughtFrom: "Systembolaget",
-            score: 5,
-          },
-        }),
-      };
-    }
-    case FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_NO_MATCH: {
-      return {
-        ...state,
-        initialValue: update(action.payload, {
-          $merge: {
-            comment: `\r\nAlk.: ${action.payload.Alkoholhalt}`,
-            boughtFrom: "Systembolaget",
-            score: 5,
-          },
-        }),
-      };
-    }
-    case FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_FULFILLED: {
-      return {
-        ...state,
-        initialValue: update(action.payload.values, {
-          $merge: {
-            comment: `\r\nAlk.: ${action.payload.values.Alkoholhalt}`,
-            boughtFrom: "Systembolaget",
-            grapes: action.payload.grapes,
-            score: 5,
-          },
-        }),
-      };
-    }
-    case FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_REJECTED: {
-      return {
-        ...state,
-        initialValue: update(action.payload, {
-          $merge: {
-            comment: `\r\nAlk.: ${action.payload.Alkoholhalt}`,
-            boughtFrom: "Systembolaget",
-            score: 5,
-          },
-        }),
-      };
-    }
-    case FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_NO_MATCH: {
-      return {
-        ...state,
-        initialValue: update(action.payload, {
-          $merge: {
-            comment: `\r\nAlk.: ${action.payload.Alkoholhalt}`,
-            boughtFrom: "Systembolaget",
-            score: 5,
-          },
-        }),
-      };
-    }
-    case FETCH_SYSTEMBOLAGET_IMAGE_INFO_FULFILLED: {
-      return update(state, {
-        systemWineData: {
-          [action.payload.rowId]: { $merge: { image: action.payload.image } },
-        },
-      });
-    }
-    case FETCH_SYSTEMBOLAGET_IMAGE_INFO_NO_MATCH: {
-      return update(state, {
-        systemWineData: {
-          [action.payload.rowId]: { $merge: { image: action.payload.image } },
-        },
-      });
-    }
-    case FETCH_SYSTEMBOLAGET_IMAGE_INFO_REJECTED: {
-      return update(state, {
-        systemWineData: { [action.payload.rowId]: { $merge: { image: null } } },
-      });
-    }
-    case HIDE_WINE_IMAGE: {
-      return update(state, {
-        systemWineData: {
-          [action.payload]: { $merge: { imageVisible: false } },
-        },
-      });
-    }
-    case SHOW_WINE_IMAGE: {
-      return update(state, {
-        systemWineData: {
-          [action.payload]: { $merge: { imageVisible: true } },
-        },
-      });
     }
     case FIELD_AUTOCOMPLETE_CLEAR_FOCUS: {
       return {
         ...state,
         fetched: false,
         fetching: false,
+        fetchIsBlocking: false,
         fieldData: null,
         focusedField: null,
       };
@@ -227,6 +249,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         fetched: false,
         fetching: false,
+        fetchIsBlocking: false,
         fieldData: null,
         focusedField: action.payload,
       };

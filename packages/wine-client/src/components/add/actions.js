@@ -3,26 +3,26 @@ import { jsonToQueryString, removeFalsy } from "../global/helpfunctions";
 import { dispatch } from "../../configureStore";
 
 import {
-  ADD_WINE_FETCHING,
-  ADD_WINE_FULFILLED,
-  ADD_WINE_REJECTED,
   ADD_REVIEW_FETCHING,
   ADD_REVIEW_FULFILLED,
   ADD_REVIEW_REJECTED,
+  CLEAR_SNACKBAR,
+  SET_SNACKBAR,
   SYSTEMBOLAGET_FETCHING,
-  SET_INITIAL_VALUES,
-  SHOW_WINE_IMAGE,
-  HIDE_WINE_IMAGE,
-  CLEAR_INITIAL_VALUES,
-  FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_FULFILLED,
-  FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_REJECTED,
-  FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_NO_MATCH,
-  FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_FULFILLED,
-  FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_REJECTED,
-  FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_NO_MATCH,
-  FETCH_SYSTEMBOLAGET_IMAGE_INFO_FULFILLED,
-  FETCH_SYSTEMBOLAGET_IMAGE_INFO_REJECTED,
-  FETCH_SYSTEMBOLAGET_IMAGE_INFO_NO_MATCH,
+  RESET_ADD_REVIEW_VALUES,
+  UPDATE_ADD_REVIEW_VALUES,
+  FETCH_SYSTEMBOLAGET_WINE_DATA_FULFILLED,
+  FETCH_SYSTEMBOLAGET_WINE_DATA_REJECTED,
+  FETCH_SYSTEMBOLAGET_WINE_DATA_FETCHING,
+  FETCH_SYSTEMBOLAGET_COUNTRIES_FULFILLED,
+  FETCH_SYSTEMBOLAGET_COUNTRIES_REJECTED,
+  FETCH_SYSTEMBOLAGET_COUNTRIES_FETCHING,
+  FETCH_SYSTEMBOLAGET_SUBTYPES_FULFILLED,
+  FETCH_SYSTEMBOLAGET_SUBTYPES_REJECTED,
+  FETCH_SYSTEMBOLAGET_SUBTYPES_FETCHING,
+  FETCH_SYSTEMBOLAGET_TYPES_FULFILLED,
+  FETCH_SYSTEMBOLAGET_TYPES_REJECTED,
+  FETCH_SYSTEMBOLAGET_TYPES_FETCHING,
   FETCH_SYSTEMBOLAGET_FULFILLED,
   FETCH_SYSTEMBOLAGET_REJECTED,
   FETCH_SYSTEMBOLAGET_NO_MATCH,
@@ -33,44 +33,17 @@ import {
   FIELD_AUTOCOMPLETE_NO_MATCH,
 } from "./constants";
 
-export const hideImageOfWine = (rowId) => {
-  dispatch({ type: HIDE_WINE_IMAGE, payload: rowId });
-};
-
-export const clearInitialValues = () => {
-  dispatch({ type: CLEAR_INITIAL_VALUES });
-};
-
-export const setInitialValues = (values) => ({
-  type: SET_INITIAL_VALUES,
-  payload: values,
-});
-
-const addWine = (values) => {
-  axios
-    .post("/api/insertWineToCellar", values)
-    .then((response) => {
-      dispatch({ type: ADD_WINE_FULFILLED, payload: response.data });
-      alert("Vi har lagt till ditt vin i vinkällaren");
-      dispatch(setInitialValues(null));
-    })
-    .catch((err) => {
-      dispatch({ type: ADD_WINE_REJECTED, payload: err });
-      alert("Något gick fel, vänligen sök hjälp hos din make");
-    });
-};
-
 const addReview = (values) => {
   axios
     .post("/api/insertWineReview", values)
     .then((response) => {
       dispatch({ type: ADD_REVIEW_FULFILLED, payload: response.data });
-      alert("Vi har lagt till ditt vin");
-      dispatch(setInitialValues(null));
+      setSnackbar("success", `Vi har lagt till ditt vin ${values?.name}`);
+      dispatch({ type: RESET_ADD_REVIEW_VALUES });
     })
     .catch((err) => {
       dispatch({ type: ADD_REVIEW_REJECTED, payload: err });
-      alert("Något gick fel, vänligen sök hjälp hos din make");
+      setSnackbar("error", "Något gick fel. Vänligen sök hjälp hos din make.");
     });
 };
 
@@ -92,7 +65,15 @@ const fieldAutocomplete = (value) => {
     });
 };
 
-const getSysWines = (values) => {
+export const clearSnackbar = () => {
+  dispatch({ type: CLEAR_SNACKBAR });
+};
+
+export const setSnackbar = (messageType, message) => {
+  dispatch({ type: SET_SNACKBAR, payload: { messageType, message } });
+};
+
+export const getSysWines = (values) => {
   axios
     .get(`/api/getSysWines${values}`)
     .then((response) => {
@@ -110,93 +91,13 @@ const getSysWines = (values) => {
     });
 };
 
-const getSysWineGrapesReviewInfo = (values) => {
-  axios
-    .post("/api/getSysWineGrapesInfo", { url: values.url })
-    .then((response) => {
-      if (response.data && response.data.data.length > 0) {
-        dispatch({
-          type: FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_FULFILLED,
-          payload: { grapes: response.data.data, values },
-        });
-      } else {
-        dispatch({
-          type: FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_NO_MATCH,
-          payload: values,
-        });
-      }
-    })
-    .catch((err) => {
-      dispatch({
-        type: FETCH_SYSTEMBOLAGET_GRAPES_REVIEW_INFO_REJECTED,
-        payload: values,
-        err,
-      });
-    });
-};
-
-const getSysWineGrapesAddInfo = (values) => {
-  axios
-    .post("/api/getSysWineGrapesInfo", { url: values.url })
-    .then((response) => {
-      if (response.data && response.data.data.length > 0) {
-        dispatch({
-          type: FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_FULFILLED,
-          payload: { grapes: response.data.data, values },
-        });
-      } else {
-        dispatch({
-          type: FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_NO_MATCH,
-          payload: values,
-        });
-      }
-    })
-    .catch((err) => {
-      dispatch({
-        type: FETCH_SYSTEMBOLAGET_GRAPES_ADD_INFO_REJECTED,
-        payload: values,
-        err,
-      });
-    });
-};
-
-const getSysWineImageInfo = async (values, rowId) => {
-  await axios
-    .post("/api/getSysWineImageInfo", { url: values.url })
-    .then((response) => {
-      if (response.data && response.data.data) {
-        dispatch({
-          type: FETCH_SYSTEMBOLAGET_IMAGE_INFO_FULFILLED,
-          payload: { image: response.data.data, values, rowId },
-        });
-      } else {
-        dispatch({
-          type: FETCH_SYSTEMBOLAGET_IMAGE_INFO_NO_MATCH,
-          payload: { image: response.data.data, values, rowId },
-        });
-      }
-    })
-    .catch((err) => {
-      dispatch({
-        type: FETCH_SYSTEMBOLAGET_IMAGE_INFO_REJECTED,
-        payload: values,
-        err,
-      });
-    });
-};
-
 export const loadAddReview = (values) => {
   dispatch({ type: ADD_REVIEW_FETCHING });
   addReview(values);
 };
 
-export const loadAddWine = (values) => {
-  values = removeFalsy(values);
-  if (values.price) {
-    values.price = values.price.replace(/\D/g, "") + " kr";
-  }
-  dispatch({ type: ADD_WINE_FETCHING });
-  addWine(values);
+export const updateAddReviewValues = (key, value) => {
+  dispatch({ type: UPDATE_ADD_REVIEW_VALUES, payload: { key, value } });
 };
 
 export const loadSysWines = (values) => {
@@ -209,31 +110,81 @@ export const clearSysWines = () => {
   dispatch({ type: SYSTEMBOLAGET_CLEAR_VALUES });
 };
 
-export const resetForm = () => {
-  dispatch(setInitialValues(null));
+export const getSystembolagetTypes = () => {
+  dispatch({
+    type: FETCH_SYSTEMBOLAGET_TYPES_FETCHING,
+  });
+  axios
+    .get(`/api/getTypes`)
+    .then((response) => {
+      if (response.data?.data?.length > 0) {
+        dispatch({
+          type: FETCH_SYSTEMBOLAGET_TYPES_FULFILLED,
+          payload: response.data.data,
+        });
+      }
+    })
+    .catch((err) => {
+      dispatch({ type: FETCH_SYSTEMBOLAGET_TYPES_REJECTED, payload: err });
+    });
 };
 
-export const setInitialValuesResult = (values) => {
-  dispatch(setInitialValues(values));
+export const getSystembolagetCountries = () => {
+  dispatch({
+    type: FETCH_SYSTEMBOLAGET_COUNTRIES_FETCHING,
+  });
+  axios
+    .get(`/api/getCountries`)
+    .then((response) => {
+      if (response.data?.data?.length > 0) {
+        dispatch({
+          type: FETCH_SYSTEMBOLAGET_COUNTRIES_FULFILLED,
+          payload: response.data.data,
+        });
+      }
+    })
+    .catch((err) => {
+      dispatch({ type: FETCH_SYSTEMBOLAGET_COUNTRIES_REJECTED, payload: err });
+    });
 };
 
-export const sendLoadSystembolagetAddRow = (values) => {
-  getSysWineGrapesAddInfo(values);
+export const getSystembolagetSubTypes = () => {
+  dispatch({
+    type: FETCH_SYSTEMBOLAGET_SUBTYPES_FETCHING,
+  });
+  axios
+    .get(`/api/getSubTypes`)
+    .then((response) => {
+      if (response.data?.data?.length > 0) {
+        dispatch({
+          type: FETCH_SYSTEMBOLAGET_SUBTYPES_FULFILLED,
+          payload: response.data.data,
+        });
+      }
+    })
+    .catch((err) => {
+      dispatch({ type: FETCH_SYSTEMBOLAGET_SUBTYPES_REJECTED, payload: err });
+    });
 };
 
-export const sendLoadSystembolagetReviewRow = (values) => {
-  getSysWineGrapesReviewInfo(values);
-};
-
-export const sendLoadSystembolagetImage = (values, rowId) => {
-  getSysWineImageInfo(values, rowId);
-};
-
-export const showImageOfWine = async (values, rowId) => {
-  if (!values.image) {
-    await getSysWineImageInfo(values, rowId);
-  }
-  dispatch({ type: SHOW_WINE_IMAGE, payload: rowId });
+export const loadSystembolagetWineData = (url) => {
+  dispatch({
+    type: FETCH_SYSTEMBOLAGET_WINE_DATA_FETCHING,
+  });
+  const urlEncoded = encodeURIComponent(`https://www.systembolaget.se${url}`);
+  axios
+    .get(`/api/getAdditionalWineData?url=${urlEncoded}`)
+    .then((response) => {
+      if (response.data?.data) {
+        dispatch({
+          type: FETCH_SYSTEMBOLAGET_WINE_DATA_FULFILLED,
+          payload: response.data.data,
+        });
+      }
+    })
+    .catch((err) => {
+      dispatch({ type: FETCH_SYSTEMBOLAGET_WINE_DATA_REJECTED, payload: err });
+    });
 };
 
 export const loadFieldAutocomplete = (prop, value) => {

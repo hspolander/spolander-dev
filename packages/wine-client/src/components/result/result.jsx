@@ -66,7 +66,6 @@ export const SearchResultDetailed = ({
   loadValuesAddWine,
   removeFromCellar,
   loadValuesReview,
-  isSmallScreen,
 }) => {
   let rows;
   rows = wine.data.map((singleWine) => (
@@ -78,27 +77,6 @@ export const SearchResultDetailed = ({
       loadValuesReview={loadValuesReview}
     />
   ));
-  /*if (isSmallScreen) {
-    rows = wine.data.map((singleWine) => (
-      <RowMobile
-        key={`wine${singleWine.wine.id}`}
-        wine={singleWine}
-        loadValuesAddWine={loadValuesAddWine}
-        removeFromCellar={removeFromCellar}
-        loadValuesReview={loadValuesReview}
-      />
-    ));
-  } else {
-    rows = wine.data.map((singleWine) => (
-      <RowDetailed
-        key={`wine${singleWine.wine.id}`}
-        wine={singleWine}
-        loadValuesAddWine={loadValuesAddWine}
-        removeFromCellar={removeFromCellar}
-        loadValuesReview={loadValuesReview}
-      />
-    ));
-  }*/
 
   return (
     <div className="search-result-detailed">
@@ -124,7 +102,7 @@ const Row = ({
   loadValuesAddWine,
   removeFromCellar,
 }) => {
-  const { grapes, name, country, color, producer, year, sizeml } = wine.wine;
+  const { grapes, name, country, type, producer, year, sizeml } = wine.wine;
   const graperows = grapes.map((grape) => (
     <div key={`grape${grape.id}`} className="grape">
       {grape.grape}
@@ -140,14 +118,14 @@ const Row = ({
       </td>
       <td>
         <div>
-          {color && color.indexOf("bubbel") > -1 ? color : `${color} vin`}
-          {color === "Rött" && (
+          {type && type.indexOf("bubbel") > -1 ? type : `${type}`}
+          {type === "Rött vin" && (
             <FontAwesomeIcon icon={faWineGlassAlt} className="red" />
           )}
-          {color === "Rosé" && (
+          {type === "Rosévin" && (
             <FontAwesomeIcon icon={faWineGlassAlt} className="rosa" />
           )}
-          {color === "Vitt" && (
+          {type === "Vitt vin" && (
             <FontAwesomeIcon icon={faWineGlassAlt} className="white" />
           )}
         </div>
@@ -202,7 +180,7 @@ const RowDetailed = ({
     grapes,
     name,
     country,
-    color,
+    type,
     producer,
     year,
     reviews,
@@ -256,11 +234,11 @@ const RowDetailed = ({
             <td>
               <div className="result-header">Färg:</div>
               <div>
-                {color}
-                {color === "Rött" && (
+                {type}
+                {type === "Rött vin" && (
                   <FontAwesomeIcon icon={faWineGlassAlt} className="red" />
                 )}
-                {color === "Vitt" && (
+                {type === "Vitt vin" && (
                   <FontAwesomeIcon icon={faWineGlassAlt} className="white" />
                 )}
               </div>
@@ -353,7 +331,7 @@ const RowMobile = ({ wine, loadValuesAddWine, loadValuesReview }) => {
     grapes,
     name,
     country,
-    color,
+    type,
     producer,
     year,
     reviews,
@@ -403,7 +381,7 @@ const RowMobile = ({ wine, loadValuesAddWine, loadValuesReview }) => {
             </td>
             <td>
               <div className="result-header">Färg:</div>
-              <div>{color}</div>
+              <div>{type}</div>
             </td>
             <td>
               <div className="result-header">År:</div>

@@ -4,11 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-regular-svg-icons";
-import {
-  faCartPlus,
-  faFlask,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 import MobileMenu from "./mobileMenu";
 import AutocompleteSelect from "./autocompleteSelect";
@@ -43,22 +39,10 @@ const Search = (props) => {
             navTo="/reviews"
           />
           <MenuIcon
-            faFamily="fas"
-            icon={faFlask}
-            text="Vinförråd"
-            navTo="/wines"
-          />
-          <MenuIcon
             faFamily="far"
             icon={faComment}
             text="Recensera"
             navTo="/addReview"
-          />
-          <MenuIcon
-            faFamily="fas"
-            icon={faCartPlus}
-            text="Lägg till i vinförråd"
-            navTo="/addWine"
           />
         </div>
       )}
