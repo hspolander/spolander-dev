@@ -399,25 +399,32 @@ export default (server) => {
     }
   });
 
+  server.post("/api/createUser", async (req, res, next) => {
+    let user = req.body;
     const cookies = req.cookies;
     if (
       cookies &&
       cookies.WINE_UUID &&
       (await validateSession(cookies.WINE_UUID))
     ) {
-  server.post("/api/createUser", (req, res, next) => {
-    let user = req.body;
-    if (validateLoginObject(user)) {
-      bcrypt.hash(user.password, 11, function (err, hash) {
-        insertUser(user.username, hash, user.name);
+      if (validateLoginObject(user)) {
+        bcrypt.hash(user.password, 11, function (err, hash) {
+          insertUser(user.username, hash, user.name);
+          res.json({
+            error: true,
+            message: `Användare ${user.name} tillagd!`,
+            data: null,
+          });
+        });
+      } else {
+        res.clearCookie("WINE_UUID");
         res.json({
           error: true,
-          message: `Användare ${user.name} tillagd!`,
+          session: "nosessionRedirect",
+          message: "Session expired/invalid",
           data: null,
         });
-      });
-    } else {
-      res.json({ error: true, message: "Something went wrong", data: null });
+      }
     }
   });
 
