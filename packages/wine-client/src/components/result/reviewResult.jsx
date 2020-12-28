@@ -70,18 +70,6 @@ const ReviewResult = ({
     history.push("/addReview");
   };
 
-  const loadValuesAddWine = (values) => {
-    const initialValues = { ...values };
-    const grapes = [];
-    for (let i = 0; i < values.grapes.length; i += 1) {
-      grapes.push(values.grapes[i].grape);
-    }
-    initialValues.grapes = grapes;
-    delete initialValues.id;
-    delete initialValues.reviews;
-    history.push("/addWine");
-  };
-
   return (
     <div className="content">
       <SortWines sortWines={sortWines} />
@@ -111,16 +99,11 @@ const ReviewResult = ({
           {detailedView || isSmallScreen ? (
             <SearchResultDetailed
               wine={reviews}
-              loadValuesAddWine={loadValuesAddWine}
               loadValuesReview={loadValuesReview}
               isSmallScreen={isSmallScreen}
             />
           ) : (
-            <SearchResult
-              wine={reviews}
-              loadValuesAddWine={loadValuesAddWine}
-              loadValuesReview={loadValuesReview}
-            />
+            <SearchResult wine={reviews} loadValuesReview={loadValuesReview} />
           )}
         </div>
       )}

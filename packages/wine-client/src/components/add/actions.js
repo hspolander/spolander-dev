@@ -96,10 +96,6 @@ export const loadAddReview = (values) => {
   addReview(values);
 };
 
-export const updateAddReviewValues = (key, value) => {
-  dispatch({ type: UPDATE_ADD_REVIEW_VALUES, payload: { key, value } });
-};
-
 export const loadSysWines = (values) => {
   values = removeFalsy(values);
   dispatch({ type: SYSTEMBOLAGET_FETCHING });

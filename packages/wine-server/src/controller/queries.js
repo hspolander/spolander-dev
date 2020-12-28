@@ -441,21 +441,8 @@ export const getAllNotCellarWines = () =>
     }
   });
 
-export const getAllCellarWines = () =>
-  query(`SELECT wine.id FROM wine WHERE incellar = 1`).then((cursor) => {
-    if (cursor[0]) {
-      return cursor[0];
-    } else {
-      return null;
-    }
-  });
-
 export const setUuidExpired = (uuid) => {
   query(`UPDATE uuid SET uuid.ttl = 0 where uuid = ?`, [uuid]);
-};
-
-export const setWineNotInCellar = (id) => {
-  query(`UPDATE wine SET incellar = 0 where id = ?`, [id]);
 };
 
 export const insertSystembolagetWine = (

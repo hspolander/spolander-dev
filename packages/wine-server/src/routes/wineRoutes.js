@@ -19,7 +19,6 @@ import {
   getDistinctFromSystembolagetWines,
   getHashByUsername,
   getAllNotCellarWines,
-  getAllCellarWines,
   getDistinctFromWine,
   getDistinctFromGrapes,
   getSystembolagWines,
@@ -36,9 +35,7 @@ import {
   updateUuid,
   updateUuidTtl,
   setUuidExpired,
-  setWineNotInCellar,
 } from "../controller/queries";
-import Axios from "axios";
 
 const fetchData = async (period) => {
   let browserInstance = browserObject.startBrowser();
@@ -230,59 +227,6 @@ export default (server) => {
     }
   });
 
-  server.get("/api/getAllCellar", async (req, res, next) => {
-    const cookies = req.cookies;
-    if (
-      cookies &&
-      cookies.WINE_UUID &&
-      (await validateSession(cookies.WINE_UUID))
-    ) {
-      const query = req.query;
-      let wines = await getAllCellarWines();
-      var result = [];
-      for (var i = 0; i < wines.length; i++) {
-        let wine = await getWineById(wines[i].id);
-        let grapes = await getGrapesByWine(wines[i].id);
-        result.push({
-          wine: wine,
-        });
-        result[i].wine.grapes = grapes;
-      }
-      if (query.orderedProp) {
-        if (query.orderedProp === "year" || query.orderedProp === "score") {
-          result.sort(function (a, b) {
-            return a.wine[query.orderedProp] - b.wine[query.orderedProp];
-          });
-        } else {
-          result.sort(function (a, b) {
-            var nameA = a.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase
-            var nameB = b.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase
-            if (nameA < nameB) {
-              return -1;
-            }
-            if (nameA > nameB) {
-              return 1;
-            }
-            return 0;
-          });
-        }
-      }
-      res.json({
-        error: false,
-        message: "Success",
-        data: result,
-      });
-    } else {
-      res.clearCookie("WINE_UUID");
-      res.json({
-        error: true,
-        session: "nosessionRedirect",
-        message: "Session expired/invalid",
-        data: null,
-      });
-    }
-  });
-
   server.get("/api/getWineByProperty", async (req, res, next) => {
     const cookies = req.cookies;
     if (
@@ -380,27 +324,6 @@ export default (server) => {
     }
   });
 
-  server.get("/api/removeFromCellar", async (req, res, next) => {
-    const cookies = req.cookies;
-    if (
-      cookies &&
-      cookies.WINE_UUID &&
-      (await validateSession(cookies.WINE_UUID))
-    ) {
-      const id = req.query.id;
-      await setWineNotInCellar(id);
-      res.json({ error: false, message: "Allt väl", data: null });
-    } else {
-      res.clearCookie("WINE_UUID");
-      res.json({
-        error: true,
-        session: "nosessionRedirect",
-        message: "Session expired/invalid",
-        data: null,
-      });
-    }
-  });
-
   server.post("/api/getSysWineGrapesInfo", async (req, res, next) => {
     const cookies = req.cookies;
     if (
@@ -476,52 +399,12 @@ export default (server) => {
     }
   });
 
-  server.post("/api/insertWineToCellar", async (req, res, next) => {
     const cookies = req.cookies;
     if (
       cookies &&
       cookies.WINE_UUID &&
       (await validateSession(cookies.WINE_UUID))
     ) {
-      const body = req.body;
-      const wineUrl = await getWineUrl(
-        body.nr,
-        body.name,
-        body.year,
-        body.country
-      );
-      const wineId = await insertWine(
-        body.year,
-        body.name,
-        body.boughtFrom,
-        body.price,
-        body.container,
-        body.country,
-        body.color,
-        body.producer,
-        1,
-        body.sizeml,
-        body.nr,
-        wineUrl
-      );
-      let user = await getUserByUsername(cookies.username);
-      if (body.grapes) {
-        for (var i = 0; i < body.grapes.length; i++) {
-          insertGrape(wineId, body.grapes[i]);
-        }
-      }
-      res.json({ error: false, message: "Allt väl", data: null });
-    } else {
-      res.clearCookie("WINE_UUID");
-      res.json({
-        error: true,
-        session: "nosession",
-        message: "Session expired/invalid",
-        data: null,
-      });
-    }
-  });
-
   server.post("/api/createUser", (req, res, next) => {
     let user = req.body;
     if (validateLoginObject(user)) {

@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import "./result.scss";
 import { faComment } from "@fortawesome/free-regular-svg-icons";
 import {
-  faCartPlus,
   faWineGlassAlt,
   faTimes,
   faSpinner,
@@ -14,18 +13,11 @@ import NewRow from "./resultRow";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export const SearchResult = ({
-  wine,
-  loadValuesAddWine,
-  removeFromCellar,
-  loadValuesReview,
-}) => {
+export const SearchResult = ({ wine, loadValuesReview }) => {
   const rows = wine.data.map((singleWine) => (
     <Row
       key={`singleWine${singleWine.wine.id}`}
       wine={singleWine}
-      loadValuesAddWine={loadValuesAddWine}
-      removeFromCellar={removeFromCellar}
       loadValuesReview={loadValuesReview}
     />
   ));
@@ -57,23 +49,14 @@ export const SearchResult = ({
 SearchResult.propTypes = {
   wine: PropTypes.object,
   loadValuesReview: PropTypes.func.isRequired,
-  removeFromCellar: PropTypes.func.isRequired,
-  loadValuesAddWine: PropTypes.func.isRequired,
 };
 
-export const SearchResultDetailed = ({
-  wine,
-  loadValuesAddWine,
-  removeFromCellar,
-  loadValuesReview,
-}) => {
+export const SearchResultDetailed = ({ wine, loadValuesReview }) => {
   let rows;
   rows = wine.data.map((singleWine) => (
     <NewRow
       key={`wine${singleWine.wine.id}`}
       wine={singleWine}
-      loadValuesAddWine={loadValuesAddWine}
-      removeFromCellar={removeFromCellar}
       loadValuesReview={loadValuesReview}
     />
   ));
@@ -92,16 +75,9 @@ SearchResultDetailed.propTypes = {
   wine: PropTypes.object,
   isSmallScreen: PropTypes.bool.isRequired,
   loadValuesReview: PropTypes.func.isRequired,
-  removeFromCellar: PropTypes.func,
-  loadValuesAddWine: PropTypes.func.isRequired,
 };
 
-const Row = ({
-  wine,
-  loadValuesReview,
-  loadValuesAddWine,
-  removeFromCellar,
-}) => {
+const Row = ({ wine, loadValuesReview }) => {
   const { grapes, name, country, type, producer, year, sizeml } = wine.wine;
   const graperows = grapes.map((grape) => (
     <div key={`grape${grape.id}`} className="grape">
@@ -151,14 +127,6 @@ const Row = ({
           icon={faComment}
           onClick={() => loadValuesReview(wine)}
         />
-        <FontAwesomeIcon
-          icon={faCartPlus}
-          onClick={() => loadValuesAddWine(wine)}
-        />
-        <FontAwesomeIcon
-          icon={faTimes}
-          onClick={() => removeFromCellar(wine.id)}
-        />
       </td>
     </tr>
   );
@@ -166,16 +134,9 @@ const Row = ({
 Row.propTypes = {
   wine: PropTypes.object,
   loadValuesReview: PropTypes.func.isRequired,
-  loadValuesAddWine: PropTypes.func.isRequired,
-  removeFromCellar: PropTypes.func.isRequired,
 };
 
-const RowDetailed = ({
-  wine,
-  loadValuesReview,
-  loadValuesAddWine,
-  removeFromCellar,
-}) => {
+const RowDetailed = ({ wine, loadValuesReview }) => {
   const {
     grapes,
     name,
@@ -297,22 +258,6 @@ const RowDetailed = ({
                 <FontAwesomeIcon icon={faComment} /> Recensera
               </div>
             </td>
-            <td>
-              <div
-                className="add-new-button"
-                onClick={() => loadValuesAddWine(wine)}
-              >
-                <FontAwesomeIcon icon={faCartPlus} /> Lägg till i förråd
-              </div>
-            </td>
-            <td>
-              <div
-                className="add-new-button"
-                onClick={() => removeFromCellar(wine.id)}
-              >
-                <FontAwesomeIcon icon={faTimes} /> Ta bort från vinkällare
-              </div>
-            </td>
           </tr>
         </tbody>
       </table>
@@ -322,11 +267,9 @@ const RowDetailed = ({
 RowDetailed.propTypes = {
   wine: PropTypes.object,
   loadValuesReview: PropTypes.func.isRequired,
-  loadValuesAddWine: PropTypes.func.isRequired,
-  removeFromCellar: PropTypes.func.isRequired,
 };
 
-const RowMobile = ({ wine, loadValuesAddWine, loadValuesReview }) => {
+const RowMobile = ({ wine, loadValuesReview }) => {
   const {
     grapes,
     name,
@@ -433,14 +376,6 @@ const RowMobile = ({ wine, loadValuesAddWine, loadValuesReview }) => {
                   <FontAwesomeIcon icon={faComment} /> Recensera
                 </div>
               </td>
-              <td>
-                <div
-                  className="add-new-button"
-                  onClick={() => loadValuesAddWine(wine)}
-                >
-                  <FontAwesomeIcon icon={faCartPlus} /> Lägg till i förråd
-                </div>
-              </td>
             </tr>
           }
         </tbody>
@@ -451,7 +386,6 @@ const RowMobile = ({ wine, loadValuesAddWine, loadValuesReview }) => {
 RowMobile.propTypes = {
   wine: PropTypes.object,
   loadValuesReview: PropTypes.func.isRequired,
-  loadValuesAddWine: PropTypes.func.isRequired,
 };
 
 export const Loader = () => (

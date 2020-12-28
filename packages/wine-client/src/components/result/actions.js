@@ -32,17 +32,6 @@ const fetchClickedReview = (query) => {
     });
 };
 
-const removeFromCellar = (query) => {
-  axios
-    .get(`/api/${query}`)
-    .then((response) => {
-      dispatch({ type: REMOVE_FROM_CELLAR_FULFILLED, payload: response.data });
-    })
-    .catch((err) => {
-      dispatch({ type: REMOVE_FROM_CELLAR_REJECTED, payload: err });
-    });
-};
-
 const fetchClickedWine = (query) => {
   axios
     .get(`/api/${query}`)
@@ -110,11 +99,6 @@ export const loadCellar = () => {
 export const loadCellarOrdered = (item) => {
   dispatch({ type: FETCH_WINES });
   fetchClickedWine(`getAllCellar?orderedProp=${item.orderedProp}`);
-};
-
-export const removeWineFromCellar = (id) => {
-  dispatch({ type: REMOVE_FROM_CELLAR });
-  removeFromCellar(`removeFromCellar?id=${id}`);
 };
 
 export const toggleDetailedView = () => {
