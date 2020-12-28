@@ -44,7 +44,7 @@ const getDistinctProducer = (producer) =>
 
 const getDistinctCountry = (country) =>
   query(
-    SQL`SELECT distinct wine.country FROM wine WHERE systembolaget_wines.country like ${country}`
+    SQL`SELECT distinct wine.country FROM wine WHERE wine.country like ${country}`
   ).then((cursor) => {
     if (cursor[0][0]) {
       return getRowValues("wine", "country", "Land", cursor[0]);
