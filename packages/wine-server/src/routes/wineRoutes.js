@@ -17,6 +17,10 @@ import {
   getWineByProperty,
   getWineByForeignProperty,
   getDistinctFromSystembolagetWines,
+  getUnpopulatedImagesArray,
+  addImageBlobIdToSystembolagetWine,
+  getSystembolagetImageBlobById,
+  insertImageBlob,
   getHashByUsername,
   getAllNotCellarWines,
   getDistinctFromWine,
@@ -55,6 +59,72 @@ export default (server) => {
       res.json({
         error: false,
         Message: "Pull wines initiated",
+      });
+    } else {
+      res.clearCookie("WINE_UUID");
+      res.json({
+        error: true,
+        session: "nosessionRedirect",
+        message: "Session expired/invalid",
+        data: null,
+      });
+    }
+  });
+
+  //Get images one by one upon paginating
+  server.get("/api/getSystembolagetImageBlobById", async (req, res, next) => {
+    const cookies = req.cookies;
+
+    if (
+      cookies &&
+      cookies.WINE_UUID &&
+      (await validateSession(cookies.WINE_UUID))
+    ) {
+      const image = await getSystembolagetImageBlobById(req.query.id);
+      const imageAsBase64 = await image.toString("base64");
+      console.log(imageAsBase64);
+
+      /*
+      get image blob as base64
+      let file = await getImageBlobById(imageBlobId);
+      let imageAsBase64 = await file.toString("base64");
+      */
+      res.json({
+        error: false,
+        data: imageAsBase64,
+        message: "Populating images",
+      });
+    } else {
+      res.clearCookie("WINE_UUID");
+      res.json({
+        error: true,
+        session: "nosessionRedirect",
+        message: "Session expired/invalid",
+        data: null,
+      });
+    }
+  });
+
+  server.get("/api/populateSystembolagetImages", async (req, res, next) => {
+    const cookies = req.cookies;
+
+    if (
+      cookies &&
+      cookies.WINE_UUID &&
+      (await validateSession(cookies.WINE_UUID))
+    ) {
+      const images = await getUnpopulatedImagesArray();
+      await images.forEach(async (image, i) => {
+        setTimeout(async () => {
+          let systembolagetImage = await fetch(image.image);
+          let imageBlob = await systembolagetImage.buffer();
+          let imageBlobId = await insertImageBlob(imageBlob);
+          await addImageBlobIdToSystembolagetWine(imageBlobId, image.image);
+        }, i * 700);
+      });
+      res.json({
+        error: false,
+        Message: "Populating images",
       });
     } else {
       res.clearCookie("WINE_UUID");
@@ -318,81 +388,6 @@ export default (server) => {
       res.json({
         error: true,
         session: "nosession",
-        message: "Session expired/invalid",
-        data: null,
-      });
-    }
-  });
-
-  server.post("/api/getSysWineGrapesInfo", async (req, res, next) => {
-    const cookies = req.cookies;
-    if (
-      cookies &&
-      cookies.WINE_UUID &&
-      (await validateSession(cookies.WINE_UUID))
-    ) {
-      const url = req.body.url;
-      let allrows;
-      let body = await fetch(url);
-      body = await body.text();
-      let page = cheerio.load(body);
-      let listprops = page("#destopview ul li");
-      for (var j = 0; j < listprops.length; j++) {
-        let liItem = page(listprops[j]);
-        if (liItem.find("h3").text().indexOf("Råvaror") > -1) {
-          allrows = liItem.find("p");
-          liItem.find("div").remove();
-          allrows = liItem
-            .html()
-            .replace(
-              /<\/button>|samt|och|\.|,|\d%|\d\d%|\d\d\d%|<p>|<\/p>/g,
-              "\r\n"
-            );
-          allrows = allrows.split(/\r\n|<\/button>|<button /);
-          for (var i = 0; i < allrows.length; i++) {
-            allrows[i] = allrows[i].trim();
-            if (allrows[i] && allrows[i].startsWith("class")) {
-              allrows.splice(i, 1);
-              i = i - 1;
-            }
-            if (allrows[i] && allrows[i].startsWith("<h3")) {
-              allrows.splice(i, 1);
-              i = i - 1;
-            }
-            if (allrows[i] && allrows[i].startsWith("R&#xE5;varor")) {
-              allrows.splice(i, 1);
-              i = i - 1;
-            }
-            if (allrows[i] && allrows[i].endsWith("</p>")) {
-              allrows.splice(i, 1);
-              i = i - 1;
-            }
-            if (allrows[i] !== undefined && allrows[i].length < 2) {
-              allrows.splice(i, 1);
-              i = i - 1;
-            }
-          }
-        }
-      }
-      if (!allrows) {
-        allrows = [];
-      }
-      for (var i = 0; i < allrows.length; i++) {
-        allrows[i] =
-          allrows[i].charAt(0)?.toUpperCase() +
-          allrows[i]
-            .slice(1)
-            .replace("&#xE8;", "é")
-            .replace("&#xD1;", "Ñ")
-            .replace("&#xC9;", "É")
-            .replace("&#xF1;", "ñ");
-      }
-      res.json({ error: false, message: "Allt väl", data: allrows });
-    } else {
-      res.clearCookie("WINE_UUID");
-      res.json({
-        error: true,
-        session: "nosessionRedirect",
         message: "Session expired/invalid",
         data: null,
       });

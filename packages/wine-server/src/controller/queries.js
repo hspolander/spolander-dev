@@ -151,47 +151,106 @@ export const getSystembolagWines = async (
   let statements = [];
   if (name) {
     statements.push(
-      ` (name1 like '%` + name + `%' OR name2 like '%` + name + `%') `
+      ` (systembolaget_wines.name1 like '%` +
+        name +
+        `%' OR systembolaget_wines.name2 like '%` +
+        name +
+        `%') `
     );
   }
   if (type) {
-    statements.push(` type like '` + type + `' `);
+    statements.push(` systembolaget_wines.type like '` + type + `' `);
   }
   if (subType) {
-    statements.push(` subType like '` + subType + `' `);
+    statements.push(` systembolaget_wines.subType like '` + subType + `' `);
   }
   if (price) {
-    statements.push(` price like '` + price + `' `);
+    statements.push(` systembolaget_wines.price like '` + price + `' `);
   }
   if (year) {
-    statements.push(` year like '` + year + `' `);
+    statements.push(` systembolaget_wines.year like '` + year + `' `);
   }
   if (volume) {
-    statements.push(` volume like '` + volume + `' `);
+    statements.push(` systembolaget_wines.volume like '` + volume + `' `);
   }
   if (description) {
-    statements.push(` description like '%` + description + `%' `);
+    statements.push(
+      ` systembolaget_wines.description like '%` + description + `%' `
+    );
   }
   if (productCode) {
-    statements.push(` productCode like '` + productCode + `' `);
+    statements.push(
+      ` systembolaget_wines.productCode like '` + productCode + `' `
+    );
   }
   if (country) {
-    statements.push(` country like '` + country + `' `);
+    statements.push(` systembolaget_wines.country like '` + country + `' `);
   }
 
   return getSystembolagWinesQuery(statements);
 };
 
-export const getSystembolagWineBynr = (nr) =>
+export const getUnpopulatedImagesArray = () =>
   query(
-    `SELECT * FROM systembolaget_sortiment WHERE ` + ` nr like ` + nr + `; `
+    `SELECT DISTINCT image 
+      FROM systembolaget_wines 
+      WHERE fk_image_blob_id IS NULL 
+      LIMIT 500;`
   ).then((cursor) => {
-    if (cursor[0][0]) {
-      return cursor[0][0];
+    if (cursor[0]) {
+      return cursor[0];
     } else {
       return null;
     }
   });
+
+export const getSystembolagetProductCodeByImage = (image) =>
+  query(
+    `SELECT productCode 
+      FROM systembolaget_wines 
+      WHERE image = '` +
+      image +
+      `' 
+      AND fk_image_blob_id IS NULL;`
+  ).then((cursor) => {
+    if (cursor[0]) {
+      return cursor[0];
+    } else {
+      return null;
+    }
+  });
+
+export const insertImageBlob = (blob) =>
+  query(`INSERT INTO systembolaget_images (image_blob) VALUES(?)`, [blob])
+    .then((cursor) => {
+      return cursor[0].insertId;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+export const getSystembolagetImageBlobById = (id) =>
+  query(`SELECT * FROM systembolaget_images where id = ` + id + `;`)
+    .then((cursor) => {
+      return cursor[0];
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+export const addImageBlobIdToSystembolagetWine = (blob_id, image) =>
+  query(
+    `UPDATE systembolaget_wines 
+      SET systembolaget_wines.fk_image_blob_id = ? 
+      WHERE image = ?`,
+    [blob_id, image]
+  )
+    .then((cursor) => {
+      return cursor[0];
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 
 export const getSystembolagSubTypes = (type = null) =>
   query(
@@ -281,7 +340,10 @@ export const getSystembolagWineByArtnr = async (productCode) =>
 
 const getSystembolagWinesQuery = (statements) =>
   query(
-    `SELECT * FROM systembolaget_wines WHERE ` +
+    `SELECT systembolaget_wines.*, systembolaget_images.* 
+    FROM systembolaget_wines
+    INNER JOIN systembolaget_images ON systembolaget_wines.fk_image_blob_id = systembolaget_images.id 
+    WHERE ` +
       statements.join(" AND ") +
       ` ; `
   )
