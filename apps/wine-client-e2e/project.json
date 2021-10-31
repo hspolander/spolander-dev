@@ -1,0 +1,29 @@
+{
+  "root": "apps/wine-client-e2e",
+  "sourceRoot": "apps/wine-client-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/wine-client-e2e/cypress.json",
+        "devServerTarget": "wine-client:serve",
+        "tsConfig": "apps/wine-client-e2e/tsconfig.json"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "wine-client:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/wine-client-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["wine-client"]
+}

@@ -1,0 +1,73 @@
+{
+  "root": "apps/wine-client",
+  "sourceRoot": "apps/wine-client/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/wine-client",
+        "index": "apps/wine-client/src/index.html",
+        "baseHref": "/",
+        "main": "apps/wine-client/src/main.tsx",
+        "polyfills": "apps/wine-client/src/polyfills.ts",
+        "tsConfig": "apps/wine-client/tsconfig.app.json",
+        "assets": [
+          "apps/wine-client/src/favicon.ico",
+          "apps/wine-client/src/assets"
+        ],
+        "styles": ["apps/wine-client/src/styles.scss"],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/wine-client/src/environments/environment.ts",
+              "with": "apps/wine-client/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "wine-client:build",
+        "hmr": true,
+        "proxyConfig": "apps/wine-client/proxy.conf.json"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "wine-client:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/wine-client/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/wine-client"],
+      "options": {
+        "jestConfig": "apps/wine-client/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
