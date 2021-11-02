@@ -3,7 +3,9 @@
   "projects": {
     "api": "apps/api",
     "api-interfaces": "libs/api-interfaces",
+    "shared-components": "apps/shared-components",
     "wine-client": "apps/wine-client",
-    "wine-client-e2e": "apps/wine-client-e2e"
+    "wine-client-e2e": "apps/wine-client-e2e",
+    "wine-server": "apps/wine-server"
   }
 }

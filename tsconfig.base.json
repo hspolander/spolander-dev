@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@spolander-dev/api-interfaces": ["libs/api-interfaces/src/index.ts"]
+      "@spolander-dev/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@spolander/shared-components": ["libs/shared-components/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
