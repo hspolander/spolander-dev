@@ -1,10 +1,12 @@
 {
+  "name": "@spolander/root",
   "private": true,
   "workspaces": [
     "packages/*"
   ],
-  "dependencies": {
-    "lerna": "3.21.0"
+  "devDependencies": {
+    "craco": "^0.0.3",
+    "lerna": "^4.0.0"
   },
   "scripts": {
     "server": "cd packages/wine-server && yarn dev",

@@ -1,5 +1,5 @@
 {
-  "name": "winereview",
+  "name": "@spolander/wine-server",
   "version": "1.0.0",
   "description": "Backend for winereview webapp",
   "main": "dist",
