@@ -55,23 +55,11 @@ const useStyles = makeStyles((theme) => ({
 const DetailedSystembolagetProductCard = ({ product }) => {
   const classes = useStyles();
   const {
-    additionalInformation,
-    alcoholPercentage,
-    aroma,
-    image,
-    bottleTextShort,
     categoryLevel2,
     categoryLevel3,
-    country,
-    grapes,
-    priceInclVat,
-    productId,
-    producerName,
     productNameBold,
     productNameThin,
-    sugarContent,
     vintage,
-    volume,
   } = product;
   const [expanded, setExpanded] = React.useState(false);
 
@@ -96,7 +84,7 @@ const DetailedSystembolagetProductCard = ({ product }) => {
   };
 
   const getSubHeader = () => {
-    const type = categoryLevel2 ? categoryLevel2 : "";
+    const type = categoryLevel2 || "";
     const subType = categoryLevel3 ? `, ${categoryLevel3}` : "";
     const year = vintage ? `, ${vintage}` : "";
     return type + subType + year;
@@ -189,7 +177,6 @@ const DetailedSystembolagetProductCard = ({ product }) => {
   );
 };
 DetailedSystembolagetProductCard.propTypes = {
-  product: PropTypes.object.isRequired,
 };
 
 export default DetailedSystembolagetProductCard;

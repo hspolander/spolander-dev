@@ -19,7 +19,6 @@ const AddReviewForm = ({
   subTypes = [],
   countries = [],
   formdata,
-  fetching,
   setFormData,
 }) => {
   const [autocompleteResponse, setAutoCompleteResponse] = useState(null);
@@ -30,7 +29,7 @@ const AddReviewForm = ({
     getSystembolagetCountries();
   }, []);
 
-  const autocompleteField = (field, value, action) => {
+  const autocompleteField = (field, value) => {
     loadFieldAutocomplete(field, value);
   };
 
@@ -86,19 +85,19 @@ const AddReviewForm = ({
       <InputSelect
         values={types}
         value={formdata.type}
-        label={"Vinkategori"}
+        label="Vinkategori"
         onChange={(val) => setFormData({ ...formdata, type: val })}
       />
       <InputSelect
         values={subTypes}
         value={formdata.subType}
-        label={"Vinunderkategori"}
+        label="Vinunderkategori"
         onChange={(val) => setFormData({ ...formdata, subType: val })}
       />
       <InputSelect
         values={countries}
         value={formdata.country}
-        label={"Land"}
+        label="Land"
         onChange={(val) => setFormData({ ...formdata, country: val })}
       />
       <InputTextField
@@ -196,7 +195,7 @@ const AddReviewForm = ({
         min={0}
         required
         value={formdata.score}
-        displayValue={"auto"}
+        displayValue="auto"
         onChange={(element, value) =>
           setFormData({ ...formdata, score: value })
         }

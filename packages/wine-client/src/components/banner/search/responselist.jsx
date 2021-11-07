@@ -13,10 +13,10 @@ const Responselist = (props) => {
     history.push(path);
   };
 
-  let elementList = responselist.map((item, index) => (
+  const elementList = responselist.map((item, index) => (
     <li
       className="autocomplete-item"
-      key={index}
+      key={responselist[index].value}
       onClick={(e) => handleClick(e, responselist)}
       data-id={index}
     >
@@ -27,8 +27,8 @@ const Responselist = (props) => {
   return <ul>{elementList}</ul>;
 };
 Responselist.propTypes = {
-  responselist: PropTypes.array,
-  history: PropTypes.object,
+  responselist: PropTypes.array.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 export default withRouter(Responselist);

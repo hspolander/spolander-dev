@@ -1,4 +1,4 @@
-import { SET_SCREEN_SIZE } from "./constants";
+import SET_SCREEN_SIZE from "./constants";
 
 const initialState = {
   isSmallScreen: false,

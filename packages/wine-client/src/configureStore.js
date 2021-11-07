@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
-import authMiddleware from "./authMiddleware";
 import invariant from "redux-immutable-state-invariant";
+import authMiddleware from "./authMiddleware";
 
 import reducers from "./reducers";
 

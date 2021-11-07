@@ -8,17 +8,21 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
-    ecmaVersion: 13,
+    ecmaVersion: 12,
     sourceType: "module",
   },
   plugins: ["react"],
 
   rules: {
-    indent: "off",
-    "react-hooks/rules-of-hooks": "warn",
-    "react-hooks/exhaustive-deps": "warn",
-    "react/prop-types": "off",
-    "react/display-name": "off",
-    "no-use-before-define": "off",
+    "no-param-reassign": 1,
+    "no-nested-ternary": 1,
+    "react/prop-types": 1,
+    "react/jsx-props-no-spreading": 1,
+    "react/forbid-prop-types": 1,
+    "react/require-default-props": 1,
+    "jsx-a11y/control-has-associated-label": 1,
+    "jsx-a11y/click-events-have-key-events": 1,
+    "jsx-a11y/no-static-element-interactions": 1,
+    "jsx-a11y/no-noninteractive-element-interactions": 1,
   },
 };

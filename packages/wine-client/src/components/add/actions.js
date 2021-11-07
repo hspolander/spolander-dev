@@ -10,7 +10,6 @@ import {
   SET_SNACKBAR,
   SYSTEMBOLAGET_FETCHING,
   RESET_ADD_REVIEW_VALUES,
-  UPDATE_ADD_REVIEW_VALUES,
   FETCH_SYSTEMBOLAGET_WINE_DATA_FULFILLED,
   FETCH_SYSTEMBOLAGET_WINE_DATA_REJECTED,
   FETCH_SYSTEMBOLAGET_WINE_DATA_FETCHING,
@@ -32,6 +31,10 @@ import {
   FIELD_AUTOCOMPLETE_REJECTED,
   FIELD_AUTOCOMPLETE_NO_MATCH,
 } from "./constants";
+
+export const setSnackbar = (messageType, message) => {
+  dispatch({ type: SET_SNACKBAR, payload: { messageType, message } });
+};
 
 const addReview = (values) => {
   axios
@@ -69,10 +72,6 @@ export const clearSnackbar = () => {
   dispatch({ type: CLEAR_SNACKBAR });
 };
 
-export const setSnackbar = (messageType, message) => {
-  dispatch({ type: SET_SNACKBAR, payload: { messageType, message } });
-};
-
 export const getSysWines = (values) => {
   axios
     .get(`/api/getSysWines${values}`)
@@ -97,9 +96,9 @@ export const loadAddReview = (values) => {
 };
 
 export const loadSysWines = (values) => {
-  values = removeFalsy(values);
+  const relevantValues = removeFalsy(values);
   dispatch({ type: SYSTEMBOLAGET_FETCHING });
-  getSysWines(jsonToQueryString(values));
+  getSysWines(jsonToQueryString(relevantValues));
 };
 
 export const clearSysWines = () => {

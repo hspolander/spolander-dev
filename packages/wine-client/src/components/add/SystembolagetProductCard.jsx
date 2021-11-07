@@ -7,7 +7,7 @@ import ControlPointIcon from "@material-ui/icons/ControlPoint";
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   tile: {
     maxHeight: 350,
     width: 400,

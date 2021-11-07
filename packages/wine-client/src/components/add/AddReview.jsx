@@ -2,25 +2,25 @@ import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
+import Dialog from "@spolander/shared-components/src/components/Dialog";
+import ButtonRegular from "@spolander/shared-components/src/components/ButtonRegular";
+import Backdrop from "@material-ui/core/Backdrop";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 import AddReviewForm from "./AddReviewForm";
 import SearchSysForm from "./SearchSysForm";
 import SearchSysResult from "./SearchSysResult";
-import Dialog from "@spolander/shared-components/src/components/Dialog";
-import { setScreenSize } from "../global/actions";
+import setScreenSize from "../global/actions";
 import { authUser } from "../login/actions";
 import {
   loadSystembolagetWineData,
   loadAddReview,
   clearSnackbar,
 } from "./actions";
-import ButtonRegular from "@spolander/shared-components/src/components/ButtonRegular";
-import Backdrop from "@material-ui/core/Backdrop";
-import Snackbar from "@material-ui/core/Snackbar";
-import Alert from "@material-ui/lab/Alert";
 
 import "./add.scss";
 
-export const AddReview = ({
+const AddReview = ({
   systemWineData,
   singleSysWineData,
   fetching,
@@ -99,13 +99,12 @@ export const AddReview = ({
 
   const validateInputs = async () => {
     const requiredFields = ["name", "type", "score", "comment"];
-    for (let key of requiredFields) {
-      if (!addReviewFormData[key]) {
-        alert("Du måste fylla i fälten Namn, Färg, betyg samt Recension.");
-        return null;
-      }
+    const areRequiredInputsFilled = requiredFields.every((requiredField) => addReviewFormData[requiredField])
+    if (areRequiredInputsFilled) {
+      await loadAddReview(addReviewFormData)
+    } else {
+      alert("Du måste fylla i fälten Namn, Färg, Betyg samt Recension.")
     }
-    await loadAddReview(addReviewFormData);
   };
 
   const onAddSystembolagetWineClick = async (url) => {
@@ -147,15 +146,9 @@ export const AddReview = ({
           scroll="body"
           isOpen={isReviewDialogOpen}
           onClose={() => setIsReviewDialogOpen(false)}
-          disableBackdropClick={true}
+          disableBackdropClick
           maxWidth="lg"
           isFullScreen={false}
-          children={
-            <AddReviewForm
-              formdata={addReviewFormData}
-              setFormData={setAddReviewFormData}
-            />
-          }
           actions={
             <>
               <ButtonRegular
@@ -175,15 +168,15 @@ export const AddReview = ({
               </ButtonRegular>
             </>
           }
-        />
+        ><AddReviewForm
+              formdata={addReviewFormData}
+              setFormData={setAddReviewFormData}
+            /></Dialog>
       </div>
     </div>
   );
 };
 AddReview.propTypes = {
-  navigatedInitialValues: PropTypes.object,
-  isSmallScreen: PropTypes.bool.isRequired,
-  formValues: PropTypes.object,
   systemWineData: PropTypes.array,
 };
 

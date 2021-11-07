@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Paper, GridList } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
-import SystembolagetProductCard from "./SystembolagetProductCard";
 import { makeStyles } from "@material-ui/core/styles";
+import SystembolagetProductCard from "./SystembolagetProductCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,9 +39,9 @@ const SearchSysResult = ({ systemWineData, addWineClick }) => {
       {visibleWines.length > 0 ? (
         <>
           <GridList cellHeight={200} className={classes.gridList}>
-            {visibleWines.map((wine, index) => (
+            {visibleWines.map((wine) => (
               <SystembolagetProductCard
-                key={index}
+                key={wine.name1}
                 wine={wine}
                 addWineClick={addWineClick}
               />
