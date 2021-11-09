@@ -1,7 +1,5 @@
 import bcrypt from 'bcrypt';
-import uuidv4 from 'uuid/v4';
-import _ from 'lodash';
-import cheerio from 'cheerio';
+import { uuid } from 'uuidv4';
 import fetch from 'node-fetch';
 import browserObject from '../scrape/browser';
 import scraperController from '../scrape/pageController';
@@ -484,14 +482,14 @@ export default (server) => {
           .compare(login.password, hash)
           .then((response) => {
             if (response) {
-              const uuid = uuidv4();
-              res.setCookie('WINE_UUID', uuid, { maxAge: 28800000 });
+              const uuidv4 = uuid();
+              res.setCookie('WINE_UUID', uuidv4, { maxAge: 28800000 });
               res.json({
                 error: false,
                 message: 'Login successful',
-                data: { UUID: uuid, login },
+                data: { UUID: uuidv4, login },
               });
-              writeUuidToDatabase(uuid, login.username);
+              writeUuidToDatabase(uuidv4, login.username);
             } else {
               res.json({
                 error: true,
