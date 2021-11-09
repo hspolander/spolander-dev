@@ -5,7 +5,7 @@ const authMiddleware = (store) => (next) => (action) => {
     try {
       if (action.payload && action.type.indexOf("@@redux") === -1) {
         if (action.payload && action.payload.session === "nosession") {
-          //TODO
+          //  TODO
           store.getState().loginReducer.isAuthenticated = false;
         } else if (
           action.payload &&

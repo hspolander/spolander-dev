@@ -18,6 +18,7 @@ const Banner = ({ isAuthenticated, isSmallScreen }) => (
 
 Banner.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
+  isSmallScreen: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({

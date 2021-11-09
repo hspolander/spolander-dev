@@ -4,14 +4,9 @@ import PropTypes from "prop-types";
 
 import "./result.scss";
 import { faComment } from "@fortawesome/free-regular-svg-icons";
-import {
-  faWineGlassAlt,
-  faTimes,
-  faSpinner,
-} from "@fortawesome/free-solid-svg-icons";
-import NewRow from "./resultRow";
-
+import { faWineGlassAlt, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import NewRow from "./resultRow";
 
 export const SearchResult = ({ wine, loadValuesReview }) => {
   const rows = wine.data.map((singleWine) => (
@@ -52,8 +47,7 @@ SearchResult.propTypes = {
 };
 
 export const SearchResultDetailed = ({ wine, loadValuesReview }) => {
-  let rows;
-  rows = wine.data.map((singleWine) => (
+  const rows = wine.data.map((singleWine) => (
     <NewRow
       key={`wine${singleWine.wine.id}`}
       wine={singleWine}
@@ -73,7 +67,6 @@ export const SearchResultDetailed = ({ wine, loadValuesReview }) => {
 };
 SearchResultDetailed.propTypes = {
   wine: PropTypes.object,
-  isSmallScreen: PropTypes.bool.isRequired,
   loadValuesReview: PropTypes.func.isRequired,
 };
 
@@ -365,19 +358,17 @@ const RowMobile = ({ wine, loadValuesReview }) => {
               )}
             </td>
           </tr>
-          {
-            <tr>
-              <td />
-              <td>
-                <div
-                  className="add-new-button"
-                  onClick={() => loadValuesReview(wine)}
-                >
-                  <FontAwesomeIcon icon={faComment} /> Recensera
-                </div>
-              </td>
-            </tr>
-          }
+          <tr>
+            <td />
+            <td>
+              <div
+                className="add-new-button"
+                onClick={() => loadValuesReview(wine)}
+              >
+                <FontAwesomeIcon icon={faComment} /> Recensera
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

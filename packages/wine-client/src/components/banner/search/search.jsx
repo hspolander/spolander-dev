@@ -52,7 +52,6 @@ const Search = (props) => {
 Search.propTypes = {
   match: PropTypes.bool,
   data: PropTypes.object,
-  loadAutocompleteSearch: PropTypes.func,
   fetched: PropTypes.bool,
 };
 
@@ -78,9 +77,9 @@ const MenuIcon = ({ navTo, icon, text }) => (
   </Link>
 );
 MenuIcon.propTypes = {
-  icon: PropTypes.object,
-  text: PropTypes.string,
-  navTo: PropTypes.string,
+  icon: PropTypes.object.isRequired,
+  text: PropTypes.string.isRequired,
+  navTo: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

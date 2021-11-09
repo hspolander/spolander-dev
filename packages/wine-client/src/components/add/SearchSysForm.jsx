@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import InputTextField from "@spolander/shared-components/src/components/InputRegular";
 import InputSelect from "@spolander/shared-components/src/components/SelectRegular";
 import ButtonRegular from "@spolander/shared-components/src/components/ButtonRegular";
@@ -57,7 +56,7 @@ export const SearchNewSysForm = ({
       <InputSelect
         values={countries}
         value={formdata.country}
-        label={"Land"}
+        label="Land"
         onEnterPress={() => loadSysWines(formdata)}
         onChange={(val) => setFormData({ ...formdata, country: val })}
       />
@@ -71,24 +70,24 @@ export const SearchNewSysForm = ({
       <InputSelect
         values={types}
         value={formdata.type}
-        label={"Vinkategori"}
+        label="Vinkategori"
         onEnterPress={() => loadSysWines(formdata)}
         onChange={(val) => setFormData({ ...formdata, type: val })}
       />
       <InputSelect
         values={subTypes}
         value={formdata.subType}
-        label={"Vinunderkategori"}
+        label="Vinunderkategori"
         onEnterPress={() => loadSysWines(formdata)}
         onChange={(val) => setFormData({ ...formdata, subType: val })}
       />
-      {/*<InputSelect
+      {/* <InputSelect
         values={subTypes}
         value={formdata.subType}
         label={"Volym"}
         onEnterPress={() => loadSysWines(formdata)}
         onChange={(val) => setFormData({ ...formdata, subType: val })}
-      />*/}
+      /> */}
       <InputTextField
         variant="outlined"
         value={formdata.year}
@@ -118,9 +117,7 @@ export const SearchNewSysForm = ({
     </div>
   );
 };
-SearchNewSysForm.propTypes = {
-  autocompleteFieldData: PropTypes.object,
-};
+SearchNewSysForm.propTypes = {};
 
 const mapStateToProps = (state) => ({
   autocompleteFieldData: state.addReducer.fieldData,

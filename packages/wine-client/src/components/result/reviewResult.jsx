@@ -79,7 +79,7 @@ const ReviewResult = ({
           onClick={() => {
             toggleDetailedView();
           }}
-          className={"activeButton"}
+          className="activeButton"
         >
           Listvy
         </button>
@@ -89,7 +89,7 @@ const ReviewResult = ({
           onClick={() => {
             toggleDetailedView();
           }}
-          className={"activeButton"}
+          className="activeButton"
         >
           Detaljerad vy
         </button>
