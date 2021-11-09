@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 
 import Banner from "./components/banner/banner";
 import AddReview from "./components/add/AddReview";
-import ReviwResult from "./components/result/reviewResult";
+import ReviewResult from "./components/result/reviewResult";
 import LoginOverlay from "./components/login/loginOverlay";
 import Login from "./components/login/login";
 import setScreenSize from "./components/global/actions";
@@ -30,10 +30,9 @@ const Client = () => {
         {Cookies.get("WINE_UUID") && <LoginOverlay />}
         <div className="main-content">
           <Switch>
-            <PrivateRoute path="/reviews" component={ReviwResult} />
             <PrivateRoute
               path="/reviews/:table?/:property?/:value?"
-              component={ReviwResult}
+              component={ReviewResult}
             />
             <Route path="/login" component={Login} />
             <PrivateRoute path="/" component={AddReview} />

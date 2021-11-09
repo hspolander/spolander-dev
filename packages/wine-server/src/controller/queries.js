@@ -455,7 +455,8 @@ export const getReviewsByWine = (id) => query(`SELECT * FROM reviews WHERE revie
 );
 
 export const getWineByForeignProperty = (table, property, value) => query(
-  `SELECT wine.id FROM wine, ${table} WHERE ${table}.${property} = ${value}' AND wine.id = ${table}.fk_wine_id`,
+  `SELECT wine.id FROM wine, ${table} WHERE ${table}.${property} like ? AND wine.id = ${table}.fk_wine_id`,
+  [value],
 ).then((cursor) => {
   if (cursor[0]) {
     return cursor[0];
@@ -463,7 +464,8 @@ export const getWineByForeignProperty = (table, property, value) => query(
   return null;
 });
 
-export const getWineByProperty = (property, value) => query(`SELECT wine.id FROM wine WHERE wine.${property} = '${value}'`).then(
+export const getWineByProperty = (property, value) => query(`SELECT wine.id FROM wine WHERE wine.${property} = ?`,
+  [value]).then(
   (cursor) => {
     if (cursor[0]) {
       return cursor[0];

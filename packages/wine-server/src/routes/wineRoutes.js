@@ -77,6 +77,31 @@ const validateSession = async (wineUuid) => {
   return false;
 };
 
+const writeUuidToDatabase = async (uuid, username) => {
+  const user = await getUserByUsername(username);
+  const uuidTtl = getUuidTtl();
+  const uuidTtlMax = getUuidTtlMax();
+  const userUuid = await getUuidByUser(user.id);
+  if (userUuid) {
+    updateUuid(user.id, uuid, uuidTtl, uuidTtlMax);
+  } else {
+    insertUuid(user.id, uuid, uuidTtl, uuidTtlMax);
+  }
+};
+
+const validateLoginObject = (login) => {
+  if (!login) {
+    return false;
+  }
+  if (!login.username) {
+    return false;
+  }
+  if (!login.password) {
+    return false;
+  }
+  return true;
+};
+
 export default (server) => {
   server.get('/api/populateSystembolagetTables', async (req, res) => {
     const { cookies } = req;
@@ -323,7 +348,7 @@ export default (server) => {
     }
   });
 
-  server.get('/api/getWineByProperty', async (req, res, next) => {
+  server.get('/api/getWineByProperty', async (req, res) => {
     const { cookies } = req;
     if (
       cookies
@@ -333,7 +358,7 @@ export default (server) => {
       const { query } = req;
       const wines = await getWineByProperty(query.property, query.value);
       const result = [];
-      for (let i = 0; i < wines.length; i++) {
+      for (let i = 0; i < wines.length; i += 1) {
         const wine = await getWineById(wines[i].id);
         const grapes = await getGrapesByWine(wines[i].id);
         const reviews = await getReviewsByWine(wines[i].id);
@@ -378,7 +403,7 @@ export default (server) => {
     }
   });
 
-  server.post('/api/insertWineReview', async (req, res, next) => {
+  server.post('/api/insertWineReview', async (req, res) => {
     const { cookies } = req;
     if (
       cookies
@@ -404,7 +429,7 @@ export default (server) => {
       const user = await getUserByUsername(cookies.username);
       await insertReview(wineId, user.name, body.comment, body.score);
       if (body.grapes) {
-        for (let i = 0; i < body.grapes.length; i++) {
+        for (let i = 0; i < body.grapes.length; i += 1) {
           insertGrape(wineId, body.grapes[i]);
         }
       }
@@ -420,7 +445,7 @@ export default (server) => {
     }
   });
 
-  server.post('/api/createUser', async (req, res, next) => {
+  server.post('/api/createUser', async (req, res) => {
     const user = req.body;
     const { cookies } = req;
     if (
@@ -449,7 +474,7 @@ export default (server) => {
     }
   });
 
-  server.post('/api/login', async (req, res, next) => {
+  server.post('/api/login', async (req, res) => {
     const login = req.body;
     res.clearCookie('WINE_UUID');
     if (validateLoginObject(login)) {
@@ -490,7 +515,7 @@ export default (server) => {
     }
   });
 
-  server.get('/api/keepalive', async (req, res, next) => {
+  server.get('/api/keepalive', async (req, res) => {
     const { cookies } = req;
     if (
       cookies
@@ -513,7 +538,7 @@ export default (server) => {
     }
   });
 
-  server.get('/api/killSession', async (req, res, next) => {
+  server.get('/api/killSession', async (req, res) => {
     const { cookies } = req;
     if (
       cookies
@@ -531,32 +556,7 @@ export default (server) => {
     });
   });
 
-  const writeUuidToDatabase = async (uuid, username) => {
-    const user = await getUserByUsername(username);
-    const uuid_ttl = getUuidTtl();
-    const uuid_ttl_max = getUuidTtlMax();
-    const user_uuid = await getUuidByUser(user.id);
-    if (user_uuid) {
-      updateUuid(user.id, uuid, uuid_ttl, uuid_ttl_max);
-    } else {
-      insertUuid(user.id, uuid, uuid_ttl, uuid_ttl_max);
-    }
-  };
-
-  const validateLoginObject = (login) => {
-    if (!login) {
-      return false;
-    }
-    if (!login.username) {
-      return false;
-    }
-    if (!login.password) {
-      return false;
-    }
-    return true;
-  };
-
-  server.get('/api/autocompleteSearch', async (req, res, next) => {
+  server.get('/api/autocompleteSearch', async (req, res) => {
     const { cookies } = req;
     const associativeArray = {};
     if (
@@ -568,7 +568,7 @@ export default (server) => {
         `%${req.query.startsWith}%`,
       );
 
-      for (let i = 0; i < autocompleteResponse.length; i++) {
+      for (let i = 0; i < autocompleteResponse.length; i += 1) {
         if (autocompleteResponse[i] !== null) {
           for (const responsetype in autocompleteResponse[i]) {
             associativeArray[responsetype] = autocompleteResponse[i][responsetype];
@@ -635,7 +635,7 @@ export default (server) => {
       await fetch(url, {
         agent: httpsAgent,
       })
-        .then((res) => res.text())
+        .then((additionalWineData) => additionalWineData.text())
         .then((text) => {
           $ = cheerio.load(text);
         });
@@ -769,7 +769,7 @@ export default (server) => {
         );
       }
       if (autocompleteAddWine) {
-        for (let i = 0; i < autocompleteAddWine.length; i++) {
+        for (let i = 0; i < autocompleteAddWine.length; i += 1) {
           responseArray.push(autocompleteAddWine[i][req.query.prop]);
         }
         res.json({
