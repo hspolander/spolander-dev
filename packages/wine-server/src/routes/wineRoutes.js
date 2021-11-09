@@ -223,7 +223,9 @@ export default (server) => {
       }
       if (query.orderedProp) {
         if (query.orderedProp === 'year' || query.orderedProp === 'score') {
-          result.sort((a, b) => a.wine[query.orderedProp] - b.wine[query.orderedProp]);
+          result.sort(
+            (a, b) => a.wine[query.orderedProp] - b.wine[query.orderedProp],
+          );
         } else {
           result.sort((a, b) => {
             const nameA = a.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase
@@ -278,17 +280,19 @@ export default (server) => {
       }
       if (query.orderedProp) {
         if (query.orderedProp === 'year') {
-          result.sort((a, b) => b.wine[query.orderedProp] - a.wine[query.orderedProp]);
+          result.sort(
+            (a, b) => b.wine[query.orderedProp] - a.wine[query.orderedProp],
+          );
         } else if (query.orderedProp === 'price') {
-          result.sort((a, b) => (
-            parseInt(a.wine[query.orderedProp].replace(' kr', ''), 10)
-              - parseInt(b.wine[query.orderedProp].replace(' kr', ''), 10)
-          ));
+          result.sort(
+            (a, b) => parseInt(a.wine[query.orderedProp].replace(' kr', ''), 10)
+              - parseInt(b.wine[query.orderedProp].replace(' kr', ''), 10),
+          );
         } else if (query.orderedProp === 'score') {
-          result.sort((a, b) => (
-            b.wine?.reviews[0][query.orderedProp]
-              - a.wine?.reviews[0][query.orderedProp]
-          ));
+          result.sort(
+            (a, b) => b.wine?.reviews[0][query.orderedProp]
+              - a.wine?.reviews[0][query.orderedProp],
+          );
         } else {
           result.sort((a, b) => {
             const nameA = a.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase
@@ -341,7 +345,9 @@ export default (server) => {
       }
       if (query.orderedProp) {
         if (query.orderedProp === 'year' || query.orderedProp === 'score') {
-          result.sort((a, b) => a.wine[query.orderedProp] - b.wine[query.orderedProp]);
+          result.sort(
+            (a, b) => a.wine[query.orderedProp] - b.wine[query.orderedProp],
+          );
         } else {
           result.sort((a, b) => {
             const nameA = a.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase

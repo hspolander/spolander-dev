@@ -49,17 +49,16 @@ const scraperObject = {
         pageIndex = 1000;
       }
     }
-    console.log(wineResponses);
+
     const wines = wineResponses.map((wine) => {
       const {
         productNumber,
         productNameBold,
         productNameThin,
-        categoryLevel1,
         categoryLevel2,
         categoryLevel3,
         taste,
-        image,
+        images,
         vintage,
         volumeText,
         price,
@@ -67,33 +66,38 @@ const scraperObject = {
       //  productCode, name1, name2(ej årtal), type(cat1 och cat2?),
       //  subType(cat3), description(taste), year, volume, price
 
-      const type = categoryLevel2 === 'Vitt'
-        ? 'Vitt vin'
-        : categoryLevel2 === 'Rött'
-          ? 'Rött vin'
-          : categoryLevel2 === 'Rosé'
-            ? 'Rosévin'
-            : categoryLevel2;
+      const getType = (type) => {
+        switch (type) {
+          case 'Vitt':
+            return 'Vitt vin';
+          case 'Rött':
+            return 'Rött vin';
+          case 'Rosé':
+            return 'Rosévin';
 
-      const wineImage = image?.length > 0 ? image[0] : '';
+          default:
+            return '';
+        }
+      };
+      const wineImage = images.length > 0 ? images[0].imageUrl : '';
 
       return {
         productCode: productNumber,
         name1: productNameBold,
         name2: productNameThin,
-        type,
-        subType: categoryLevel3,
+        type: getType(categoryLevel2),
+        subType:
+          categoryLevel3
+          || 'Drycken finns i lager hos leverantör, inte hos Systembolaget. Den är inte provad av Systembolaget och därför visas ingen smakbeskrivning. Drycken kan finnas i butiker vid lokal efterfrågan.',
         description: taste,
         image: wineImage,
         year: vintage,
         volume: volumeText,
-        price,
+        price: `${price}:-`,
       };
     });
 
-    console.log(wines)
-
-    // insertSystembolagetWines(wines)
+    insertSystembolagetWines(wines);
     await browser.close();
   },
 };
