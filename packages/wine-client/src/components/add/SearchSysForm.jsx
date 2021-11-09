@@ -117,8 +117,7 @@ export const SearchNewSysForm = ({
     </div>
   );
 };
-SearchNewSysForm.propTypes = {
-};
+SearchNewSysForm.propTypes = {};
 
 const mapStateToProps = (state) => ({
   autocompleteFieldData: state.addReducer.fieldData,

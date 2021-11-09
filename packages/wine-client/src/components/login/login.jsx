@@ -21,13 +21,12 @@ const Login = ({ location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
   if (Cookies.get("WINE_UUID")) {
     return <Redirect to={from.pathname} />;
-  } 
-    return (
-      <div className="login">
-        <LoginForm handleSubmit={handleSendLoginRequest} />
-      </div>
-    );
-  
+  }
+  return (
+    <div className="login">
+      <LoginForm handleSubmit={handleSendLoginRequest} />
+    </div>
+  );
 };
 Login.propTypes = {
   location: PropTypes.object,

@@ -1,3 +1,3 @@
 const SET_SCREEN_SIZE = "SET_SCREEN_SIZE";
 
-export default SET_SCREEN_SIZE
+export default SET_SCREEN_SIZE;

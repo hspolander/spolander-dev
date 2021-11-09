@@ -5,4 +5,4 @@ const setScreenSize = (isSmall) => {
   dispatch({ type: SET_SCREEN_SIZE, payload: isSmall });
 };
 
-export default setScreenSize
+export default setScreenSize;

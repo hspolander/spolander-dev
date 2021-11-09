@@ -99,11 +99,13 @@ const AddReview = ({
 
   const validateInputs = async () => {
     const requiredFields = ["name", "type", "score", "comment"];
-    const areRequiredInputsFilled = requiredFields.every((requiredField) => addReviewFormData[requiredField])
+    const areRequiredInputsFilled = requiredFields.every(
+      (requiredField) => addReviewFormData[requiredField]
+    );
     if (areRequiredInputsFilled) {
-      await loadAddReview(addReviewFormData)
+      await loadAddReview(addReviewFormData);
     } else {
-      alert("Du måste fylla i fälten Namn, Färg, Betyg samt Recension.")
+      alert("Du måste fylla i fälten Namn, Färg, Betyg samt Recension.");
     }
   };
 
@@ -168,10 +170,12 @@ const AddReview = ({
               </ButtonRegular>
             </>
           }
-        ><AddReviewForm
-              formdata={addReviewFormData}
-              setFormData={setAddReviewFormData}
-            /></Dialog>
+        >
+          <AddReviewForm
+            formdata={addReviewFormData}
+            setFormData={setAddReviewFormData}
+          />
+        </Dialog>
       </div>
     </div>
   );

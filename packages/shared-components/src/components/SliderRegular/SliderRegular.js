@@ -5,16 +5,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 
 const SliderRegular = (props) => {
-  const {
-    displayValue,
-    classes,
-    min,
-    max,
-    step,
-    onChange,
-    value,
-    label,
-  } = props;
+  const { displayValue, classes, min, max, step, onChange, value, label } =
+    props;
 
   return (
     <FormControl className={classes.root}>

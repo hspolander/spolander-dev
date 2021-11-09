@@ -176,7 +176,6 @@ const DetailedSystembolagetProductCard = ({ product }) => {
     </Card>
   );
 };
-DetailedSystembolagetProductCard.propTypes = {
-};
+DetailedSystembolagetProductCard.propTypes = {};
 
 export default DetailedSystembolagetProductCard;

@@ -6,8 +6,8 @@ import store from "./configureStore";
 import "./App.css";
 
 const App = () => (
-    <Provider store={store}>
-      <Client />
-    </Provider>
-  );
+  <Provider store={store}>
+    <Client />
+  </Provider>
+);
 export default App;

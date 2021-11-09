@@ -1,7 +1,6 @@
 export const jsonToQueryString = (json) =>
-  `?${ 
-  Object.keys(json)
-    .map((key) => `${encodeURIComponent(key)  }=${  encodeURIComponent(json[key])}`)
+  `?${Object.keys(json)
+    .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(json[key])}`)
     .join("&")}`;
 export const removeFalsy = (obj) => {
   const newObj = {};
