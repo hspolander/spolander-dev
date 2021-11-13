@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { uuid } from 'uuidv4';
+import cheerio from 'cheerio';
 import fetch from 'node-fetch';
 import browserObject from '../scrape/browser';
 import scraperController from '../scrape/pageController';
@@ -65,25 +66,25 @@ const getMsTime = () => {
 const validateSession = async (wineUuid) => {
   const time = getMsTime();
   const uuidTtl = getUuidTtl();
-  const uuid = await getUuidByUuid(wineUuid);
-  if (uuid && time < uuid.ttl) {
-    await updateUuidTtl(uuid.id, uuidTtl);
-    console.log(`Poked session for user id ${uuid.fk_user_id}.`);
+  const userUuid = await getUuidByUuid(wineUuid);
+  if (userUuid && time < userUuid.ttl) {
+    await updateUuidTtl(userUuid.id, uuidTtl);
+    console.log(`Poked session for user id ${userUuid.fk_user_id}.`);
     return true;
   }
-  console.log(`Session for user id ${uuid.fk_user_id} has expired.`);
+  console.log(`Session for user id ${userUuid.fk_user_id} has expired.`);
   return false;
 };
 
-const writeUuidToDatabase = async (uuid, username) => {
+const writeUuidToDatabase = async (newUuid, username) => {
   const user = await getUserByUsername(username);
   const uuidTtl = getUuidTtl();
   const uuidTtlMax = getUuidTtlMax();
   const userUuid = await getUuidByUser(user.id);
   if (userUuid) {
-    updateUuid(user.id, uuid, uuidTtl, uuidTtlMax);
+    updateUuid(user.id, newUuid, uuidTtl, uuidTtlMax);
   } else {
-    insertUuid(user.id, uuid, uuidTtl, uuidTtlMax);
+    insertUuid(user.id, newUuid, uuidTtl, uuidTtlMax);
   }
 };
 

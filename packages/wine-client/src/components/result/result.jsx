@@ -3,17 +3,15 @@ import moment from "moment";
 import PropTypes from "prop-types";
 
 import "./result.scss";
-import { faComment } from "@fortawesome/free-regular-svg-icons";
 import { faWineGlassAlt, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import NewRow from "./resultRow";
 
-export const SearchResult = ({ wine, loadValuesReview }) => {
+export const SearchResult = ({ wine }) => {
   const rows = wine.data.map((singleWine) => (
     <Row
       key={`singleWine${singleWine.wine.id}`}
       wine={singleWine}
-      loadValuesReview={loadValuesReview}
     />
   ));
   return (
@@ -43,7 +41,6 @@ export const SearchResult = ({ wine, loadValuesReview }) => {
 };
 SearchResult.propTypes = {
   wine: PropTypes.object,
-  loadValuesReview: PropTypes.func.isRequired,
 };
 
 export const SearchResultDetailed = ({ wine, loadValuesReview }) => {
@@ -67,10 +64,9 @@ export const SearchResultDetailed = ({ wine, loadValuesReview }) => {
 };
 SearchResultDetailed.propTypes = {
   wine: PropTypes.object,
-  loadValuesReview: PropTypes.func.isRequired,
 };
 
-const Row = ({ wine, loadValuesReview }) => {
+const Row = ({ wine }) => {
   const { grapes, name, country, type, producer, year, sizeml } = wine.wine;
   const graperows = grapes.map((grape) => (
     <div key={`grape${grape.id}`} className="grape">
@@ -115,21 +111,14 @@ const Row = ({ wine, loadValuesReview }) => {
       ) : (
         <td />
       )}
-      <td>
-        <FontAwesomeIcon
-          icon={faComment}
-          onClick={() => loadValuesReview(wine)}
-        />
-      </td>
     </tr>
   );
 };
 Row.propTypes = {
   wine: PropTypes.object,
-  loadValuesReview: PropTypes.func.isRequired,
 };
 
-const RowDetailed = ({ wine, loadValuesReview }) => {
+const RowDetailed = ({ wine }) => {
   const {
     grapes,
     name,
@@ -243,14 +232,6 @@ const RowDetailed = ({ wine, loadValuesReview }) => {
           <tr>
             <td />
             <td />
-            <td>
-              <div
-                className="add-new-button"
-                onClick={() => loadValuesReview(wine)}
-              >
-                <FontAwesomeIcon icon={faComment} /> Recensera
-              </div>
-            </td>
           </tr>
         </tbody>
       </table>
@@ -259,10 +240,9 @@ const RowDetailed = ({ wine, loadValuesReview }) => {
 };
 RowDetailed.propTypes = {
   wine: PropTypes.object,
-  loadValuesReview: PropTypes.func.isRequired,
 };
 
-const RowMobile = ({ wine, loadValuesReview }) => {
+const RowMobile = ({ wine }) => {
   const {
     grapes,
     name,
@@ -360,14 +340,7 @@ const RowMobile = ({ wine, loadValuesReview }) => {
           </tr>
           <tr>
             <td />
-            <td>
-              <div
-                className="add-new-button"
-                onClick={() => loadValuesReview(wine)}
-              >
-                <FontAwesomeIcon icon={faComment} /> Recensera
-              </div>
-            </td>
+            <td />
           </tr>
         </tbody>
       </table>
@@ -376,7 +349,6 @@ const RowMobile = ({ wine, loadValuesReview }) => {
 };
 RowMobile.propTypes = {
   wine: PropTypes.object,
-  loadValuesReview: PropTypes.func.isRequired,
 };
 
 export const Loader = () => (

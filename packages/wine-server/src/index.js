@@ -1,7 +1,6 @@
 import routes from './routes/wineRoutes';
 
 const restify = require('restify');
-const md5 = require('md5');
 const CookieParser = require('restify-cookies');
 
 const server = restify.createServer();

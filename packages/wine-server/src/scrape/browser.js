@@ -6,7 +6,7 @@ async function startBrowser() {
     browser = await puppeteer.launch({
       args: ['--disable-setuid-sandbox'],
       ignoreHTTPSErrors: true,
-      headless: false,
+      headless: true,
     });
   } catch (err) {
     console.log('Could not create a browser instance => : ', err);

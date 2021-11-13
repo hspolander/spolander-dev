@@ -190,7 +190,6 @@ const getSystembolagWinesQuery = (statements) => query(
 )
   .then((cursor) => {
     if (cursor[0]) {
-      console.log(cursor[0]);
       return cursor[0];
     }
     return null;
