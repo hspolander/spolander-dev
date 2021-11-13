@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt';
-import uuidv4 from 'uuid/v4';
-import _ from 'lodash';
+import { uuid } from 'uuidv4';
 import cheerio from 'cheerio';
 import fetch from 'node-fetch';
 import browserObject from '../scrape/browser';
@@ -67,25 +66,25 @@ const getMsTime = () => {
 const validateSession = async (wineUuid) => {
   const time = getMsTime();
   const uuidTtl = getUuidTtl();
-  const uuid = await getUuidByUuid(wineUuid);
-  if (uuid && time < uuid.ttl) {
-    await updateUuidTtl(uuid.id, uuidTtl);
-    console.log(`Poked session for user id ${uuid.fk_user_id}.`);
+  const userUuid = await getUuidByUuid(wineUuid);
+  if (userUuid && time < userUuid.ttl) {
+    await updateUuidTtl(userUuid.id, uuidTtl);
+    console.log(`Poked session for user id ${userUuid.fk_user_id}.`);
     return true;
   }
-  console.log(`Session for user id ${uuid.fk_user_id} has expired.`);
+  console.log(`Session for user id ${userUuid.fk_user_id} has expired.`);
   return false;
 };
 
-const writeUuidToDatabase = async (uuid, username) => {
+const writeUuidToDatabase = async (newUuid, username) => {
   const user = await getUserByUsername(username);
   const uuidTtl = getUuidTtl();
   const uuidTtlMax = getUuidTtlMax();
   const userUuid = await getUuidByUser(user.id);
   if (userUuid) {
-    updateUuid(user.id, uuid, uuidTtl, uuidTtlMax);
+    updateUuid(user.id, newUuid, uuidTtl, uuidTtlMax);
   } else {
-    insertUuid(user.id, uuid, uuidTtl, uuidTtlMax);
+    insertUuid(user.id, newUuid, uuidTtl, uuidTtlMax);
   }
 };
 
@@ -484,14 +483,14 @@ export default (server) => {
           .compare(login.password, hash)
           .then((response) => {
             if (response) {
-              const uuid = uuidv4();
-              res.setCookie('WINE_UUID', uuid, { maxAge: 28800000 });
+              const uuidv4 = uuid();
+              res.setCookie('WINE_UUID', uuidv4, { maxAge: 28800000 });
               res.json({
                 error: false,
                 message: 'Login successful',
-                data: { UUID: uuid, login },
+                data: { UUID: uuidv4, login },
               });
-              writeUuidToDatabase(uuid, login.username);
+              writeUuidToDatabase(uuidv4, login.username);
             } else {
               res.json({
                 error: true,
