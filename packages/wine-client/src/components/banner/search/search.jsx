@@ -42,7 +42,7 @@ const Search = (props) => {
             faFamily="far"
             icon={faComment}
             text="Recensera"
-            navTo="/addReview"
+            navTo="/"
           />
         </div>
       )}

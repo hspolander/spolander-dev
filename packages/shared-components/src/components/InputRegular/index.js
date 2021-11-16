@@ -1,8 +1,8 @@
 import { withStyles } from "@material-ui/styles";
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 import InputRegular from "./InputRegular";
 
-let theme = createMuiTheme();
+let theme = createTheme();
 
 const styles = () => ({
   wide: {

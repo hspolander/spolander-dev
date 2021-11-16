@@ -43,12 +43,11 @@ SearchResult.propTypes = {
   wine: PropTypes.object,
 };
 
-export const SearchResultDetailed = ({ wine, loadValuesReview }) => {
+export const SearchResultDetailed = ({ wine }) => {
   const rows = wine.data.map((singleWine) => (
     <NewRow
       key={`wine${singleWine.wine.id}`}
       wine={singleWine}
-      loadValuesReview={loadValuesReview}
     />
   ));
 
