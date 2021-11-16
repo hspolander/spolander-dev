@@ -1,16 +1,17 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import "./search.scss";
 
 const Responselist = (props) => {
-  const { history, responselist } = props;
+  const navigate = useNavigate()
+  const { responselist } = props;
 
   const handleClick = (e, data) => {
     const item = data[e.target.dataset.id];
     const path = `/reviews/${item.table}/${item.property}/${item.value}`;
-    history.push(path);
+    navigate(path);
   };
 
   const elementList = responselist.map((item, index) => (
@@ -28,7 +29,6 @@ const Responselist = (props) => {
 };
 Responselist.propTypes = {
   responselist: PropTypes.array.isRequired,
-  history: PropTypes.object.isRequired,
 };
 
-export default withRouter(Responselist);
+export default Responselist;

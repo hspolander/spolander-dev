@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { useParams, useLocation } from "react-router-dom"
 
 import SortWines from "./sortWines";
 import { SearchResult, SearchResultDetailed, Loader, Noresult } from "./result";
@@ -15,20 +16,18 @@ import { authUser } from "../login/actions";
 import "./result.scss";
 
 const ReviewResult = ({
-  match,
-  history,
   isSmallScreen,
   detailedView,
   fetched,
   reviews,
-  location,
   fetching,
 }) => {
+  const location = useLocation();
   const prevLocation = usePrevious(location);
+  const { property, value, table } = useParams();
 
   useEffect(() => {
     authUser();
-    const { property, value, table } = match.params;
     loadClickedReview({
       property,
       value,
@@ -38,7 +37,6 @@ const ReviewResult = ({
 
   useEffect(() => {
     if (location !== prevLocation) {
-      const { property, value, table } = match.params;
       loadClickedReview({
         property,
         value,
@@ -50,24 +48,12 @@ const ReviewResult = ({
   const sortWines = (e) => {
     if (e.target.value) {
       loadOrderedClickedReview({
-        property: match.params.property,
-        value: match.params.value,
-        table: match.params.table,
+        property,
+        value,
+        table,
         orderedProp: e.target.value,
       });
     }
-  };
-
-  const loadValuesReview = (values) => {
-    const initialValues = { ...values };
-    const grapes = [];
-    for (let i = 0; i < values.grapes.length; i += 1) {
-      grapes.push(values.grapes[i].grape);
-    }
-    initialValues.grapes = grapes;
-    delete initialValues.id;
-    delete initialValues.reviews;
-    history.push("/addReview");
   };
 
   return (
@@ -99,11 +85,10 @@ const ReviewResult = ({
           {detailedView || isSmallScreen ? (
             <SearchResultDetailed
               wine={reviews}
-              loadValuesReview={loadValuesReview}
               isSmallScreen={isSmallScreen}
             />
           ) : (
-            <SearchResult wine={reviews} loadValuesReview={loadValuesReview} />
+            <SearchResult wine={reviews} />
           )}
         </div>
       )}
@@ -118,9 +103,6 @@ ReviewResult.propTypes = {
   detailedView: PropTypes.bool,
   isSmallScreen: PropTypes.bool,
   reviews: PropTypes.object,
-  match: PropTypes.object,
-  location: PropTypes.object,
-  history: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({

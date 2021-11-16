@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
-import { Redirect, withRouter } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 import Cookies from "js-cookie";
-import PropTypes from "prop-types";
 
 import { loginUser, authUser } from "./actions";
 import LoginForm from "./loginform";
 
 import "./login.scss";
 
-const Login = ({ location }) => {
+const Login = () => {
+  const location = useLocation();
   useEffect(() => {
     authUser();
   }, []);
@@ -20,16 +20,13 @@ const Login = ({ location }) => {
 
   const { from } = location.state || { from: { pathname: "/" } };
   if (Cookies.get("WINE_UUID")) {
-    return <Redirect to={from.pathname} />;
+    return <Navigate to={from.pathname} />;
   }
   return (
     <div className="login">
       <LoginForm handleSubmit={handleSendLoginRequest} />
     </div>
   );
-};
-Login.propTypes = {
-  location: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
@@ -38,4 +35,4 @@ const mapStateToProps = (state) => ({
   error: state.loginReducer.error,
 });
 
-export default withRouter(connect(mapStateToProps, null)(Login));
+export default connect(mapStateToProps, null)(Login);

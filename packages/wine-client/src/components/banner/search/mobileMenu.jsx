@@ -34,7 +34,7 @@ const SimpleMenu = () => {
           <MenuItem
             handleClose={handleClose}
             text="Recensera"
-            navTo="/addReview"
+            navTo="/"
           />
         </div>
       </Menu>

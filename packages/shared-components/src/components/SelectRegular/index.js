@@ -1,8 +1,8 @@
 import { withStyles } from "@material-ui/core/styles";
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 import SelectRegular from "./SelectRegular";
 
-const theme = createMuiTheme();
+const theme = createTheme();
 
 const styles = () => ({
   root: {
