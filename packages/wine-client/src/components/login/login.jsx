@@ -1,25 +1,23 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
-import Cookies from "js-cookie";
+import PropTypes from 'prop-types'
 
-import { loginUser, authUser } from "./actions";
+import { loginUser } from "./actions";
 import LoginForm from "./loginform";
 
 import "./login.scss";
 
-const Login = () => {
+const Login = (props) => {
+  const { isAuthenticated } = props
   const location = useLocation();
-  useEffect(() => {
-    authUser();
-  }, []);
 
   const handleSendLoginRequest = (values) => {
     loginUser(values);
   };
 
   const { from } = location.state || { from: { pathname: "/" } };
-  if (Cookies.get("WINE_UUID")) {
+  if (isAuthenticated) {
     return <Navigate to={from.pathname} />;
   }
   return (
@@ -28,6 +26,9 @@ const Login = () => {
     </div>
   );
 };
+Login.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired
+}
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.loginReducer.isAuthenticated,

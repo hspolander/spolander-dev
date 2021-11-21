@@ -485,6 +485,7 @@ export default (server) => {
             if (response) {
               const uuidv4 = uuid();
               res.setCookie('WINE_UUID', uuidv4, { maxAge: 28800000 });
+              res.setCookie('username', login.username, { maxAge: 28800000 });
               res.json({
                 error: false,
                 message: 'Login successful',
@@ -504,6 +505,9 @@ export default (server) => {
             console.log(e);
           });
       } else {
+        res.clearCookie('WINE_UUID');
+        res.clearCookie('username');
+        res.code(403);
         res.json({
           error: true,
           message: 'Login unsuccessful',
@@ -524,15 +528,16 @@ export default (server) => {
       res.json({
         error: false,
         message: `Poked session for user ${cookies.username}.`,
-        data: null,
+        data: true,
       });
     } else {
       res.clearCookie('WINE_UUID');
-      res.json({
+      res.clearCookie('username');
+      res.send(403, {
         error: false,
         message: 'No live session for user. Please login again',
         session: 'nosession',
-        data: null,
+        data: false,
       });
     }
   });

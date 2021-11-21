@@ -13,11 +13,10 @@ import {
 
 const initialState = {
   redirectToReferrer: false,
-  isAuthenticated: true,
+  isAuthenticated: false,
   fetching: false,
   fetched: false,
   error: false,
-  data: null,
   redirectedToLogin: false,
 };
 
@@ -32,7 +31,6 @@ export default function Loginreducer(state = initialState, action) {
         redirectToReferrer: true,
         fetching: false,
         isAuthenticated: true,
-        data: action.payload,
       };
     }
     case USER_LOGIN_REJECTED: {
@@ -40,21 +38,19 @@ export default function Loginreducer(state = initialState, action) {
         ...state,
         fetching: false,
         isAuthenticated: false,
-        data: action.payload,
       };
     }
     case USER_AUTH_FETCHING: {
       return { ...state, fetching: true };
     }
     case USER_AUTH_FULFILLED: {
-      return { ...state, fetching: false, data: action.payload };
+      return { ...state, fetching: false, isAuthenticated: action.payload };
     }
     case USER_AUTH_REJECTED: {
       return {
         ...state,
         fetching: false,
         isAuthenticated: false,
-        data: action.payload,
       };
     }
     case SET_USER_AUTHORIZED: {

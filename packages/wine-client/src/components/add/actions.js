@@ -72,7 +72,7 @@ export const clearSnackbar = () => {
   dispatch({ type: CLEAR_SNACKBAR });
 };
 
-export const getSysWines = (values) => {
+const getSysWines = (values) => {
   axios
     .get(`/api/getSysWines${values}`)
     .then((response) => {

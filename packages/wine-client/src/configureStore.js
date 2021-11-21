@@ -1,14 +1,13 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import invariant from "redux-immutable-state-invariant";
-import authMiddleware from "./authMiddleware";
 
 import reducers from "./reducers";
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const configureStore = createStore(
   reducers,
-  composeEnhancer(applyMiddleware(invariant(), thunk, authMiddleware))
+  composeEnhancer(applyMiddleware(invariant(), thunk))
 );
 export const getState = () => configureStore.getState();
 

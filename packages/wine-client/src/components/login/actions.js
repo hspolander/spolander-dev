@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 
 import { dispatch } from "../../configureStore";
 
@@ -18,10 +17,8 @@ import {
 const sendLoginRequest = (values) => {
   axios
     .post("/api/login", values)
-    .then((response) => {
-      Cookies.set("username", response.data.data.login.username);
-      Cookies.set("WINE_UUID", response.data.data.UUID);
-      dispatch({ type: USER_LOGIN_FULFILLED, payload: response.data });
+    .then(() => {
+      dispatch({ type: USER_LOGIN_FULFILLED, payload: true });
     })
     .catch((err) => {
       dispatch({ type: USER_LOGIN_REJECTED, payload: err });
@@ -32,8 +29,8 @@ const sendAuthRequest = () => {
   dispatch({ type: USER_AUTH_FETCHING });
   axios
     .get("/api/keepalive")
-    .then((response) => {
-      dispatch({ type: USER_AUTH_FULFILLED, payload: response.data });
+    .then(() => {
+      dispatch({ type: USER_AUTH_FULFILLED, payload: true });
     })
     .catch((err) => {
       dispatch({ type: USER_AUTH_REJECTED, payload: err });
