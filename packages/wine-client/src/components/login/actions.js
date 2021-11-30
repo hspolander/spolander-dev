@@ -9,7 +9,6 @@ import {
   USER_AUTH_FETCHING,
   USER_AUTH_FULFILLED,
   USER_AUTH_REJECTED,
-  SET_USER_UNAUTHORIZED,
   KILL_SESSION_FULFILLED,
   KILL_SESSION_REJECTED,
 } from "./constants";
@@ -55,8 +54,4 @@ export const killSession = () => {
     .catch((err) => {
       dispatch({ type: KILL_SESSION_REJECTED, payload: err });
     });
-};
-
-export const setUserUnauthorized = () => {
-  dispatch({ type: SET_USER_UNAUTHORIZED });
 };

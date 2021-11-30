@@ -5,8 +5,6 @@ import {
   USER_AUTH_FETCHING,
   USER_AUTH_FULFILLED,
   USER_AUTH_REJECTED,
-  SET_USER_AUTHORIZED,
-  SET_USER_UNAUTHORIZED,
   KILL_SESSION_FULFILLED,
   KILL_SESSION_REJECTED,
 } from "./constants";
@@ -52,12 +50,6 @@ export default function Loginreducer(state = initialState, action) {
         fetching: false,
         isAuthenticated: false,
       };
-    }
-    case SET_USER_AUTHORIZED: {
-      return { ...state, isAuthenticated: true };
-    }
-    case SET_USER_UNAUTHORIZED: {
-      return { ...state, isAuthenticated: false };
     }
     case KILL_SESSION_FULFILLED: {
       return { ...state, isAuthenticated: false };

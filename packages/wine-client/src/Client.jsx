@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 
-import AuthProvider from "./AuthContext";
 import Banner from "./components/banner/banner";
 import AddReview from "./components/add/AddReview";
 import ReviewResult from "./components/result/reviewResult";
@@ -27,7 +26,6 @@ const Client = (props) => {
 
   return (
     <Router>
-      <AuthProvider>
         <div>
           <Banner />
           <div className="main-content">
@@ -59,7 +57,6 @@ const Client = (props) => {
             </Routes>
           </div>
         </div>
-      </AuthProvider>
     </Router>
   );
 };
