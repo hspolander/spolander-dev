@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import NewRow from "./resultRow";
 
 export const SearchResult = ({ wine }) => {
-  const rows = wine.data.map((singleWine) => (
+  const rows = wine.map((singleWine) => (
     <Row
       key={`singleWine${singleWine.wine.id}`}
       wine={singleWine}
@@ -40,11 +40,11 @@ export const SearchResult = ({ wine }) => {
   );
 };
 SearchResult.propTypes = {
-  wine: PropTypes.object,
+  wine: PropTypes.array,
 };
 
 export const SearchResultDetailed = ({ wine }) => {
-  const rows = wine.data.map((singleWine) => (
+  const rows = wine.map((singleWine) => (
     <NewRow
       key={`wine${singleWine.wine.id}`}
       wine={singleWine}
@@ -62,7 +62,7 @@ export const SearchResultDetailed = ({ wine }) => {
   );
 };
 SearchResultDetailed.propTypes = {
-  wine: PropTypes.object,
+  wine: PropTypes.array,
 };
 
 const Row = ({ wine }) => {

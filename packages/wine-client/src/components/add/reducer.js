@@ -10,18 +10,7 @@ import {
   FETCH_SYSTEMBOLAGET_NO_MATCH,
   FETCH_SYSTEMBOLAGET_WINE_DATA_FULFILLED,
   FETCH_SYSTEMBOLAGET_WINE_DATA_REJECTED,
-  FETCH_SYSTEMBOLAGET_WINE_DATA_NO_MATCH,
   FETCH_SYSTEMBOLAGET_WINE_DATA_FETCHING,
-  FETCH_SYSTEMBOLAGET_COUNTRIES_FULFILLED,
-  FETCH_SYSTEMBOLAGET_COUNTRIES_REJECTED,
-  FETCH_SYSTEMBOLAGET_COUNTRIES_FETCHING,
-  FETCH_SYSTEMBOLAGET_SUBTYPES_FULFILLED,
-  FETCH_SYSTEMBOLAGET_SUBTYPES_REJECTED,
-  FETCH_SYSTEMBOLAGET_SUBTYPES_FETCHING,
-  FETCH_SYSTEMBOLAGET_TYPES_FULFILLED,
-  FETCH_SYSTEMBOLAGET_TYPES_REJECTED,
-  FETCH_SYSTEMBOLAGET_TYPES_FETCHING,
-  SYSTEMBOLAGET_CLEAR_VALUES,
   FIELD_AUTOCOMPLETE_FETCHING,
   FIELD_AUTOCOMPLETE_FULFILLED,
   FIELD_AUTOCOMPLETE_REJECTED,
@@ -54,57 +43,20 @@ export default function reducer(state = initialState, action) {
     case SET_SNACKBAR: {
       return { ...state, snackbar: action.payload };
     }
-    case FETCH_SYSTEMBOLAGET_COUNTRIES_FETCHING: {
-      return { ...state, fetching: true, fetchIsBlocking: false };
+    case ADD_REVIEW_FETCHING: {
+      return {
+        ...state,
+        fetching: true,
+        fetchIsBlocking: true,
+      };
     }
-    case FETCH_SYSTEMBOLAGET_COUNTRIES_FULFILLED: {
+    case ADD_REVIEW_FULFILLED: {
       return {
         ...state,
         fetching: false,
+        addedWine: action.payload,
         fetchIsBlocking: false,
-        countries: action.payload,
       };
-    }
-    case FETCH_SYSTEMBOLAGET_COUNTRIES_REJECTED: {
-      return {
-        ...state,
-        fetching: false,
-        fetchIsBlocking: false,
-        countries: [],
-      };
-    }
-    case FETCH_SYSTEMBOLAGET_SUBTYPES_FETCHING: {
-      return { ...state, fetching: true, fetchIsBlocking: false };
-    }
-    case FETCH_SYSTEMBOLAGET_SUBTYPES_FULFILLED: {
-      return {
-        ...state,
-        fetching: false,
-        fetchIsBlocking: false,
-        subTypes: action.payload,
-      };
-    }
-    case FETCH_SYSTEMBOLAGET_SUBTYPES_REJECTED: {
-      return {
-        ...state,
-        fetching: false,
-        fetchIsBlocking: false,
-        subTypes: [],
-      };
-    }
-    case FETCH_SYSTEMBOLAGET_TYPES_FETCHING: {
-      return { ...state, fetching: true, fetchIsBlocking: false };
-    }
-    case FETCH_SYSTEMBOLAGET_TYPES_FULFILLED: {
-      return {
-        ...state,
-        fetching: false,
-        fetchIsBlocking: false,
-        types: action.payload,
-      };
-    }
-    case FETCH_SYSTEMBOLAGET_TYPES_REJECTED: {
-      return { ...state, fetching: false, fetchIsBlocking: false, types: [] };
     }
     case FETCH_SYSTEMBOLAGET_WINE_DATA_FETCHING: {
       return {
@@ -130,35 +82,12 @@ export default function reducer(state = initialState, action) {
         error: action.payload,
       };
     }
-    case ADD_REVIEW_FETCHING: {
-      return {
-        ...state,
-        fetching: true,
-        fetchIsBlocking: true,
-      };
-    }
-    case ADD_REVIEW_FULFILLED: {
-      return {
-        ...state,
-        fetching: false,
-        addedWine: action.payload,
-        fetchIsBlocking: false,
-      };
-    }
     case ADD_REVIEW_REJECTED: {
       return {
         ...state,
         error: action.payload,
         fetchIsBlocking: false,
         fetching: false,
-      };
-    }
-    case FETCH_SYSTEMBOLAGET_WINE_DATA_NO_MATCH: {
-      return {
-        ...state,
-        fetching: false,
-        fetchIsBlocking: false,
-        singleSysWineData: null,
       };
     }
     case FIELD_AUTOCOMPLETE_FETCHING: {
@@ -203,9 +132,6 @@ export default function reducer(state = initialState, action) {
         fetchIsBlocking: true,
         systemWineData: null,
       };
-    }
-    case SYSTEMBOLAGET_CLEAR_VALUES: {
-      return { ...state, systemWineData: null };
     }
     case FETCH_SYSTEMBOLAGET_FULFILLED: {
       return {

@@ -8,25 +8,26 @@ import Autocomplete from "@spolander/shared-components/src/components/Autocomple
 import SliderRegular from "@spolander/shared-components/src/components/SliderRegular";
 import {
   loadFieldAutocomplete,
-  getSystembolagetSubTypes,
-  getSystembolagetTypes,
-  getSystembolagetCountries,
 } from "./actions";
+import GetSystembolaget from "../../api/getSystembolaget";
 
 const AddReviewForm = ({
   autocompleteFieldData,
-  types = [],
-  subTypes = [],
-  countries = [],
   formdata,
   setFormData,
 }) => {
+  const [subTypes, setSubTypes] = useState([])
+  const [types, setTypes] = useState([])
+  const [countries, setCountries] = useState([])
   const [autocompleteResponse, setAutoCompleteResponse] = useState(null);
 
   useEffect(() => {
-    getSystembolagetTypes();
-    getSystembolagetSubTypes();
-    getSystembolagetCountries();
+    GetSystembolaget.getTypes()
+    .then((typesResponse) => setTypes(typesResponse))
+    GetSystembolaget.getSubTypes()
+    .then((subTypesResponse) => setSubTypes(subTypesResponse))
+    GetSystembolaget.getCountries()
+    .then((countriesResponse) => setCountries(countriesResponse))
   }, []);
 
   const autocompleteField = (field, value) => {
@@ -221,9 +222,6 @@ AddReviewForm.propTypes = {
 
 const mapStateToProps = (state) => ({
   autocompleteFieldData: state.addReducer.fieldData,
-  countries: state.addReducer.countries,
-  subTypes: state.addReducer.subTypes,
-  types: state.addReducer.types,
   fetching: state.addReducer.fetching,
 });
 

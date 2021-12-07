@@ -463,8 +463,7 @@ export const getWineByForeignProperty = (table, property, value) => query(
   return null;
 });
 
-export const getWineByProperty = (property, value) => query(`SELECT wine.id FROM wine WHERE wine.${property} = ?`,
-  [value]).then(
+export const getWineByProperty = (property, value) => query(`SELECT wine.id FROM wine WHERE wine.${property} = ?`, [value]).then(
   (cursor) => {
     if (cursor[0]) {
       return cursor[0];

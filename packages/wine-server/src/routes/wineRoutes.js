@@ -221,7 +221,7 @@ export default (server) => {
     }
   });
 
-  server.get('/api/getWineByForeignProperty', async (req, res) => {
+  server.get('/api/getReviews', async (req, res) => {
     const { cookies } = req;
     if (
       cookies
@@ -229,66 +229,18 @@ export default (server) => {
       && (await validateSession(cookies.WINE_UUID))
     ) {
       const { query } = req;
-      const wines = await getWineByForeignProperty(
-        query.table,
-        query.property,
-        query.value,
-      );
-      const result = [];
-      for (let i = 0; i < wines.length; i += 1) {
-        const wine = await getWineById(wines[i].id);
-        const grapes = await getGrapesByWine(wines[i].id);
-        const reviews = await getReviewsByWine(wines[i].id);
-        result.push({
-          wine,
-        });
-        result[i].wine.grapes = grapes;
-        result[i].wine.reviews = reviews;
+      let wines;
+      if (!query?.table) {
+        wines = await getAllNotCellarWines();
+      } else if (query?.table === 'wine') {
+        wines = await getWineByProperty(query.property, query.value);
+      } else {
+        wines = await getWineByForeignProperty(
+          query.table,
+          query.property,
+          query.value,
+        );
       }
-      if (query.orderedProp) {
-        if (query.orderedProp === 'year' || query.orderedProp === 'score') {
-          result.sort(
-            (a, b) => a.wine[query.orderedProp] - b.wine[query.orderedProp],
-          );
-        } else {
-          result.sort((a, b) => {
-            const nameA = a.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase
-            const nameB = b.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase
-            if (nameA < nameB) {
-              return -1;
-            }
-            if (nameA > nameB) {
-              return 1;
-            }
-            return 0;
-          });
-        }
-      }
-      res.json({
-        error: false,
-        message: 'Success',
-        data: result,
-      });
-    } else {
-      res.clearCookie('WINE_UUID');
-      res.json({
-        error: true,
-        session: 'nosessionRedirect',
-        message: 'Session expired/invalid',
-        data: null,
-      });
-    }
-  });
-
-  server.get('/api/getAllReviews', async (req, res) => {
-    const { cookies } = req;
-    if (
-      cookies
-      && cookies.WINE_UUID
-      && (await validateSession(cookies.WINE_UUID))
-    ) {
-      const { query } = req;
-      const wines = await getAllNotCellarWines();
       const result = [];
       for (let i = 0; i < wines.length; i += 1) {
         const wine = await getWineById(wines[i].id);
@@ -302,75 +254,20 @@ export default (server) => {
           });
         }
       }
+
       if (query.orderedProp) {
         if (query.orderedProp === 'year') {
           result.sort(
-            (a, b) => b.wine[query.orderedProp] - a.wine[query.orderedProp],
+            (a, b) => b.wine.year - a.wine.year,
           );
         } else if (query.orderedProp === 'price') {
           result.sort(
-            (a, b) => parseInt(a.wine[query.orderedProp].replace(' kr', ''), 10)
-              - parseInt(b.wine[query.orderedProp].replace(' kr', ''), 10),
+            (a, b) => parseInt(a.wine.price.replace(' kr', ''), 10)
+              - parseInt(b.wine.price.replace(' kr', ''), 10),
           );
         } else if (query.orderedProp === 'score') {
           result.sort(
-            (a, b) => b.wine?.reviews[0][query.orderedProp]
-              - a.wine?.reviews[0][query.orderedProp],
-          );
-        } else {
-          result.sort((a, b) => {
-            const nameA = a.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase
-            const nameB = b.wine[query.orderedProp]?.toUpperCase(); // ignore upper and lowercase
-            if (nameA < nameB) {
-              return -1;
-            }
-            if (nameA > nameB) {
-              return 1;
-            }
-            return 0;
-          });
-        }
-      }
-      res.json({
-        error: false,
-        message: 'Success',
-        data: result,
-      });
-    } else {
-      res.clearCookie('WINE_UUID');
-      res.json({
-        error: true,
-        session: 'nosessionRedirect',
-        message: 'Session expired/invalid',
-        data: null,
-      });
-    }
-  });
-
-  server.get('/api/getWineByProperty', async (req, res) => {
-    const { cookies } = req;
-    if (
-      cookies
-      && cookies.WINE_UUID
-      && (await validateSession(cookies.WINE_UUID))
-    ) {
-      const { query } = req;
-      const wines = await getWineByProperty(query.property, query.value);
-      const result = [];
-      for (let i = 0; i < wines.length; i += 1) {
-        const wine = await getWineById(wines[i].id);
-        const grapes = await getGrapesByWine(wines[i].id);
-        const reviews = await getReviewsByWine(wines[i].id);
-        result.push({
-          wine,
-        });
-        result[i].wine.grapes = grapes;
-        result[i].wine.reviews = reviews;
-      }
-      if (query.orderedProp) {
-        if (query.orderedProp === 'year' || query.orderedProp === 'score') {
-          result.sort(
-            (a, b) => a.wine[query.orderedProp] - b.wine[query.orderedProp],
+            (a, b) => b.wine?.reviews[0].score - a.wine?.reviews[0].score,
           );
         } else {
           result.sort((a, b) => {

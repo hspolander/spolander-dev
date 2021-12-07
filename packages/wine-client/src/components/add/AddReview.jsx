@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 
 import Dialog from "@spolander/shared-components/src/components/Dialog";
 import ButtonRegular from "@spolander/shared-components/src/components/ButtonRegular";
@@ -19,16 +18,17 @@ import {
 } from "./actions";
 
 import "./add.scss";
+import GetSystembolaget from "../../api/getSystembolaget";
 
 const AddReview = ({
-  systemWineData,
   singleSysWineData,
-  fetching,
   snackbar,
   addedWine,
 }) => {
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
   const resultNode = useRef();
+  const [sysWines, setSysWines] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
   const [addReviewFormData, setAddReviewFormData] = useState({
     name: "",
     producer: "",
@@ -97,6 +97,13 @@ const AddReview = ({
     }
   }, []);
 
+  const getSysWines = (formdata) => {
+    setIsLoading(true)
+    GetSystembolaget.getSysWines(formdata)
+    .then((sysWinesResponse) => setSysWines(sysWinesResponse))
+    .finally(() => setIsLoading(false))
+  }
+
   const validateInputs = async () => {
     const requiredFields = ["name", "type", "score", "comment"];
     const areRequiredInputsFilled = requiredFields.every(
@@ -125,17 +132,19 @@ const AddReview = ({
           {snackbar?.message}
         </Alert>
       </Snackbar>
-      <Backdrop open={fetching} />
+      <Backdrop open={isLoading} />
       <div className="add-wine">
         <div className="formtitle">
           <span>Lägg till från systembolagets sortiment</span>
         </div>
-        <SearchSysForm />
-        {systemWineData && (
+        <SearchSysForm 
+          getSysWines={(formdata) => getSysWines(formdata)}
+        />
+        {sysWines && (
           <div ref={resultNode}>
-            {systemWineData.length > 0 ? (
+            {sysWines.length > 0 ? (
               <SearchSysResult
-                systemWineData={systemWineData}
+                systemWineData={sysWines}
                 addWineClick={onAddSystembolagetWineClick}
               />
             ) : (
@@ -181,16 +190,11 @@ const AddReview = ({
   );
 };
 AddReview.propTypes = {
-  systemWineData: PropTypes.array,
 };
 
 const mapStateToProps = (state) => ({
   data: state.addReducer.data,
   error: state.addReducer.error,
-  fetching: state.addReducer.fetching,
-  fetchIsBlocking: state.addReducer.fetchIsBlocking,
-  addReviewValues: state.addReducer.addReviewValues,
-  systemWineData: state.addReducer.systemWineData,
   isSmallScreen: state.globalReducer.isSmallScreen,
   singleSysWineData: state.addReducer.singleSysWineData,
   snackbar: state.addReducer.snackbar,

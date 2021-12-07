@@ -1,20 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
 import InputTextField from "@spolander/shared-components/src/components/InputRegular";
 import InputSelect from "@spolander/shared-components/src/components/SelectRegular";
 import ButtonRegular from "@spolander/shared-components/src/components/ButtonRegular";
-import {
-  loadSysWines,
-  getSystembolagetSubTypes,
-  getSystembolagetTypes,
-  getSystembolagetCountries,
-} from "./actions";
+import GetSystembolaget from "../../api/getSystembolaget";
 
-export const SearchNewSysForm = ({
-  types = [],
-  subTypes = [],
-  countries = [],
-}) => {
+const SearchSysForm = (props) => {
+  const [subTypes, setSubTypes] = useState([])
+  const [types, setTypes] = useState([])
+  const [countries, setCountries] = useState([])
   const [formdata, setFormData] = useState({
     name: "",
     type: "",
@@ -25,6 +18,8 @@ export const SearchNewSysForm = ({
     volume: "",
     productCode: "",
   });
+const { getSysWines } = props
+
   const resetForm = () => {
     setFormData({
       name: "",
@@ -37,11 +32,16 @@ export const SearchNewSysForm = ({
       productCode: "",
     });
   };
+
   useEffect(() => {
-    getSystembolagetTypes();
-    getSystembolagetSubTypes();
-    getSystembolagetCountries();
+    GetSystembolaget.getTypes()
+    .then((typesResponse) => setTypes(typesResponse))
+    GetSystembolaget.getSubTypes()
+    .then((subTypesResponse) => setSubTypes(subTypesResponse))
+    GetSystembolaget.getCountries()
+    .then((countriesResponse) => setCountries(countriesResponse))
   }, []);
+
 
   return (
     <div className="addWineForm">
@@ -50,50 +50,43 @@ export const SearchNewSysForm = ({
         variant="outlined"
         value={formdata.name}
         placeholder="ex Spier signature"
-        onEnterPress={() => loadSysWines(formdata)}
+        onEnterPress={() => getSysWines(formdata)}
         onChange={(val) => setFormData({ ...formdata, name: val })}
       />
       <InputSelect
         values={countries}
         value={formdata.country}
         label="Land"
-        onEnterPress={() => loadSysWines(formdata)}
+        onEnterPress={() => getSysWines(formdata)}
         onChange={(val) => setFormData({ ...formdata, country: val })}
       />
       <InputTextField
         label="Beskrivning"
         variant="outlined"
         value={formdata.description}
-        onEnterPress={() => loadSysWines(formdata)}
+        onEnterPress={() => getSysWines(formdata)}
         onChange={(val) => setFormData({ ...formdata, description: val })}
       />
       <InputSelect
         values={types}
         value={formdata.type}
         label="Vinkategori"
-        onEnterPress={() => loadSysWines(formdata)}
+        onEnterPress={() => getSysWines(formdata)}
         onChange={(val) => setFormData({ ...formdata, type: val })}
       />
       <InputSelect
         values={subTypes}
         value={formdata.subType}
         label="Vinunderkategori"
-        onEnterPress={() => loadSysWines(formdata)}
+        onEnterPress={() => getSysWines(formdata)}
         onChange={(val) => setFormData({ ...formdata, subType: val })}
       />
-      {/* <InputSelect
-        values={subTypes}
-        value={formdata.subType}
-        label={"Volym"}
-        onEnterPress={() => loadSysWines(formdata)}
-        onChange={(val) => setFormData({ ...formdata, subType: val })}
-      /> */}
       <InputTextField
         variant="outlined"
         value={formdata.year}
         label="År"
         placeholder="ex. 2012"
-        onEnterPress={() => loadSysWines(formdata)}
+        onEnterPress={() => getSysWines(formdata)}
         onChange={(val) =>
           setFormData({ ...formdata, year: val.replace(/\D/g, "") })
         }
@@ -109,7 +102,7 @@ export const SearchNewSysForm = ({
         <ButtonRegular
           variant="contained"
           color="primary"
-          onClick={() => loadSysWines(formdata)}
+          onClick={() => getSysWines(formdata)}
         >
           <i>Sök</i>
         </ButtonRegular>
@@ -117,13 +110,7 @@ export const SearchNewSysForm = ({
     </div>
   );
 };
-SearchNewSysForm.propTypes = {};
+SearchSysForm.propTypes = {};
 
-const mapStateToProps = (state) => ({
-  autocompleteFieldData: state.addReducer.fieldData,
-  countries: state.addReducer.countries,
-  subTypes: state.addReducer.subTypes,
-  types: state.addReducer.types,
-});
 
-export default connect(mapStateToProps, null)(SearchNewSysForm);
+export default SearchSysForm;
