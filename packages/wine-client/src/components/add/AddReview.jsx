@@ -13,16 +13,14 @@ import setScreenSize from "../global/actions";
 import { authUser } from "../login/actions";
 import {
   loadSystembolagetWineData,
-  loadAddReview,
-  clearSnackbar,
 } from "./actions";
 
 import "./add.scss";
 import GetSystembolaget from "../../api/getSystembolaget";
+import AddWineReview from "../../api/addReview";
 
 const AddReview = ({
   singleSysWineData,
-  snackbar,
   addedWine,
 }) => {
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
@@ -38,14 +36,13 @@ const AddReview = ({
     country: "",
     boughtFrom: "",
     price: "",
-    container: "",
     nr: "",
-    review: "",
     volume: "",
     grapes: [],
     comment: "",
     score: 0,
   });
+  const [snackbar, setSnackbar] = useState(null)
 
   useEffect(() => {
     if (singleSysWineData) {
@@ -110,9 +107,16 @@ const AddReview = ({
       (requiredField) => addReviewFormData[requiredField]
     );
     if (areRequiredInputsFilled) {
-      await loadAddReview(addReviewFormData);
+      AddWineReview.one(addReviewFormData)
+      .then(() => {
+        setSnackbar({messageType: "success", message: `Vi har lagt till ditt vin ${addReviewFormData?.name}`});
+        setIsReviewDialogOpen(false)
+      })
+      .catch(() => {
+        setSnackbar({messageType: "error", message: "Något gick fel. Vänligen sök hjälp hos din make."});
+      })
     } else {
-      alert("Du måste fylla i fälten Namn, Färg, Betyg samt Recension.");
+      setSnackbar({messageType: "error", message: "Du måste fylla i fälten Namn, Färg, Betyg samt Recension."});
     }
   };
 
@@ -126,9 +130,9 @@ const AddReview = ({
       <Snackbar
         autoHideDuration={10000}
         open={snackbar?.message}
-        onClose={() => clearSnackbar()}
+        onClose={() => setSnackbar(null)}
       >
-        <Alert onClose={() => clearSnackbar()} severity={snackbar?.messageType}>
+        <Alert onClose={() => setSnackbar(null)} severity={snackbar?.messageType}>
           {snackbar?.message}
         </Alert>
       </Snackbar>
@@ -197,7 +201,6 @@ const mapStateToProps = (state) => ({
   error: state.addReducer.error,
   isSmallScreen: state.globalReducer.isSmallScreen,
   singleSysWineData: state.addReducer.singleSysWineData,
-  snackbar: state.addReducer.snackbar,
   addedWine: state.addReducer.addedWine,
 });
 

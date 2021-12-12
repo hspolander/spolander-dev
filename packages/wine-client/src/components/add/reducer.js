@@ -1,13 +1,4 @@
 import {
-  ADD_REVIEW_FETCHING,
-  ADD_REVIEW_FULFILLED,
-  ADD_REVIEW_REJECTED,
-  CLEAR_SNACKBAR,
-  SET_SNACKBAR,
-  SYSTEMBOLAGET_FETCHING,
-  FETCH_SYSTEMBOLAGET_FULFILLED,
-  FETCH_SYSTEMBOLAGET_REJECTED,
-  FETCH_SYSTEMBOLAGET_NO_MATCH,
   FETCH_SYSTEMBOLAGET_WINE_DATA_FULFILLED,
   FETCH_SYSTEMBOLAGET_WINE_DATA_REJECTED,
   FETCH_SYSTEMBOLAGET_WINE_DATA_FETCHING,
@@ -15,8 +6,6 @@ import {
   FIELD_AUTOCOMPLETE_FULFILLED,
   FIELD_AUTOCOMPLETE_REJECTED,
   FIELD_AUTOCOMPLETE_NO_MATCH,
-  FIELD_AUTOCOMPLETE_CLEAR_FOCUS,
-  FIELD_AUTOCOMPLETE_FOCUS_FIELD,
 } from "./constants";
 
 const initialState = {
@@ -37,27 +26,6 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case CLEAR_SNACKBAR: {
-      return { ...state, snackbar: null };
-    }
-    case SET_SNACKBAR: {
-      return { ...state, snackbar: action.payload };
-    }
-    case ADD_REVIEW_FETCHING: {
-      return {
-        ...state,
-        fetching: true,
-        fetchIsBlocking: true,
-      };
-    }
-    case ADD_REVIEW_FULFILLED: {
-      return {
-        ...state,
-        fetching: false,
-        addedWine: action.payload,
-        fetchIsBlocking: false,
-      };
-    }
     case FETCH_SYSTEMBOLAGET_WINE_DATA_FETCHING: {
       return {
         ...state,
@@ -80,14 +48,6 @@ export default function reducer(state = initialState, action) {
         fetching: false,
         fetchIsBlocking: false,
         error: action.payload,
-      };
-    }
-    case ADD_REVIEW_REJECTED: {
-      return {
-        ...state,
-        error: action.payload,
-        fetchIsBlocking: false,
-        fetching: false,
       };
     }
     case FIELD_AUTOCOMPLETE_FETCHING: {
@@ -122,62 +82,6 @@ export default function reducer(state = initialState, action) {
         fetching: false,
         fetchIsBlocking: false,
         fieldData: null,
-      };
-    }
-    case SYSTEMBOLAGET_FETCHING: {
-      return {
-        ...state,
-        fetched: false,
-        fetching: true,
-        fetchIsBlocking: true,
-        systemWineData: null,
-      };
-    }
-    case FETCH_SYSTEMBOLAGET_FULFILLED: {
-      return {
-        ...state,
-        fetched: true,
-        fetching: false,
-        fetchIsBlocking: false,
-        systemWineData: action.payload,
-      };
-    }
-    case FETCH_SYSTEMBOLAGET_REJECTED: {
-      return {
-        ...state,
-        fetched: true,
-        fetching: false,
-        fetchIsBlocking: false,
-        systemWineData: null,
-      };
-    }
-    case FETCH_SYSTEMBOLAGET_NO_MATCH: {
-      return {
-        ...state,
-        fetched: true,
-        fetching: false,
-        fetchIsBlocking: false,
-        systemWineData: [],
-      };
-    }
-    case FIELD_AUTOCOMPLETE_CLEAR_FOCUS: {
-      return {
-        ...state,
-        fetched: false,
-        fetching: false,
-        fetchIsBlocking: false,
-        fieldData: null,
-        focusedField: null,
-      };
-    }
-    case FIELD_AUTOCOMPLETE_FOCUS_FIELD: {
-      return {
-        ...state,
-        fetched: false,
-        fetching: false,
-        fetchIsBlocking: false,
-        fieldData: null,
-        focusedField: action.payload,
       };
     }
     default: {
