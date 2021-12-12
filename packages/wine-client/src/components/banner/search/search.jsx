@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-regular-svg-icons";
@@ -8,15 +7,24 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 import MobileMenu from "./mobileMenu";
 import AutocompleteSelect from "./autocompleteSelect";
-import loadAutocompleteSearch from "./actions";
 
 import "./search.scss";
+import SuperSearch from "../../../api/search";
+import { useScreenSize } from "../../../contextProviders";
 
-const Search = (props) => {
-  const { match, data, fetched, isSmallScreen } = props;
+const Search = () => {
+  const [autocomplete, setAutocomplete] = useState(null)
+  const [isSmallScreen] = useScreenSize()
 
   const handleChange = (e) => {
-    loadAutocompleteSearch(e.target.value);
+    if (e?.target?.value.length > 1) {
+      SuperSearch.autocomplete(e?.target?.value)
+      .then((autocompleteResponse) => {
+        setAutocomplete(autocompleteResponse)
+      })
+    } else {
+      setAutocomplete(null)
+    }
   };
 
   return (
@@ -25,9 +33,9 @@ const Search = (props) => {
         type="text"
         placeholder="Sök"
         onChange={handleChange}
-        className={match ? "match" : "noMatch"}
+        className={autocomplete === null || Object.keys(autocomplete).length > 0 ? "match" : "noMatch"}
       />
-      {fetched && <AutocompleteSelect autocompleteSelect={data} />}
+      {autocomplete && <AutocompleteSelect autocompleteObjects={autocomplete} />}
       {isSmallScreen ? (
         <MobileMenu />
       ) : (
@@ -49,24 +57,7 @@ const Search = (props) => {
     </div>
   );
 };
-Search.propTypes = {
-  match: PropTypes.bool,
-  data: PropTypes.object,
-  fetched: PropTypes.bool,
-};
 
-const mapStateToProps = (state) => ({
-  isSmallScreen: state.globalReducer.isSmallScreen,
-  data: state.searchbarReducer.data,
-  error: state.searchbarReducer.error,
-  fetching: state.searchbarReducer.fetching,
-  fetched: state.searchbarReducer.fetched,
-  match: state.searchbarReducer.match,
-});
-
-const mapDispatchToProps = {
-  loadAutocompleteSearch,
-};
 
 const MenuIcon = ({ navTo, icon, text }) => (
   <Link className="nostyle-link" to={navTo}>
@@ -82,4 +73,4 @@ MenuIcon.propTypes = {
   navTo: PropTypes.string.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default Search;

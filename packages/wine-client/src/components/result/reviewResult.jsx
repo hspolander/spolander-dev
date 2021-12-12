@@ -1,57 +1,65 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { useParams, useLocation } from "react-router-dom"
 
 import SortWines from "./sortWines";
 import { SearchResult, SearchResultDetailed, Loader, Noresult } from "./result";
-import {
-  loadClickedReview,
-  loadOrderedClickedReview,
-} from "./actions";
-import { usePrevious } from "../../hooks";
-import { authUser } from "../login/actions";
+import { usePrevious } from "../../hooks/hooks";
 
 import "./result.scss";
+import GetWines from "../../api/getWine";
+import { useLogin, useScreenSize } from "../../contextProviders";
+import LoginApi from "../../api/login";
 
-const ReviewResult = ({
-  isSmallScreen,
-  fetched,
-  reviews,
-  fetching,
-}) => {
+const ReviewResult = () => {
   const location = useLocation();
   const prevLocation = usePrevious(location);
   const { property, value, table } = useParams();
+  const [isLoading, setIsLoading] = useState(false)
+  const [reviews, setReviews] = useState(null)
   const [isDetailedView, setIsDetailedView] = useState(false)
+  const [, setIsLoggedIn] = useLogin()
+  const [isSmallScreen] = useScreenSize()
 
   useEffect(() => {
-    authUser();
-    loadClickedReview({
+    LoginApi.authRequest()
+    .then(() => {
+      setIsLoggedIn(true)
+    })
+    .catch(() => setIsLoggedIn(false))
+    setIsLoading(true)
+    GetWines.all({
       property,
       value,
       table,
-    });
+      orderedProp: "score",
+    })
+    .then((reviewResponse) => setReviews(reviewResponse))
+    .finally(() => setIsLoading(false))
   }, []);
 
   useEffect(() => {
     if (location !== prevLocation) {
-      loadClickedReview({
+      GetWines.all({
         property,
         value,
         table,
-      });
+        orderedProp: "score",
+      })
+      .then((reviewResponse) => setReviews(reviewResponse))
+      .finally(() => setIsLoading(false))
     }
   }, [location]);
 
   const sortWines = (e) => {
     if (e.target.value) {
-      loadOrderedClickedReview({
+      GetWines.all({
         property,
         value,
         table,
         orderedProp: e.target.value,
-      });
+      })
+      .then((reviewResponse) => setReviews(reviewResponse))
+      .finally(() => setIsLoading(false))
     }
   };
 
@@ -79,7 +87,7 @@ const ReviewResult = ({
           Detaljerad vy
         </button>
       )}
-      {fetched && reviews?.data && (
+      {!isLoading && reviews && (
         <div>
           {isDetailedView || isSmallScreen ? (
             <SearchResultDetailed
@@ -91,24 +99,11 @@ const ReviewResult = ({
           )}
         </div>
       )}
-      {fetching && <Loader />}
-      {reviews?.data && reviews.data.length === 0 && <Noresult />}
+      {isLoading && <Loader />}
+      {reviews && reviews.length === 0 && <Noresult />}
     </div>
   );
 };
-ReviewResult.propTypes = {
-  fetched: PropTypes.bool,
-  fetching: PropTypes.bool,
-  isSmallScreen: PropTypes.bool,
-  reviews: PropTypes.object,
-};
 
-const mapStateToProps = (state) => ({
-  reviews: state.resultReducer.reviews,
-  error: state.resultReducer.error,
-  fetching: state.resultReducer.fetching,
-  fetched: state.resultReducer.fetched,
-  isSmallScreen: state.globalReducer.isSmallScreen,
-});
 
-export default connect(mapStateToProps, null)(ReviewResult);
+export default ReviewResult;

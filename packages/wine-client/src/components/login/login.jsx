@@ -1,23 +1,28 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { connect } from "react-redux";
-import PropTypes from 'prop-types'
 
-import { loginUser } from "./actions";
 import LoginForm from "./loginform";
 
 import "./login.scss";
+import { useLogin } from "../../contextProviders";
+import LoginApi from "../../api/login";
 
-const Login = (props) => {
-  const { isAuthenticated } = props
+const Login = () => {
   const location = useLocation();
+  const [isLoggedIn, setIsLoggedIn] = useLogin()
 
   const handleSendLoginRequest = (values) => {
-    loginUser(values);
+    LoginApi.login(values)
+    .then(() => {
+      setIsLoggedIn(true)
+    })
+    .error(() => {
+      setIsLoggedIn(false)
+    })
   };
 
   const { from } = location.state || { from: { pathname: "/" } };
-  if (isAuthenticated) {
+  if (isLoggedIn) {
     return <Navigate to={from.pathname} />;
   }
   return (
@@ -26,14 +31,5 @@ const Login = (props) => {
     </div>
   );
 };
-Login.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired
-}
 
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.loginReducer.isAuthenticated,
-  fetching: state.loginReducer.fetching,
-  error: state.loginReducer.error,
-});
-
-export default connect(mapStateToProps, null)(Login);
+export default (Login);

@@ -1,50 +1,45 @@
 import React, { useState, useEffect } from "react";
 
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import InputSelect from "@spolander/shared-components/src/components/SelectRegular";
 import InputTextField from "@spolander/shared-components/src/components/InputRegular";
 import Autocomplete from "@spolander/shared-components/src/components/Autocomplete";
 import SliderRegular from "@spolander/shared-components/src/components/SliderRegular";
-import {
-  loadFieldAutocomplete,
-  getSystembolagetSubTypes,
-  getSystembolagetTypes,
-  getSystembolagetCountries,
-} from "./actions";
+import GetSystembolaget from "../../api/getSystembolaget";
+import GetWine from "../../api/getWine";
 
 const AddReviewForm = ({
-  autocompleteFieldData,
-  types = [],
-  subTypes = [],
-  countries = [],
   formdata,
   setFormData,
 }) => {
-  const [autocompleteResponse, setAutoCompleteResponse] = useState(null);
+  const [subTypes, setSubTypes] = useState([])
+  const [types, setTypes] = useState([])
+  const [countries, setCountries] = useState([])
+  const [autocomplete, setAutocomplete] = useState(null);
 
   useEffect(() => {
-    getSystembolagetTypes();
-    getSystembolagetSubTypes();
-    getSystembolagetCountries();
+    GetSystembolaget.getTypes()
+    .then((typesResponse) => setTypes(typesResponse))
+    GetSystembolaget.getSubTypes()
+    .then((subTypesResponse) => setSubTypes(subTypesResponse))
+    GetSystembolaget.getCountries()
+    .then((countriesResponse) => setCountries(countriesResponse))
   }, []);
 
   const autocompleteField = (field, value) => {
-    loadFieldAutocomplete(field, value);
+    GetWine.autocomplete(value, field)
+    .then((autocompleteResponse) => {
+      if (autocompleteResponse?.match?.length) {   
+        setAutocomplete(
+          autocompleteResponse.match.map((val) => ({
+            value: val,
+            label: val,
+          }))
+          );
+        } else {
+          setAutocomplete(null)
+        }
+    })
   };
-
-  useEffect(() => {
-    if (autocompleteFieldData) {
-      setAutoCompleteResponse(
-        autocompleteFieldData.match.map((val) => ({
-          value: val,
-          label: val,
-        }))
-      );
-    } else {
-      setAutoCompleteResponse(null);
-    }
-  }, [autocompleteFieldData]);
 
   return (
     <div className="addWineForm">
@@ -80,7 +75,7 @@ const AddReviewForm = ({
         }
         value={{ value: formdata.producer, label: formdata.producer }}
         placeholder="ex. Freixenet"
-        options={autocompleteResponse}
+        options={autocomplete}
       />
       <InputSelect
         values={types}
@@ -133,7 +128,7 @@ const AddReviewForm = ({
         value={{ value: formdata.boughtFrom, label: formdata.boughtFrom }}
         label="Inköpsplats"
         placeholder="ex. Systembolaget"
-        options={autocompleteResponse}
+        options={autocomplete}
       />
       {formdata.nr && (
         <InputTextField
@@ -187,7 +182,7 @@ const AddReviewForm = ({
               : [],
           })
         }
-        options={autocompleteResponse}
+        options={autocomplete}
       />
       <SliderRegular
         step={1}
@@ -215,16 +210,5 @@ const AddReviewForm = ({
   );
 };
 
-AddReviewForm.propTypes = {
-  autocompleteFieldData: PropTypes.object,
-};
 
-const mapStateToProps = (state) => ({
-  autocompleteFieldData: state.addReducer.fieldData,
-  countries: state.addReducer.countries,
-  subTypes: state.addReducer.subTypes,
-  types: state.addReducer.types,
-  fetching: state.addReducer.fetching,
-});
-
-export default connect(mapStateToProps, null)(AddReviewForm);
+export default AddReviewForm;
