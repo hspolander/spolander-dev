@@ -13,8 +13,7 @@ const Login = () => {
 
   const handleSendLoginRequest = (values) => {
     LoginApi.login(values)
-    .then((loginResponse) => {
-      console.log({loginResponse})
+    .then(() => {
       setIsLoggedIn(true)
     })
     .error(() => {

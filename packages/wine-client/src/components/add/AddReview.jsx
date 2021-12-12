@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { connect } from "react-redux";
 
 import Dialog from "@spolander/shared-components/src/components/Dialog";
 import ButtonRegular from "@spolander/shared-components/src/components/ButtonRegular";
@@ -9,18 +8,20 @@ import Alert from "@material-ui/lab/Alert";
 import AddReviewForm from "./AddReviewForm";
 import SearchSysForm from "./SearchSysForm";
 import SearchSysResult from "./SearchSysResult";
-import setScreenSize from "../global/actions";
-import { authUser } from "../login/actions";
 
 import "./add.scss";
 import GetSystembolaget from "../../api/getSystembolaget";
 import AddWineReview from "../../api/addReview";
+import LoginApi from "../../api/login";
+import { useLogin, useScreenSize } from "../../contextProviders";
 
 const AddReview = () => {
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
   const resultNode = useRef();
   const [sysWines, setSysWines] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [, setIsLoggedIn] = useLogin()
+  const [, setIsSmallScreen] = useScreenSize()
   const [addReviewFormData, setAddReviewFormData] = useState({
     name: "",
     producer: "",
@@ -39,11 +40,15 @@ const AddReview = () => {
   const [snackbar, setSnackbar] = useState(null)
 
   useEffect(() => {
-    authUser();
+    LoginApi.authRequest()
+    .then(() => {
+      setIsLoggedIn(true)
+    })
+    .catch(() => setIsLoggedIn(false))
     if (window.innerWidth <= 1024) {
-      setScreenSize(true);
+      setIsSmallScreen(true);
     } else {
-      setScreenSize(false);
+      setIsSmallScreen(false);
     }
   }, []);
 
@@ -190,8 +195,5 @@ const AddReview = () => {
 AddReview.propTypes = {
 };
 
-const mapStateToProps = (state) => ({
-  isSmallScreen: state.globalReducer.isSmallScreen,
-});
 
-export default connect(mapStateToProps, null)(AddReview);
+export default AddReview;

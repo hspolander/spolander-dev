@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-regular-svg-icons";
@@ -11,10 +10,11 @@ import AutocompleteSelect from "./autocompleteSelect";
 
 import "./search.scss";
 import SuperSearch from "../../../api/search";
+import { useScreenSize } from "../../../contextProviders";
 
-const Search = (props) => {
-  const { isSmallScreen } = props;
+const Search = () => {
   const [autocomplete, setAutocomplete] = useState(null)
+  const [isSmallScreen] = useScreenSize()
 
   const handleChange = (e) => {
     if (e?.target?.value.length > 1) {
@@ -58,9 +58,6 @@ const Search = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  isSmallScreen: state.globalReducer.isSmallScreen,
-});
 
 const MenuIcon = ({ navTo, icon, text }) => (
   <Link className="nostyle-link" to={navTo}>
@@ -76,4 +73,4 @@ MenuIcon.propTypes = {
   navTo: PropTypes.string.isRequired,
 };
 
-export default connect(mapStateToProps, null)(Search);
+export default Search;

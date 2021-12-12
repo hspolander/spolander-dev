@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { useParams, useLocation } from "react-router-dom"
 
 import SortWines from "./sortWines";
 import { SearchResult, SearchResultDetailed, Loader, Noresult } from "./result";
 import { usePrevious } from "../../hooks/hooks";
-import { authUser } from "../login/actions";
 
 import "./result.scss";
 import GetWines from "../../api/getWine";
+import { useLogin, useScreenSize } from "../../contextProviders";
+import LoginApi from "../../api/login";
 
-const ReviewResult = ({
-  isSmallScreen,
-}) => {
+const ReviewResult = () => {
   const location = useLocation();
   const prevLocation = usePrevious(location);
   const { property, value, table } = useParams();
   const [isLoading, setIsLoading] = useState(false)
   const [reviews, setReviews] = useState(null)
   const [isDetailedView, setIsDetailedView] = useState(false)
+  const [, setIsLoggedIn] = useLogin()
+  const [isSmallScreen] = useScreenSize()
 
   useEffect(() => {
-    authUser();
+    LoginApi.authRequest()
+    .then(() => {
+      setIsLoggedIn(true)
+    })
+    .catch(() => setIsLoggedIn(false))
     setIsLoading(true)
     GetWines.all({
       property,
@@ -101,12 +104,6 @@ const ReviewResult = ({
     </div>
   );
 };
-ReviewResult.propTypes = {
-  isSmallScreen: PropTypes.bool,
-};
 
-const mapStateToProps = (state) => ({
-  isSmallScreen: state.globalReducer.isSmallScreen,
-});
 
-export default connect(mapStateToProps, null)(ReviewResult);
+export default ReviewResult;

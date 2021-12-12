@@ -4,7 +4,8 @@ const path = '/api'
 
 const LoginApi = {
     login(credentials) {
-        return axios.post(`${path}/login`, { credentials })
+        const { username, password } = credentials
+        return axios.post(`${path}/login`, { username, password })
         .then((data) => data?.data)
     },
     authRequest(){
