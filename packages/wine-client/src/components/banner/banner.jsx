@@ -1,29 +1,22 @@
 import React from "react";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 
 import Logout from "./logout";
 import Logo from "./logo";
 import Search from "./search/search";
 
 import "./banner.scss";
+import { useLogin, useScreenSize } from "../../contextProviders";
 
-const Banner = ({ isAuthenticated, isSmallScreen }) => (
-  <div className="banner-main">
+const Banner = () => {
+  const [isSmallScreen] = useScreenSize()
+  const [isLoggedIn] = useLogin()
+  return (
+    <div className="banner-main">
     <Logo />
-    {isAuthenticated && <Search />}
-    {!isSmallScreen && isAuthenticated && <Logout />}
+    {isLoggedIn && <Search />}
+    {!isSmallScreen && isLoggedIn && <Logout />}
   </div>
-);
+)}
 
-Banner.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  isSmallScreen: PropTypes.bool.isRequired,
-};
 
-const mapStateToProps = (state) => ({
-  isSmallScreen: state.globalReducer.isSmallScreen,
-  isAuthenticated: state.loginReducer.isAuthenticated,
-});
-
-export default connect(mapStateToProps, null)(Banner);
+export default (Banner);

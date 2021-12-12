@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 
 import Banner from "./components/banner/banner";
@@ -8,77 +7,70 @@ import AddReview from "./components/add/AddReview";
 import ReviewResult from "./components/result/reviewResult";
 import LoginOverlay from "./components/login/loginOverlay";
 import Login from "./components/login/login";
-import setScreenSize from "./components/global/actions";
 
 import "./client.scss";
-import { authUser } from "./components/login/actions";
+import { useLogin, useScreenSize } from "./contextProviders";
 
-const Client = (props) => {
-  const  { isAuthenticated } = props
+const Client = () => {
+  const [, setIsSmallScreen] = useScreenSize()
+  const [isLoggedIn] = useLogin()
+
   useEffect(() => {
-    authUser()
     if (window.innerWidth <= 1024) {
-      setScreenSize(true);
+      setIsSmallScreen(true);
     } else {
-      setScreenSize(false);
+      setIsSmallScreen(false);
     }
   }, []);
 
   return (
     <Router>
-        <div>
-          <Banner />
-          <div className="main-content">
-            <Routes>
-              <Route
-                path="/reviews/:table/:property/:value"
-                element={
-                  <RequireAuth isAuthenticated={isAuthenticated}>
-                    <ReviewResult />
-                  </RequireAuth>
-                }
-              />
-              <Route
-                path="/reviews"
-                element={
-                  <RequireAuth isAuthenticated={isAuthenticated}>
-                    <ReviewResult />
-                  </RequireAuth>
-                }
-              />
-              <Route path="/login" element={<Login />} />
-              <Route path="/"
-                element={
-                  <RequireAuth isAuthenticated={isAuthenticated}>
-                    <AddReview />
-                  </RequireAuth>
-                }
-              />
-            </Routes>
+          <div>
+            <Banner />
+            <div className="main-content">
+              <Routes>
+                <Route
+                  path="/reviews/:table/:property/:value"
+                  element={
+                    <RequireAuth isLoggedIn={isLoggedIn}>
+                      <ReviewResult />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/reviews"
+                  element={
+                    <RequireAuth isLoggedIn={isLoggedIn}>
+                      <ReviewResult />
+                    </RequireAuth>
+                  }
+                />
+                <Route path="/login" element={<Login />} />
+                <Route path="/"
+                  element={
+                    <RequireAuth isLoggedIn={isLoggedIn}>
+                      <AddReview />
+                    </RequireAuth>
+                  }
+                />
+              </Routes>
+            </div>
           </div>
-        </div>
     </Router>
   );
 };
 
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.loginReducer.isAuthenticated,
-});
-Client.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired
-}
-
 const RequireAuth = (props) => {
-  const { children, isAuthenticated } = props;
-  return isAuthenticated ? children : <LoginOverlay />
+  const { children, isLoggedIn } = props;
+  return isLoggedIn ? children : <LoginOverlay />
 }
 RequireAuth.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node
   ]).isRequired,
-  isAuthenticated: PropTypes.bool.isRequired
+  isLoggedIn: PropTypes.bool.isRequired
 }
 
 
-export default connect(mapStateToProps, null)(Client);
+export default (Client);

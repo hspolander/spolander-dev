@@ -1,25 +1,37 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
 
-import { loginUser, authUser } from "./actions";
 import LoginForm from "./loginform";
 
 import "./login.scss";
+import LoginApi from "../../api/login";
+import { useLogin } from "../../contextProviders";
 
-const LoginOverlay = ({ isAuthenticated }) => {
+const LoginOverlay = () => {
+  const [isLoggedIn, setIsLoggedIn] = useLogin()
   const handleSendLoginRequest = (values) => {
-    loginUser(values);
+    LoginApi.login(values)
+    .then((loginResponse) => {
+      console.log({loginResponse})
+      setIsLoggedIn(true)
+    })
+    .error(() => {
+      setIsLoggedIn(false)
+    })
   };
 
   useEffect(() => {
-    authUser();
+    LoginApi.authRequest()
+    .then((authResponse) => {
+      console.log({authResponse})
+      setIsLoggedIn(true)
+    })
   }, []);
 
   return (
     <div>
-      {!isAuthenticated && <div className="loginOverlay" />}
-      {!isAuthenticated && (
+      {!isLoggedIn && <div className="loginOverlay" />}
+      {!isLoggedIn && (
         <div className="login overlay">
           <div className="sessionExpired">
             {" "}
@@ -32,13 +44,9 @@ const LoginOverlay = ({ isAuthenticated }) => {
     </div>
   );
 };
-LoginOverlay.propTypes = {
-  isAuthenticated: PropTypes.bool,
-};
 
 const mapStateToProps = (state) => ({
   redirectToReferrer: state.loginReducer.redirectToReferrer,
-  isAuthenticated: state.loginReducer.isAuthenticated,
   fetching: state.loginReducer.fetching,
   error: state.loginReducer.error,
   redirectedToLogin: state.loginReducer.redirectedToLogin,

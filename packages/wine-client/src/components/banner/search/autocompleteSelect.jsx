@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
-import { useOnClickOutside } from "../../../hooks";
+import { useOnClickOutside } from "../../../hooks/hooks";
 import Responseheader from "./responseheader";
 import Responselist from "./responselist";
 
 import "./search.scss";
 
-const AutocompleteSelect = ({ autocompleteSelect }) => {
-  const { data } = autocompleteSelect;
+const AutocompleteSelect = (props) => {
+  const { autocompleteObjects } = props;
   const [collapsed, onClickOutside] = useState(false);
   const responsedivs = [];
 
@@ -20,10 +20,10 @@ const AutocompleteSelect = ({ autocompleteSelect }) => {
       behavior: "smooth",
       block: "start",
     });
-  }, [data]);
+  }, [autocompleteObjects]);
 
-  Object.keys(data).forEach((responsetype) => {
-    const responselist = autocompleteSelect.data[responsetype];
+  Object.keys(autocompleteObjects).forEach((responsetype) => {
+    const responselist = autocompleteObjects[responsetype];
     responsedivs.push(
       <li key={responsetype} onClick={() => onClickOutside(true)}>
         <Responseheader responseheader={responsetype} />
@@ -41,7 +41,7 @@ const AutocompleteSelect = ({ autocompleteSelect }) => {
 };
 
 AutocompleteSelect.propTypes = {
-  autocompleteSelect: PropTypes.object,
+  autocompleteObjects: PropTypes.object,
 };
 
 export default AutocompleteSelect;

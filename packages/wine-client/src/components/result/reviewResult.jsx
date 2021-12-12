@@ -5,7 +5,7 @@ import { useParams, useLocation } from "react-router-dom"
 
 import SortWines from "./sortWines";
 import { SearchResult, SearchResultDetailed, Loader, Noresult } from "./result";
-import { usePrevious } from "../../hooks";
+import { usePrevious } from "../../hooks/hooks";
 import { authUser } from "../login/actions";
 
 import "./result.scss";
