@@ -20,6 +20,11 @@ const GetSystembolaget = {
         return axios.get(`${path}/getSysWines`, { params: { name, type, subType, country, price, year, description, volume, productCode } })
         .then((data) => data?.data?.data)
     },
+    getAdditionalWineData(url) {
+        const urlEncoded = encodeURIComponent(`https://www.systembolaget.se${url}`);
+        return axios.get(`${path}/getAdditionalWineData`, { params: { url: urlEncoded } })
+        .then((data) => data?.data?.data)
+    }
 }
 
 export default GetSystembolaget

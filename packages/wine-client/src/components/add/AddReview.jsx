@@ -11,18 +11,12 @@ import SearchSysForm from "./SearchSysForm";
 import SearchSysResult from "./SearchSysResult";
 import setScreenSize from "../global/actions";
 import { authUser } from "../login/actions";
-import {
-  loadSystembolagetWineData,
-} from "./actions";
 
 import "./add.scss";
 import GetSystembolaget from "../../api/getSystembolaget";
 import AddWineReview from "../../api/addReview";
 
-const AddReview = ({
-  singleSysWineData,
-  addedWine,
-}) => {
+const AddReview = () => {
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
   const resultNode = useRef();
   const [sysWines, setSysWines] = useState(null)
@@ -45,8 +39,47 @@ const AddReview = ({
   const [snackbar, setSnackbar] = useState(null)
 
   useEffect(() => {
-    if (singleSysWineData) {
-      const { product } = singleSysWineData;
+    authUser();
+    if (window.innerWidth <= 1024) {
+      setScreenSize(true);
+    } else {
+      setScreenSize(false);
+    }
+  }, []);
+
+  const getSysWines = (formdata) => {
+    setIsLoading(true)
+    GetSystembolaget.getSysWines(formdata)
+    .then((sysWinesResponse) => setSysWines(sysWinesResponse))
+    .finally(() => setIsLoading(false))
+  }
+
+  const validateInputs = async () => {
+    const requiredFields = ["name", "type", "score", "comment"];
+    const areRequiredInputsFilled = requiredFields.every(
+      (requiredField) => addReviewFormData[requiredField]
+    );
+    if (areRequiredInputsFilled) {
+      setIsLoading(true)
+      AddWineReview.one(addReviewFormData)
+      .then(() => {
+        setSnackbar({messageType: "success", message: `Vi har lagt till ditt vin ${addReviewFormData?.name}`});
+        setIsReviewDialogOpen(false)
+      })
+      .catch(() => {
+        setSnackbar({messageType: "error", message: "Något gick fel. Vänligen sök hjälp hos din make."});
+      })
+      .finally(() => setIsLoading(false))
+    } else {
+      setSnackbar({messageType: "error", message: "Du måste fylla i fälten Namn, Färg, Betyg samt Recension."});
+    }
+  };
+
+  const onAddSystembolagetWineClick = async (url) => {
+    setIsLoading(true)
+    GetSystembolaget.getAdditionalWineData(url)
+    .then((additionalWineData) => {
+      const { product } = additionalWineData;
       const {
         alcoholPercentage,
         categoryLevel2,
@@ -78,50 +111,11 @@ const AddReview = ({
         volume: `${volume} ml`,
         comment: alcoholPercentage ? `\r\nAlk.: ${alcoholPercentage}%` : "",
       });
-    }
-  }, [singleSysWineData]);
-
-  useEffect(() => {
-    setIsReviewDialogOpen(false);
-  }, [addedWine]);
-
-  useEffect(() => {
-    authUser();
-    if (window.innerWidth <= 1024) {
-      setScreenSize(true);
-    } else {
-      setScreenSize(false);
-    }
-  }, []);
-
-  const getSysWines = (formdata) => {
-    setIsLoading(true)
-    GetSystembolaget.getSysWines(formdata)
-    .then((sysWinesResponse) => setSysWines(sysWinesResponse))
+    })
+    .catch(() => {
+      setSnackbar({messageType: "error", message: "Något gick fel. Vänligen sök hjälp hos din make."});
+    })
     .finally(() => setIsLoading(false))
-  }
-
-  const validateInputs = async () => {
-    const requiredFields = ["name", "type", "score", "comment"];
-    const areRequiredInputsFilled = requiredFields.every(
-      (requiredField) => addReviewFormData[requiredField]
-    );
-    if (areRequiredInputsFilled) {
-      AddWineReview.one(addReviewFormData)
-      .then(() => {
-        setSnackbar({messageType: "success", message: `Vi har lagt till ditt vin ${addReviewFormData?.name}`});
-        setIsReviewDialogOpen(false)
-      })
-      .catch(() => {
-        setSnackbar({messageType: "error", message: "Något gick fel. Vänligen sök hjälp hos din make."});
-      })
-    } else {
-      setSnackbar({messageType: "error", message: "Du måste fylla i fälten Namn, Färg, Betyg samt Recension."});
-    }
-  };
-
-  const onAddSystembolagetWineClick = async (url) => {
-    await loadSystembolagetWineData(url);
     setIsReviewDialogOpen(true);
   };
 
@@ -197,11 +191,7 @@ AddReview.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  data: state.addReducer.data,
-  error: state.addReducer.error,
   isSmallScreen: state.globalReducer.isSmallScreen,
-  singleSysWineData: state.addReducer.singleSysWineData,
-  addedWine: state.addReducer.addedWine,
 });
 
 export default connect(mapStateToProps, null)(AddReview);
