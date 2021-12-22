@@ -51,6 +51,7 @@ const scraperObject = {
     }
 
     const wines = wineResponses.map((wine) => {
+      console.log(wine);
       const {
         productNumber,
         productNameBold,
