@@ -1,12 +1,11 @@
 import { insertSystembolagetWines } from '../controller/queries';
 
 const scraperObject = {
-  async scraper(browser, period) {
+  async scraper(browser, params) {
     const page = await browser.newPage();
     let wineResponses = [];
-
-    const winesRawHtml = period === 'all'
-      ? 'https://www.systembolaget.se/sok/?categoryLevel1=Vin'
+    const winesRawHtml = params
+      ? `https://www.systembolaget.se/sok/?${params}`
       : 'https://www.systembolaget.se/sok/?categoryLevel1=Vin&newArrivalType=Nytt%20senaste%20månaden';
 
     page.on('response', async (response) => {
@@ -51,52 +50,141 @@ const scraperObject = {
     }
 
     const wines = wineResponses.map((wine) => {
-      console.log(wine);
       const {
+        productId,
         productNumber,
         productNameBold,
         productNameThin,
+        category,
+        productNumberShort,
+        producerName,
+        supplierName,
+        isKosher,
+        bottleText,
+        restrictedParcelQuantity,
+        isOrganic,
+        isSustainableChoice,
+        isClimateSmartPackaging,
+        isEthical,
+        ethicalLabel,
+        isWebLaunch,
+        productLaunchDate,
+        isCompletelyOutOfStock,
+        isTemporaryOutOfStock,
+        alcoholPercentage,
+        volumeText,
+        volume,
+        price,
+        country,
+        originLevel1,
+        originLevel2,
+        categoryLevel1,
         categoryLevel2,
         categoryLevel3,
+        categoryLevel4,
+        customCategoryTitle,
+        assortmentText,
+        usage,
         taste,
+        tasteSymbols,
+        tasteClockGroupBitter,
+        tasteClockGroupSmokiness,
+        tasteClockBitter,
+        tasteClockFruitacid,
+        tasteClockBody,
+        tasteClockRoughness,
+        tasteClockSweetness,
+        tasteClockSmokiness,
+        tasteClockCasque,
+        assortment,
+        recycleFee,
+        isManufacturingCountry,
+        isRegionalRestricted,
+        packagingLevel1,
+        isNews,
         images,
+        isDiscontinued,
+        isSupplierTemporaryNotAvailable,
+        sugarContent,
+        sugarContentGramPer100ml,
+        seal,
         vintage,
-        volumeText,
-        price,
+        grapes,
+        otherSelections,
+        tasteClocks,
+        color,
+        dishPoints,
       } = wine;
-      //  productCode, name1, name2(ej årtal), type(cat1 och cat2?),
-      //  subType(cat3), description(taste), year, volume, price
-
-      const getType = (type) => {
-        switch (type) {
-          case 'Vitt':
-            return 'Vitt vin';
-          case 'Rött':
-            return 'Rött vin';
-          case 'Rosé':
-            return 'Rosévin';
-
-          default:
-            return '';
-        }
-      };
       const wineImage = images.length > 0 ? images[0].imageUrl : '';
+      const wineSeal = seal.length > 0 ? seal.join('') : '';
 
       return {
-        productCode: productNumber,
-        name1: productNameBold,
-        name2: productNameThin,
-        type: getType(categoryLevel2),
-        subType:
-          categoryLevel3
-          || 'Drycken finns i lager hos leverantör, inte hos Systembolaget. Den är inte provad av Systembolaget och därför visas ingen smakbeskrivning. Drycken kan finnas i butiker vid lokal efterfrågan.',
-        description: taste,
-        image: wineImage,
-        year: vintage,
-        volume: volumeText,
-        price: `${price}:-`,
+        productId,
+        productNumber,
+        productNameBold,
+        productNameThin,
+        category,
+        productNumberShort,
+        producerName,
+        supplierName,
+        isKosher,
+        bottleText,
+        restrictedParcelQuantity,
+        isOrganic,
+        isSustainableChoice,
+        isClimateSmartPackaging,
+        isEthical,
+        ethicalLabel,
+        isWebLaunch,
+        productLaunchDate,
+        isCompletelyOutOfStock,
+        isTemporaryOutOfStock,
+        alcoholPercentage,
+        volumeText,
+        volume,
+        price,
+        country,
+        originLevel1,
+        originLevel2,
+        categoryLevel1,
+        categoryLevel2,
+        categoryLevel3,
+        categoryLevel4,
+        customCategoryTitle,
+        assortmentText,
+        usage,
+        taste,
+        tasteSymbols,
+        tasteClockGroupBitter,
+        tasteClockGroupSmokiness,
+        tasteClockBitter,
+        tasteClockFruitacid,
+        tasteClockBody,
+        tasteClockRoughness,
+        tasteClockSweetness,
+        tasteClockSmokiness,
+        tasteClockCasque,
+        assortment,
+        recycleFee,
+        isManufacturingCountry,
+        isRegionalRestricted,
+        packagingLevel1,
+        isNews,
+        isDiscontinued,
+        isSupplierTemporaryNotAvailable,
+        sugarContent,
+        sugarContentGramPer100ml,
+        wineSeal,
+        vintage,
+        grapes,
+        otherSelections,
+        tasteClocks,
+        color,
+        dishPoints,
+        wineImage,
       };
     });
+    console.log(wines.length);
 
     insertSystembolagetWines(wines);
     await browser.close();

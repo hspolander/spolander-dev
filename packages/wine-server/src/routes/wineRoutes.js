@@ -16,7 +16,9 @@ import {
   getWineByForeignProperty,
   getDistinctFromSystembolagetWines,
   getUnpopulatedImagesArray,
+  getNewUnpopulatedImagesArray,
   addImageBlobIdToSystembolagetWine,
+  addImageBlobIdToNewSystembolagetWine,
   getSystembolagetImageBlobById,
   insertImageBlob,
   getHashByUsername,
@@ -24,6 +26,7 @@ import {
   getDistinctFromWine,
   getDistinctFromGrapes,
   getSystembolagWines,
+  getNewSystembolagWines,
   getAutocompleteResponse,
   getSystembolagCountries,
   getSystembolagSubTypes,
@@ -41,9 +44,9 @@ import {
 
 const https = require('https');
 
-const fetchData = async (period) => {
+const fetchData = async (params) => {
   const browserInstance = browserObject.startBrowser();
-  return scraperController(browserInstance, period);
+  return scraperController(browserInstance, params);
 };
 
 const getUuidTtl = () => {
@@ -110,7 +113,21 @@ export default (server) => {
       && cookies.WINE_UUID
       && (await validateSession(cookies.WINE_UUID))
     ) {
-      fetchData(req.query.period ? req.query.period : null);
+      // await fetchData('categoryLevel1=Vin&priceTo=80');
+      // await fetchData('categoryLevel1=Vin&priceFrom=80&priceTo=90');
+      // await fetchData('categoryLevel1=Vin&priceFrom=90&priceTo=100');
+      // await fetchData('categoryLevel1=Vin&priceFrom=100&priceTo=115');
+      // await fetchData('categoryLevel1=Vin&priceFrom=115&priceTo=125');
+      // await fetchData('categoryLevel1=Vin&priceFrom=125&priceTo=135');
+      // await fetchData('categoryLevel1=Vin&priceFrom=135&priceTo=150');
+      // await fetchData('categoryLevel1=Vin&priceFrom=150&priceTo=175');
+      // await fetchData('categoryLevel1=Vin&priceFrom=175&priceTo=200');
+      // await fetchData('categoryLevel1=Vin&priceFrom=200&priceTo=250');
+      await fetchData('categoryLevel1=Vin&priceFrom=250&priceTo=300');
+      // await fetchData('categoryLevel1=Vin&priceFrom=300&priceTo=400');
+      // await fetchData('categoryLevel1=Vin&priceFrom=400&priceTo=500');
+      // await fetchData('categoryLevel1=Vin&priceFrom=500&priceTo=1000');
+      // await fetchData('categoryLevel1=Vin&priceFrom=1000');
       res.json({
         error: false,
         Message: 'Pull wines initiated',
@@ -175,6 +192,38 @@ export default (server) => {
           const imageBlob = await systembolagetImage.buffer();
           const imageBlobId = await insertImageBlob(imageBlob);
           await addImageBlobIdToSystembolagetWine(imageBlobId, image.image);
+        }, i * 700);
+      });
+      res.json({
+        error: false,
+        Message: 'Populating images',
+      });
+    } else {
+      res.clearCookie('WINE_UUID');
+      res.json({
+        error: true,
+        session: 'nosessionRedirect',
+        message: 'Session expired/invalid',
+        data: null,
+      });
+    }
+  });
+
+  server.get('/api/populateNewSystembolagetImages', async (req, res) => {
+    const { cookies } = req;
+
+    if (
+      cookies
+      && cookies.WINE_UUID
+      && (await validateSession(cookies.WINE_UUID))
+    ) {
+      const images = await getNewUnpopulatedImagesArray();
+      await images.forEach(async (image, i) => {
+        setTimeout(async () => {
+          const systembolagetImage = await fetch(image.image);
+          const imageBlob = await systembolagetImage.buffer();
+          const imageBlobId = await insertImageBlob(imageBlob);
+          await addImageBlobIdToNewSystembolagetWine(imageBlobId, image.image);
         }, i * 700);
       });
       res.json({
@@ -507,6 +556,30 @@ export default (server) => {
         query.volume,
         query.productCode,
       );
+      res.json({ error: false, message: 'Success', data: systembolagetWines });
+    } else {
+      res.clearCookie('WINE_UUID');
+      res.json({
+        error: true,
+        session: 'nosessionRedirect',
+        message: 'Session expired/invalid',
+        data: null,
+      });
+    }
+  });
+
+  server.get('/api/getNewSysWines', async (req, res) => {
+    const { cookies } = req;
+    if (
+      cookies
+      && cookies.WINE_UUID
+      && (await validateSession(cookies.WINE_UUID))
+    ) {
+      const { query } = req;
+      const {
+        name, type, subtype, country, price, vintage, description, volume, productId,
+      } = query;
+      const systembolagetWines = await getNewSystembolagWines(name, type, subtype, country, price, vintage, description, volume, productId);
       res.json({ error: false, message: 'Success', data: systembolagetWines });
     } else {
       res.clearCookie('WINE_UUID');
