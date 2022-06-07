@@ -13,10 +13,10 @@ const SearchSysForm = (props) => {
     type: "",
     subType: "",
     country: "",
-    year: "",
+    vintage: "",
     description: "",
     volume: "",
-    productCode: "",
+    productId: "",
   });
 const { getSysWines } = props
 
@@ -26,10 +26,10 @@ const { getSysWines } = props
       type: null,
       subType: null,
       country: "",
-      year: "",
+      vintage: "",
       description: "",
       volume: "",
-      productCode: "",
+      productId: "",
     });
   };
 
@@ -83,12 +83,12 @@ const { getSysWines } = props
       />
       <InputTextField
         variant="outlined"
-        value={formdata.year}
+        value={formdata.vintage}
         label="År"
         placeholder="ex. 2012"
         onEnterPress={() => getSysWines(formdata)}
         onChange={(val) =>
-          setFormData({ ...formdata, year: val.replace(/\D/g, "") })
+          setFormData({ ...formdata, vintage: val.replace(/\D/g, "") })
         }
       />
       <div className="buttonDiv">

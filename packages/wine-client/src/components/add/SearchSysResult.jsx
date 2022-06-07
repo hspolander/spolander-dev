@@ -41,7 +41,7 @@ const SearchSysResult = ({ systemWineData, addWineClick }) => {
           <GridList cellHeight={200} className={classes.gridList}>
             {visibleWines.map((wine) => (
               <SystembolagetProductCard
-                key={wine.name1}
+                key={wine.productId}
                 wine={wine}
                 addWineClick={addWineClick}
               />

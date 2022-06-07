@@ -10,6 +10,8 @@ import {
   getUuidByUser,
   getUuidByUuid,
   getGrapesByWine,
+  getGrapesByNewSysWine,
+  getTasteSymbolsByNewSysWine,
   getReviewsByWine,
   getUserByUsername,
   getWineByProperty,
@@ -580,7 +582,13 @@ export default (server) => {
         name, type, subtype, country, price, vintage, description, volume, productId,
       } = query;
       const systembolagetWines = await getNewSystembolagWines(name, type, subtype, country, price, vintage, description, volume, productId);
-      res.json({ error: false, message: 'Success', data: systembolagetWines });
+      const winesWithGrapesAndTasteSymbols = await Promise.all(systembolagetWines.map(async (sysWine) => {
+        const grapes = await getGrapesByNewSysWine(sysWine.productId);
+        const tasteSymbols = await getTasteSymbolsByNewSysWine(sysWine.productId);
+        return { ...sysWine, grapes, tasteSymbols };
+      }));
+
+      res.json({ error: false, message: 'Success', data: winesWithGrapesAndTasteSymbols });
     } else {
       res.clearCookie('WINE_UUID');
       res.json({

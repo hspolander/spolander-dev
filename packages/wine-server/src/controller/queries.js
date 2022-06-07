@@ -485,9 +485,9 @@ export const insertSystembolagetWines = (wineArray) => {
   });
 };
 
-const getSystembolagWinesQuery = (statements) => query(
+const getSystembolagWinesQuery = async (statements) => query(
   `SELECT systembolaget_wines.*, systembolaget_images.* 
-    FROM systembolaget_wines
+    FROM systembolaget_wines 
     INNER JOIN systembolaget_images ON systembolaget_wines.fk_image_blob_id = systembolaget_images.id 
     WHERE ${statements.join(' AND ')} ; `,
 )
@@ -501,9 +501,10 @@ const getSystembolagWinesQuery = (statements) => query(
     console.log(e);
   });
 
-const getNewSystembolagWinesQuery = (statements) => query(
-  `SELECT new_systembolaget_wines.*  
-      FROM new_systembolaget_wines
+const getNewSystembolagWinesQuery = async (statements) => query(
+  `SELECT new_systembolaget_wines.*, new_systembolaget_images.*    
+      FROM new_systembolaget_wines 
+      LEFT JOIN new_systembolaget_images ON new_systembolaget_wines.fk_image_blob_id = new_systembolaget_images.id 
       WHERE ${statements.join(' AND ')} ; `,
 )
   .then((cursor) => {
@@ -831,6 +832,30 @@ export const getGrapesByWine = (id) => query(`SELECT * FROM grapes WHERE grapes.
     return null;
   },
 );
+
+export const getGrapesByNewSysWine = (id) => query(`SELECT * FROM new_systembolaget_grapes WHERE new_systembolaget_grapes.fk_systembolaget_wine_id = ${id}`).then(
+  (cursor) => {
+    if (cursor[0]) {
+      return cursor[0];
+    }
+    return null;
+  },
+).catch((error) => {
+  console.log(error);
+  console.log(id);
+});
+
+export const getTasteSymbolsByNewSysWine = (id) => query(`SELECT * FROM new_systembolaget_taste_symbols WHERE new_systembolaget_taste_symbols.fk_systembolaget_wine_id = ${id}`).then(
+  (cursor) => {
+    if (cursor[0]) {
+      return cursor[0];
+    }
+    return null;
+  },
+).catch((error) => {
+  console.log(error);
+  console.log(id);
+});
 
 export const getReviewsByWine = (id) => query(`SELECT * FROM reviews WHERE reviews.fk_wine_id = ${id}`).then(
   (cursor) => {
