@@ -1,4 +1,5 @@
 import SQL from 'sql-template-strings';
+import booleanAsTinyInt from '../util/booleanAsTinyInt';
 import { query } from '../util/db';
 
 const getRowValues = (table, prop, displayTitle, data) => {
@@ -85,45 +86,193 @@ export const getAutocompleteResponse = (startsWith) => {
   return Promise.all(autocompleteQueries);
 };
 
+export const insertSystembolagetGrape = (id, grape) => {
+  query('INSERT INTO systembolaget_grapes (fk_systembolaget_wine_id, grape) VALUES(?, ?)', [id, grape]);
+};
+
+export const insertSystembolagetTasteSymbol = (id, tasteSymbol) => {
+  query('INSERT INTO systembolaget_taste_symbols (fk_systembolaget_wine_id, taste_symbol) VALUES(?, ?)', [id, tasteSymbol]);
+};
+
 export const insertSystembolagetWine = (
-  country = null,
-  description = null,
-  image = null,
-  link = null,
-  name1 = null,
-  name2 = null,
+  productId = null,
+  productNumber = null,
+  productNameBold = null,
+  productNameThin = null,
+  category = null,
+  productNumberShort = null,
+  producerName = null,
+  supplierName = null,
+  isKosher = null,
+  bottleText = null,
+  restrictedParcelQuantity = null,
+  isOrganic = null,
+  isSustainableChoice = null,
+  isClimateSmartPackaging = null,
+  isEthical = null,
+  isWebLaunch = null,
+  productLaunchDate = null,
+  isCompletelyOutOfStock = null,
+  isTemporaryOutOfStock = null,
+  alcoholPercentage = null,
+  volumeText = null,
+  volume = null,
   price = null,
-  type = null,
-  volume = 0,
-  year = null,
-  subType = null,
-  productCode = null,
+  country = null,
+  originLevel1 = null,
+  originLevel2 = null,
+  categoryLevel1 = null,
+  categoryLevel2 = null,
+  categoryLevel3 = null,
+  categoryLevel4 = null,
+  customCategoryTitle = null,
+  assortmentText = null,
+  taste = null,
+  tasteClockBitter = null,
+  tasteClockFruitacid = null,
+  tasteClockBody = null,
+  tasteClockRoughness = null,
+  tasteClockSweetness = null,
+  tasteClockSmokiness = null,
+  tasteClockCasque = null,
+  assortment = null,
+  recycleFee = null,
+  isManufacturingCountry = null,
+  isRegionalRestricted = null,
+  packagingLevel1 = null,
+  isNews = null,
+  isDiscontinued = null,
+  isSupplierTemporaryNotAvailable = null,
+  sugarContent = null,
+  sugarContentGramPer100ml = null,
+  seal = null,
+  vintage = null,
+  color = null,
+  wineImage = null,
+  usage = null,
 ) => query(
-  'INSERT INTO systembolaget_wines(country, description, image, link, name1, name2, price, type, volume, year, productCode, subType) '
-      + 'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+  'INSERT INTO systembolaget_wines(productId, '
+    + 'productNumber, '
+    + 'productNameBold, '
+    + 'productNameThin, '
+    + 'category, '
+    + 'productNumberShort, '
+    + 'producerName, '
+    + 'supplierName, '
+    + 'isKosher, '
+    + 'bottleText, '
+    + 'restrictedParcelQuantity, '
+    + 'isOrganic, '
+    + 'isSustainableChoice, '
+    + 'isClimateSmartPackaging, '
+    + 'isEthical, '
+    + 'isWebLaunch, '
+    + 'productLaunchDate, '
+    + 'isCompletelyOutOfStock, '
+    + 'isTemporaryOutOfStock, '
+    + 'alcoholPercentage, '
+    + 'volumeText, '
+    + 'volume, '
+    + 'price, '
+    + 'country, '
+    + 'originLevel1, '
+    + 'originLevel2, '
+    + 'categoryLevel1, '
+    + 'categoryLevel2, '
+    + 'categoryLevel3, '
+    + 'categoryLevel4, '
+    + 'customCategoryTitle, '
+    + 'assortmentText, '
+    + 'taste, '
+    + 'tasteClockBitter, '
+    + 'tasteClockFruitacid, '
+    + 'tasteClockBody, '
+    + 'tasteClockRoughness, '
+    + 'tasteClockSweetness, '
+    + 'tasteClockSmokiness, '
+    + 'tasteClockCasque, '
+    + 'assortment, '
+    + 'recycleFee, '
+    + 'isManufacturingCountry, '
+    + 'isRegionalRestricted, '
+    + 'packagingLevel1, '
+    + 'isNews, '
+    + 'isDiscontinued, '
+    + 'isSupplierTemporaryNotAvailable, '
+    + 'sugarContent, '
+    + 'sugarContentGramPer100ml, '
+    + 'seal, '
+    + 'vintage, '
+    + 'color, '
+    + 'image, '
+    + 'usageField) '
+        + 'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '
+        + '?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
   [
-    country,
-    description,
-    image,
-    link,
-    name1,
-    name2,
-    price,
-    type,
+    parseInt(productId, 10),
+    productNumber,
+    productNameBold,
+    productNameThin,
+    category,
+    productNumberShort,
+    producerName,
+    supplierName,
+    isKosher,
+    bottleText,
+    restrictedParcelQuantity,
+    isOrganic,
+    isSustainableChoice,
+    isClimateSmartPackaging,
+    isEthical,
+    isWebLaunch,
+    productLaunchDate,
+    isCompletelyOutOfStock,
+    isTemporaryOutOfStock,
+    alcoholPercentage,
+    volumeText,
     volume,
-    year,
-    productCode,
-    subType,
+    price,
+    country,
+    originLevel1,
+    originLevel2,
+    categoryLevel1,
+    categoryLevel2,
+    categoryLevel3,
+    categoryLevel4,
+    customCategoryTitle,
+    assortmentText,
+    taste,
+    tasteClockBitter,
+    tasteClockFruitacid,
+    tasteClockBody,
+    tasteClockRoughness,
+    tasteClockSweetness,
+    tasteClockSmokiness,
+    tasteClockCasque,
+    assortment,
+    recycleFee,
+    isManufacturingCountry,
+    isRegionalRestricted,
+    packagingLevel1,
+    isNews,
+    isDiscontinued,
+    isSupplierTemporaryNotAvailable,
+    sugarContent,
+    sugarContentGramPer100ml,
+    seal,
+    vintage,
+    color,
+    wineImage,
+    usage,
   ],
 )
   .then((cursor) => cursor[0].insertId)
   .catch((error) => {
     console.log(error);
-    console.log(productCode);
   });
 
-export const getSystembolagetWineById = (productCode) => query(
-  `SELECT image FROM systembolaget_wines WHERE productCode like ${productCode}; `,
+export const getSystembolagetWineById = (productId) => query(
+  `SELECT * FROM systembolaget_wines WHERE productId = ${productId}; `,
 )
   .then((cursor) => {
     if (cursor[0][0]) {
@@ -133,60 +282,149 @@ export const getSystembolagetWineById = (productCode) => query(
   })
   .catch((error) => {
     console.log(error);
-    console.log(productCode);
   });
 
-export const updateSystembolagetWine = (image, productCode) => query('UPDATE systembolaget_wines SET image = ? WHERE productCode = ?', [
+export const updateSystembolagetWine = (image, productId) => query('UPDATE systembolaget_wines SET image = ? WHERE productId = ?', [
   image,
-  productCode,
+  productId,
 ]).catch((error) => {
   console.log(error);
-  console.log(productCode);
 });
 
 export const insertSystembolagetWines = (wineArray) => {
   wineArray.forEach(async (wine) => {
     const {
-      country,
-      description,
-      image,
-      link,
-      name1,
-      name2,
-      price,
-      type,
+      productId,
+      productNumber,
+      productNameBold,
+      productNameThin,
+      category,
+      productNumberShort,
+      producerName,
+      supplierName,
+      isKosher,
+      bottleText,
+      restrictedParcelQuantity,
+      isOrganic,
+      isSustainableChoice,
+      isClimateSmartPackaging,
+      isEthical,
+      isWebLaunch,
+      productLaunchDate,
+      isCompletelyOutOfStock,
+      isTemporaryOutOfStock,
+      alcoholPercentage,
+      volumeText,
       volume,
-      year,
-      subType,
-      productCode,
+      price,
+      country,
+      originLevel1,
+      originLevel2,
+      categoryLevel1,
+      categoryLevel2,
+      categoryLevel3,
+      categoryLevel4,
+      customCategoryTitle,
+      assortmentText,
+      usage,
+      taste,
+      tasteSymbols,
+      tasteClockBitter,
+      tasteClockFruitacid,
+      tasteClockBody,
+      tasteClockRoughness,
+      tasteClockSweetness,
+      tasteClockSmokiness,
+      tasteClockCasque,
+      assortment,
+      recycleFee,
+      isManufacturingCountry,
+      isRegionalRestricted,
+      packagingLevel1,
+      isNews,
+      isDiscontinued,
+      isSupplierTemporaryNotAvailable,
+      sugarContent,
+      sugarContentGramPer100ml,
+      wineSeal,
+      vintage,
+      grapes,
+      color,
+      wineImage,
     } = wine;
-    const alreadyInserted = await getSystembolagetWineById(productCode);
+    const alreadyInserted = await getSystembolagetWineById(productId);
     if (!alreadyInserted) {
       await insertSystembolagetWine(
-        country,
-        description,
-        image,
-        link,
-        name1,
-        name2,
-        price,
-        type,
+        productId,
+        productNumber,
+        productNameBold,
+        productNameThin,
+        category,
+        productNumberShort,
+        producerName,
+        supplierName,
+        booleanAsTinyInt(isKosher),
+        bottleText,
+        restrictedParcelQuantity,
+        booleanAsTinyInt(isOrganic),
+        booleanAsTinyInt(isSustainableChoice),
+        booleanAsTinyInt(isClimateSmartPackaging),
+        booleanAsTinyInt(isEthical),
+        booleanAsTinyInt(isWebLaunch),
+        productLaunchDate,
+        booleanAsTinyInt(isCompletelyOutOfStock),
+        booleanAsTinyInt(isTemporaryOutOfStock),
+        alcoholPercentage,
+        volumeText,
         volume,
-        year,
-        subType,
-        productCode,
+        price,
+        country,
+        originLevel1,
+        originLevel2,
+        categoryLevel1,
+        categoryLevel2,
+        categoryLevel3,
+        categoryLevel4,
+        customCategoryTitle,
+        assortmentText,
+        taste,
+        tasteClockBitter,
+        tasteClockFruitacid,
+        tasteClockBody,
+        tasteClockRoughness,
+        tasteClockSweetness,
+        tasteClockSmokiness,
+        tasteClockCasque,
+        assortment,
+        recycleFee,
+        booleanAsTinyInt(isManufacturingCountry),
+        booleanAsTinyInt(isRegionalRestricted),
+        packagingLevel1,
+        booleanAsTinyInt(isNews),
+        booleanAsTinyInt(isDiscontinued),
+        booleanAsTinyInt(isSupplierTemporaryNotAvailable),
+        sugarContent,
+        sugarContentGramPer100ml,
+        wineSeal,
+        vintage,
+        color,
+        wineImage,
+        usage,
       );
+      grapes.forEach(async (grape) => {
+        await insertSystembolagetGrape(productId, grape);
+      });
+      tasteSymbols.forEach(async (tasteSymbol) => {
+        await insertSystembolagetTasteSymbol(productId, tasteSymbol);
+      });
     } else if (!alreadyInserted?.image) {
-      await updateSystembolagetWine(image, productCode);
+      await updateSystembolagetWine(wineImage, productId);
     }
   });
 };
 
-const getSystembolagWinesQuery = (statements) => query(
-  `SELECT systembolaget_wines.*, systembolaget_images.* 
-    FROM systembolaget_wines
-    INNER JOIN systembolaget_images ON systembolaget_wines.fk_image_blob_id = systembolaget_images.id 
-    WHERE ${statements.join(' AND ')} ; `,
+const getSystembolagWinesQuery = async (statements) => query(
+  `SELECT systembolaget_wines.* FROM systembolaget_wines WHERE ${statements.join(' AND ')} ; `,
 )
   .then((cursor) => {
     if (cursor[0]) {
@@ -204,39 +442,39 @@ export const getSystembolagWines = async (
   subType,
   country,
   price,
-  year,
+  vintage,
   description,
   volume,
-  productCode,
+  productId,
 ) => {
   const statements = [];
   if (name) {
     statements.push(
-      ` (systembolaget_wines.name1 like '%${name}%' OR systembolaget_wines.name2 like '%${name}%') `,
+      ` (systembolaget_wines.productNameBold like '%${name}%' OR systembolaget_wines.productNameThin like '%${name}%') `,
     );
   }
   if (type) {
-    statements.push(` systembolaget_wines.type like '${type}' `);
+    statements.push(` systembolaget_wines.categoryLevel2 like '${type}' `);
   }
   if (subType) {
-    statements.push(` systembolaget_wines.subType like '${subType}' `);
+    statements.push(` systembolaget_wines.categoryLevel3 like '${subType}' `);
   }
   if (price) {
     statements.push(` systembolaget_wines.price like '${price}' `);
   }
-  if (year) {
-    statements.push(` systembolaget_wines.year like '${year}' `);
+  if (vintage) {
+    statements.push(` systembolaget_wines.vintage like '${vintage}' `);
   }
   if (volume) {
     statements.push(` systembolaget_wines.volume like '${volume}' `);
   }
   if (description) {
     statements.push(
-      ` systembolaget_wines.description like '%${description}%' `,
+      ` (systembolaget_wines.taste like '%${description}%' OR systembolaget_wines.usageField like '%${description}%') `,
     );
   }
-  if (productCode) {
-    statements.push(` systembolaget_wines.productCode like '${productCode}' `);
+  if (productId) {
+    statements.push(` systembolaget_wines.productCode like '${productId}' `);
   }
   if (country) {
     statements.push(` systembolaget_wines.country like '${country}' `);
@@ -257,53 +495,18 @@ export const getUnpopulatedImagesArray = () => query(
   return null;
 });
 
-export const getSystembolagetProductCodeByImage = (image) => query(
-  `SELECT productCode 
-      FROM systembolaget_wines 
-      WHERE image = '${image}' 
-      AND fk_image_blob_id IS NULL;`,
-).then((cursor) => {
-  if (cursor[0]) {
-    return cursor[0];
-  }
-  return null;
-});
-
-export const insertImageBlob = (blob) => query('INSERT INTO systembolaget_images (image_blob) VALUES(?)', [blob])
-  .then((cursor) => cursor[0].insertId)
-  .catch((error) => {
-    console.log(error);
-  });
-
-export const getSystembolagetImageBlobById = (id) => query(`SELECT * FROM systembolaget_images where id = ${id};`)
-  .then((cursor) => cursor[0])
-  .catch((error) => {
-    console.log(error);
-  });
-
-export const addImageBlobIdToSystembolagetWine = (blobId, image) => query(
-  `UPDATE systembolaget_wines 
-      SET systembolaget_wines.fk_image_blob_id = ? 
-      WHERE image = ?`,
-  [blobId, image],
-)
-  .then((cursor) => cursor[0])
-  .catch((error) => {
-    console.log(error);
-  });
-
 export const getSystembolagSubTypes = () => query(
-  `SELECT DISTINCT subType
+  `SELECT DISTINCT categoryLevel3
       FROM systembolaget_wines
-      WHERE subType IS NOT NULL
-      GROUP BY subType
-      ORDER BY COUNT(subType) DESC;
+      WHERE categoryLevel3 IS NOT NULL
+      GROUP BY categoryLevel3
+      ORDER BY COUNT(categoryLevel3) DESC;
       `,
 ).then((cursor) => {
   if (cursor[0]) {
     return cursor[0].map((entity) => ({
-      name: entity.subType,
-      value: entity.subType,
+      name: entity.categoryLevel3,
+      value: entity.categoryLevel3,
     }));
   }
   return null;
@@ -326,45 +529,19 @@ export const getSystembolagCountries = () => query(
   return null;
 });
 
-export const getSystembolagVolumes = () => query(
-  `SELECT DISTINCT volume
-            FROM systembolaget_wines
-            WHERE volume IS NOT NULL
-            GROUP BY volume
-            ORDER BY COUNT(volume) DESC;
-            `,
-).then((cursor) => {
-  if (cursor[0]) {
-    return cursor[0].map((entity) => ({
-      name: entity.volume,
-      value: entity.volume,
-    }));
-  }
-  return null;
-});
-
 export const getSystembolagTypes = () => query(
-  `SELECT DISTINCT type
+  `SELECT DISTINCT categoryLevel2
       FROM systembolaget_wines 
-      WHERE type IS NOT NULL
-      GROUP BY type
-      ORDER BY COUNT(type) DESC;
+      WHERE categoryLevel2 IS NOT NULL
+      GROUP BY categoryLevel2
+      ORDER BY COUNT(categoryLevel2) DESC;
       `,
 ).then((cursor) => {
   if (cursor[0]) {
     return cursor[0].map((entity) => ({
-      name: entity.type,
-      value: entity.type,
+      name: entity.categoryLevel2,
+      value: entity.categoryLevel2,
     }));
-  }
-  return null;
-});
-
-export const getSystembolagWineByArtnr = async (productCode) => query(
-  `SELECT * from systembolager_wines WHERE productCode like ${productCode}; `,
-).then((cursor) => {
-  if (cursor[0][0]) {
-    return cursor[0][0];
   }
   return null;
 });
@@ -443,6 +620,28 @@ export const getGrapesByWine = (id) => query(`SELECT * FROM grapes WHERE grapes.
     return null;
   },
 );
+
+export const getGrapesBySysWine = (id) => query(`SELECT grape FROM systembolaget_grapes WHERE systembolaget_grapes.fk_systembolaget_wine_id = ${id}`).then(
+  (cursor) => {
+    if (cursor[0]) {
+      return cursor[0];
+    }
+    return null;
+  },
+).catch((error) => {
+  console.log(error);
+});
+
+export const getTasteSymbolsBySysWine = (id) => query(`SELECT * FROM systembolaget_taste_symbols WHERE systembolaget_taste_symbols.fk_systembolaget_wine_id = ${id}`).then(
+  (cursor) => {
+    if (cursor[0]) {
+      return cursor[0];
+    }
+    return null;
+  },
+).catch((error) => {
+  console.log(error);
+});
 
 export const getReviewsByWine = (id) => query(`SELECT * FROM reviews WHERE reviews.fk_wine_id = ${id}`).then(
   (cursor) => {
@@ -525,7 +724,6 @@ export const insertReview = (id, reviewer, comment, score) => query(
 export const insertGrape = (id, grape) => {
   query('INSERT INTO grapes (fk_wine_id, grape) VALUES(?, ?)', [id, grape]);
 };
-
 export const insertUser = (username, hash, name) => {
   query('INSERT INTO users (username, hash, name) VALUES(?, ?, ?)', [
     username,

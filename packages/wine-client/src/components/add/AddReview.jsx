@@ -80,47 +80,37 @@ const AddReview = () => {
     }
   };
 
-  const onAddSystembolagetWineClick = async (url) => {
+  const onAddSystembolagetWineClick = async (product) => {
     setIsLoading(true)
-    GetSystembolaget.getAdditionalWineData(url)
-    .then((additionalWineData) => {
-      const { product } = additionalWineData;
-      const {
-        alcoholPercentage,
-        categoryLevel2,
-        categoryLevel3,
-        country,
-        grapes,
-        priceInclVat,
-        productNumber,
-        producerName,
-        productNameBold,
-        productNameThin,
-        vintage,
-        volume,
-      } = product;
-      const name1 = productNameBold && productNameBold.trim();
-      const name2 = productNameThin ? `, ${productNameThin}` : "";
-      setAddReviewFormData({
-        name: name1 + name2,
-        country,
-        grapes: grapes && grapes.split(";"),
-        price: priceInclVat,
-        type: categoryLevel2 && categoryLevel2,
-        subType: categoryLevel3 && categoryLevel3,
-        producer: producerName,
-        nr: productNumber,
-        year: vintage,
-        boughtFrom: "Systembolaget",
-        score: 0,
-        volume: `${volume} ml`,
-        comment: alcoholPercentage ? `\r\nAlk.: ${alcoholPercentage}%` : "",
-      });
-    })
-    .catch(() => {
-      setSnackbar({messageType: "error", message: "Något gick fel. Vänligen sök hjälp hos din make."});
-    })
-    .finally(() => setIsLoading(false))
+    const {
+      alcoholPercentage,
+      categoryLevel1,
+      categoryLevel2,
+      categoryLevel3,
+      country,
+      grapes,
+      price,
+      productNumber,
+      producerName,
+      name,
+      vintage,
+      volume,
+    } = product;
+    setAddReviewFormData({
+      name,
+      country,
+      grapes,
+      price,
+      type: `${categoryLevel2} ${categoryLevel1.toLowerCase()}`,
+      subType: categoryLevel3 || '',
+      producer: producerName,
+      nr: productNumber,
+      year: vintage,
+      boughtFrom: "Systembolaget",
+      score: 0,
+      volume: `${volume} ml`,
+      comment: alcoholPercentage ? `\r\nAlk.: ${alcoholPercentage}%` : "",
+    });
     setIsReviewDialogOpen(true);
   };
 

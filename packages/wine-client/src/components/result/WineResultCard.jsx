@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
@@ -21,23 +20,20 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-
-const SystembolagetProductCard = ({ wine, addWineClick }) => {
+const WineResultCard = ({ wine }) => {
   const classes = useStyles();
-  const { productNumber, name, country, volumeText, vintage, image } = wine;
-
+  console.log(wine)
+  const { link, image, name1, country, volume, year } = wine;
   return (
-    <GridListTile className={classes.tile} key={productNumber}>
+    <GridListTile className={classes.tile} key={link}>
       <Paper>
-        <img className={classes.image} src={image !== "" ? `${image}_400.png` : "https://cdn.systembolaget.se/490dd4/contentassets/ef797556881d4e20b334529d96b975a2/placeholder-wine-bottle.png"} alt="Vin bild"/>
+        <img className={classes.image} src={image} alt={name1} />
         <GridListTileBar
-          title={`${name}, ${vintage}`}
-          subtitle={<span>{`${country} ${volumeText}`}</span>}
+          title={`${name1}, ${year}`}
+          subtitle={<span>{`${country} ${volume}`}</span>}
           actionIcon={
             <IconButton
-              aria-label={`Add ${name}`}
-              className={classes.icon}
-              onClick={() => addWineClick(wine)}
+              aria-label={`Add ${name1}`}
             >
               <ControlPointIcon />
             </IconButton>
@@ -47,8 +43,5 @@ const SystembolagetProductCard = ({ wine, addWineClick }) => {
     </GridListTile>
   );
 };
-SystembolagetProductCard.propTypes = {
-  wine: PropTypes.object.isRequired,
-};
 
-export default SystembolagetProductCard;
+export default WineResultCard;
