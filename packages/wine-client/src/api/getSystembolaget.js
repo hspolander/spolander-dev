@@ -7,7 +7,7 @@ const unpackNewSysWine = (wine) => {
     // productId,
     productNumber,
     productNameBold,
-    // productNameThin,
+    productNameThin,
     // category,
     // productNumberShort,
     // producerName,
@@ -27,7 +27,6 @@ const unpackNewSysWine = (wine) => {
     // volumeText,
     // volume,
     // price,
-    // country,
     // originLevel1,
     // originLevel2,
     // categoryLevel1,
@@ -55,17 +54,17 @@ const unpackNewSysWine = (wine) => {
     // sugarContent,
     // sugarContentGramPer100ml,
     // wineSeal,
-    vintage,
+    // vintage,
     // color,
-    wineImage,
+    // wineImage,
     // usage
+    image,
     } = wine
 
     const wineLinkText = productNameBold.replaceAll(' ', '-')
     const link = `https://www.systembolaget.se/produkt/vin/${wineLinkText}-${productNumber}/`
-    const name = `${productNameBold}, ${productNameBold}`
-
-    return {...wine, image: wineImage, link, name, year: vintage }
+    const name = `${productNameBold}, ${productNameThin}`
+    return {...wine, link, name, image }
 }
 
 const GetSystembolaget = {
@@ -90,6 +89,11 @@ const GetSystembolaget = {
         const { name, type, subType, country, price, vintage, description, volume, productId } = values
         return axios.get(`${path}/getNewSysWines`, { params: { name, type, subType, country, price, vintage, description, volume, productId } })
         .then((data) => data?.data?.data.map((wine) => unpackNewSysWine(wine)))
+    },
+    getSystembolagetImageBlobById(blobId) {
+        return fetch(`${path}/getSystembolagetImageBlobById?blobId=${blobId}`)
+        .then(response => response.blob())
+        .then((myBlob) => URL.createObjectURL(myBlob))
     },
     getAdditionalWineData(url) {
         const urlEncoded = encodeURIComponent(`https://www.systembolaget.se${url}`);

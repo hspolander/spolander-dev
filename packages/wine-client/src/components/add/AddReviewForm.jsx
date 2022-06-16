@@ -15,14 +15,18 @@ const AddReviewForm = ({
   const [types, setTypes] = useState([])
   const [countries, setCountries] = useState([])
   const [autocomplete, setAutocomplete] = useState(null);
+  const [isLoading, setIsLoading] = useState();
 
   useEffect(() => {
+    setIsLoading(true)
     GetSystembolaget.getTypes()
     .then((typesResponse) => setTypes(typesResponse))
     GetSystembolaget.getSubTypes()
     .then((subTypesResponse) => setSubTypes(subTypesResponse))
     GetSystembolaget.getCountries()
     .then((countriesResponse) => setCountries(countriesResponse))
+    .finally(() => setIsLoading(false)
+    )
   }, []);
 
   const autocompleteField = (field, value) => {
@@ -53,10 +57,13 @@ const AddReviewForm = ({
     nr,
     grapes,
     comment,
-    score } = formdata
+    score 
+  } = formdata
 
   return (
     <div className="addWineForm">
+    {!isLoading &&(
+    <>
       <InputTextField
         onChange={(val) => setFormData({ ...formdata, name: val })}
         label="Namn"
@@ -65,7 +72,7 @@ const AddReviewForm = ({
         required
         placeholder="ex Spier signature"
       />
-      <Autocomplete
+        <Autocomplete
         onInputChange={(inputValue) =>
           autocompleteField("producer", inputValue)
         }
@@ -88,26 +95,26 @@ const AddReviewForm = ({
         value={{ value: producer, label: producer }}
         placeholder="ex. Freixenet"
         options={autocomplete}
-      />
-      <InputSelect
+        />
+        <InputSelect
         values={types}
         value={type}
         label="Vinkategori"
         onChange={(val) => setFormData({ ...formdata, type: val })}
-      />
-      <InputSelect
+        />
+        <InputSelect
         values={subTypes}
         value={subType}
         label="Vinunderkategori"
         onChange={(val) => setFormData({ ...formdata, subType: val })}
-      />
-      <InputSelect
+        />
+        <InputSelect
         values={countries}
         value={country}
         label="Land"
         onChange={(val) => setFormData({ ...formdata, country: val })}
-      />
-      <InputTextField
+        />
+        <InputTextField
         variant="outlined"
         value={year}
         label="År"
@@ -115,8 +122,8 @@ const AddReviewForm = ({
         onChange={(val) =>
           setFormData({ ...formdata, year: val.replace(/\D/g, "") })
         }
-      />
-      <Autocomplete
+        />
+        <Autocomplete
         onInputChange={(inputValue) =>
           autocompleteField("boughtFrom", inputValue)
         }
@@ -132,33 +139,33 @@ const AddReviewForm = ({
             boughtFrom: boughtFrom || (e.target.value
               ? e.target.value
               : ""),
-          })
-        }
-        variant="outlined"
-        value={{ value: boughtFrom, label: boughtFrom }}
-        label="Inköpsplats"
-        placeholder="ex. Systembolaget"
-        options={autocomplete}
-      />
-      {nr && (
-        <InputTextField
-          onChange={(val) => setFormData({ ...formdata, nr: val })}
+            })
+          }
           variant="outlined"
-          readOnly
-          value={nr}
-          label="Artikelnummer"
-        />
-      )}
-      {boughtFrom && (
-        <InputTextField
-          onChange={(val) => setFormData({ ...formdata, price: val })}
-          variant="outlined"
-          value={price}
-          label="Pris"
-        />
-      )}
-      <Autocomplete
-        variant="outlined"
+          value={{ value: boughtFrom, label: boughtFrom }}
+          label="Inköpsplats"
+          placeholder="ex. Systembolaget"
+          options={autocomplete}
+          />
+          {nr && (
+            <InputTextField
+            onChange={(val) => setFormData({ ...formdata, nr: val })}
+            variant="outlined"
+            readOnly
+            value={nr}
+            label="Artikelnummer"
+            />
+            )}
+            {boughtFrom && (
+              <InputTextField
+              onChange={(val) => setFormData({ ...formdata, price: val })}
+              variant="outlined"
+              value={price}
+              label="Pris"
+              />
+              )}
+              <Autocomplete
+              variant="outlined"
         label="Druva"
         isMulti
         inputType="single"
@@ -166,18 +173,18 @@ const AddReviewForm = ({
         placeholder="Ex. Chardonnay"
         value={
           grapes && grapes.length > 0
-            ? grapes.map((grape) => ({
-                value: grape,
-                label: grape,
-              }))
-            : []
+          ? grapes.map((grape) => ({
+            value: grape,
+            label: grape,
+          }))
+          : []
         }
         onBlur={(e) =>
           setFormData({
             ...formdata,
             grapes: e.target.value
-              ? grapes.map((newGrapes) => newGrapes.value)
-              : grapes,
+            ? grapes.map((newGrapes) => newGrapes.value)
+            : grapes,
           })
         }
         formatCreateLabel={(val) => `${val} (ny)`}
@@ -188,13 +195,13 @@ const AddReviewForm = ({
           setFormData({
             ...formdata,
             grapes: selectedValue
-              ? selectedValue.map((newGrapes) => newGrapes.value)
-              : [],
+            ? selectedValue.map((newGrapes) => newGrapes.value)
+            : [],
           })
         }
         options={autocomplete}
-      />
-      <SliderRegular
+        />
+        <SliderRegular
         step={1}
         max={10}
         min={0}
@@ -215,10 +222,11 @@ const AddReviewForm = ({
         required
         wide
         multiRows={7}
-      />
-    </div>
-  );
-};
-
-
+        /></>)
+        }
+        </div>
+        );
+      };
+      
+      
 export default AddReviewForm;

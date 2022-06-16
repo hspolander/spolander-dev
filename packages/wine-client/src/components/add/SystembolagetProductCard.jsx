@@ -21,21 +21,23 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
+
 const SystembolagetProductCard = ({ wine, addWineClick }) => {
   const classes = useStyles();
-  const { link, image, name1, country, volume, year } = wine;
+  const { productNumber, name, country, volumeText, vintage, image } = wine;
+
   return (
-    <GridListTile className={classes.tile} key={link}>
+    <GridListTile className={classes.tile} key={productNumber}>
       <Paper>
-        <img className={classes.image} src={image} alt={name1} />
+        <img className={classes.image} src={image !== "" ? `${image}_400.png` : "https://cdn.systembolaget.se/490dd4/contentassets/ef797556881d4e20b334529d96b975a2/placeholder-wine-bottle.png"} alt="Vin bild"/>
         <GridListTileBar
-          title={`${name1}, ${year}`}
-          subtitle={<span>{`${country} ${volume}`}</span>}
+          title={`${name}, ${vintage}`}
+          subtitle={<span>{`${country} ${volumeText}`}</span>}
           actionIcon={
             <IconButton
-              aria-label={`Add ${name1}`}
+              aria-label={`Add ${name}`}
               className={classes.icon}
-              onClick={() => addWineClick(link)}
+              onClick={() => addWineClick(wine)}
             >
               <ControlPointIcon />
             </IconButton>

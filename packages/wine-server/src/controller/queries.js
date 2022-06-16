@@ -327,6 +327,8 @@ export const getNewSystembolagetWineById = (productId) => query(
   `SELECT * FROM new_systembolaget_wines WHERE productId = ${productId}; `,
 )
   .then((cursor) => {
+    console.log(productId);
+    console.log(cursor);
     if (cursor[0][0]) {
       return cursor[0][0];
     }
@@ -502,9 +504,9 @@ const getSystembolagWinesQuery = async (statements) => query(
   });
 
 const getNewSystembolagWinesQuery = async (statements) => query(
-  `SELECT new_systembolaget_wines.*, new_systembolaget_images.*    
+  `SELECT new_systembolaget_wines.*, systembolaget_images.*    
       FROM new_systembolaget_wines 
-      LEFT JOIN new_systembolaget_images ON new_systembolaget_wines.fk_image_blob_id = new_systembolaget_images.id 
+      LEFT JOIN systembolaget_images ON new_systembolaget_wines.fk_image_blob_id = systembolaget_images.id 
       WHERE ${statements.join(' AND ')} ; `,
 )
   .then((cursor) => {
@@ -833,7 +835,7 @@ export const getGrapesByWine = (id) => query(`SELECT * FROM grapes WHERE grapes.
   },
 );
 
-export const getGrapesByNewSysWine = (id) => query(`SELECT * FROM new_systembolaget_grapes WHERE new_systembolaget_grapes.fk_systembolaget_wine_id = ${id}`).then(
+export const getGrapesByNewSysWine = (id) => query(`SELECT grape FROM new_systembolaget_grapes WHERE new_systembolaget_grapes.fk_systembolaget_wine_id = ${id}`).then(
   (cursor) => {
     if (cursor[0]) {
       return cursor[0];
