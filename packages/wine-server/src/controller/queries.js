@@ -86,52 +86,15 @@ export const getAutocompleteResponse = (startsWith) => {
   return Promise.all(autocompleteQueries);
 };
 
-export const insertNewSystembolagetGrape = (id, grape) => {
-  query('INSERT INTO new_systembolaget_grapes (fk_systembolaget_wine_id, grape) VALUES(?, ?)', [id, grape]);
+export const insertSystembolagetGrape = (id, grape) => {
+  query('INSERT INTO systembolaget_grapes (fk_systembolaget_wine_id, grape) VALUES(?, ?)', [id, grape]);
 };
 
-export const insertNewSystembolagetTasteSymbol = (id, tasteSymbol) => {
-  query('INSERT INTO new_systembolaget_taste_symbols (fk_systembolaget_wine_id, taste_symbol) VALUES(?, ?)', [id, tasteSymbol]);
+export const insertSystembolagetTasteSymbol = (id, tasteSymbol) => {
+  query('INSERT INTO systembolaget_taste_symbols (fk_systembolaget_wine_id, taste_symbol) VALUES(?, ?)', [id, tasteSymbol]);
 };
 
 export const insertSystembolagetWine = (
-  country = null,
-  description = null,
-  image = null,
-  link = null,
-  name1 = null,
-  name2 = null,
-  price = null,
-  type = null,
-  volume = 0,
-  year = null,
-  subType = null,
-  productCode = null,
-) => query(
-  'INSERT INTO systembolaget_wines(country, description, image, link, name1, name2, price, type, volume, year, productCode, subType) '
-      + 'VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-  [
-    country,
-    description,
-    image,
-    link,
-    name1,
-    name2,
-    price,
-    type,
-    volume,
-    year,
-    productCode,
-    subType,
-  ],
-)
-  .then((cursor) => cursor[0].insertId)
-  .catch((error) => {
-    console.log(error);
-    console.log(productCode);
-  });
-
-export const insertNewSystembolagetWine = (
   productId = null,
   productNumber = null,
   productNameBold = null,
@@ -188,7 +151,7 @@ export const insertNewSystembolagetWine = (
   wineImage = null,
   usage = null,
 ) => query(
-  'INSERT INTO new_systembolaget_wines(productId, '
+  'INSERT INTO systembolaget_wines(productId, '
     + 'productNumber, '
     + 'productNameBold, '
     + 'productNameThin, '
@@ -306,11 +269,10 @@ export const insertNewSystembolagetWine = (
   .then((cursor) => cursor[0].insertId)
   .catch((error) => {
     console.log(error);
-    console.log(productId);
   });
 
-export const getSystembolagetWineById = (productCode) => query(
-  `SELECT * FROM systembolaget_wines WHERE productCode = ${productCode}; `,
+export const getSystembolagetWineById = (productId) => query(
+  `SELECT * FROM systembolaget_wines WHERE productId = ${productId}; `,
 )
   .then((cursor) => {
     if (cursor[0][0]) {
@@ -320,39 +282,13 @@ export const getSystembolagetWineById = (productCode) => query(
   })
   .catch((error) => {
     console.log(error);
-    console.log(productCode);
   });
 
-export const getNewSystembolagetWineById = (productId) => query(
-  `SELECT * FROM new_systembolaget_wines WHERE productId = ${productId}; `,
-)
-  .then((cursor) => {
-    console.log(productId);
-    console.log(cursor);
-    if (cursor[0][0]) {
-      return cursor[0][0];
-    }
-    return null;
-  })
-  .catch((error) => {
-    console.log(error);
-    console.log(productId);
-  });
-
-export const updateSystembolagetWine = (image, productCode) => query('UPDATE systembolaget_wines SET image = ? WHERE productCode = ?', [
-  image,
-  productCode,
-]).catch((error) => {
-  console.log(error);
-  console.log(productCode);
-});
-
-export const updateNewSystembolagetWine = (image, productId) => query('UPDATE new_systembolaget_wines SET image = ? WHERE productId = ?', [
+export const updateSystembolagetWine = (image, productId) => query('UPDATE systembolaget_wines SET image = ? WHERE productId = ?', [
   image,
   productId,
 ]).catch((error) => {
   console.log(error);
-  console.log(productId);
 });
 
 export const insertSystembolagetWines = (wineArray) => {
@@ -416,9 +352,9 @@ export const insertSystembolagetWines = (wineArray) => {
       color,
       wineImage,
     } = wine;
-    const alreadyInserted = await getNewSystembolagetWineById(productId);
+    const alreadyInserted = await getSystembolagetWineById(productId);
     if (!alreadyInserted) {
-      await insertNewSystembolagetWine(
+      await insertSystembolagetWine(
         productId,
         productNumber,
         productNameBold,
@@ -476,38 +412,19 @@ export const insertSystembolagetWines = (wineArray) => {
         usage,
       );
       grapes.forEach(async (grape) => {
-        await insertNewSystembolagetGrape(productId, grape);
+        await insertSystembolagetGrape(productId, grape);
       });
       tasteSymbols.forEach(async (tasteSymbol) => {
-        await insertNewSystembolagetTasteSymbol(productId, tasteSymbol);
+        await insertSystembolagetTasteSymbol(productId, tasteSymbol);
       });
     } else if (!alreadyInserted?.image) {
-      await updateNewSystembolagetWine(wineImage, productId);
+      await updateSystembolagetWine(wineImage, productId);
     }
   });
 };
 
 const getSystembolagWinesQuery = async (statements) => query(
-  `SELECT systembolaget_wines.*, systembolaget_images.* 
-    FROM systembolaget_wines 
-    INNER JOIN systembolaget_images ON systembolaget_wines.fk_image_blob_id = systembolaget_images.id 
-    WHERE ${statements.join(' AND ')} ; `,
-)
-  .then((cursor) => {
-    if (cursor[0]) {
-      return cursor[0];
-    }
-    return null;
-  })
-  .catch((e) => {
-    console.log(e);
-  });
-
-const getNewSystembolagWinesQuery = async (statements) => query(
-  `SELECT new_systembolaget_wines.*, systembolaget_images.*    
-      FROM new_systembolaget_wines 
-      LEFT JOIN systembolaget_images ON new_systembolaget_wines.fk_image_blob_id = systembolaget_images.id 
-      WHERE ${statements.join(' AND ')} ; `,
+  `SELECT systembolaget_wines.* FROM systembolaget_wines WHERE ${statements.join(' AND ')} ; `,
 )
   .then((cursor) => {
     if (cursor[0]) {
@@ -525,53 +442,6 @@ export const getSystembolagWines = async (
   subType,
   country,
   price,
-  year,
-  description,
-  volume,
-  productCode,
-) => {
-  const statements = [];
-  if (name) {
-    statements.push(
-      ` (systembolaget_wines.name1 like '%${name}%' OR systembolaget_wines.name2 like '%${name}%') `,
-    );
-  }
-  if (type) {
-    statements.push(` systembolaget_wines.type like '${type}' `);
-  }
-  if (subType) {
-    statements.push(` systembolaget_wines.subType like '${subType}' `);
-  }
-  if (price) {
-    statements.push(` systembolaget_wines.price like '${price}' `);
-  }
-  if (year) {
-    statements.push(` systembolaget_wines.year like '${year}' `);
-  }
-  if (volume) {
-    statements.push(` systembolaget_wines.volume like '${volume}' `);
-  }
-  if (description) {
-    statements.push(
-      ` systembolaget_wines.description like '%${description}%' `,
-    );
-  }
-  if (productCode) {
-    statements.push(` systembolaget_wines.productCode like '${productCode}' `);
-  }
-  if (country) {
-    statements.push(` systembolaget_wines.country like '${country}' `);
-  }
-
-  return getSystembolagWinesQuery(statements);
-};
-
-export const getNewSystembolagWines = async (
-  name,
-  type,
-  subType,
-  country,
-  price,
   vintage,
   description,
   volume,
@@ -580,37 +450,37 @@ export const getNewSystembolagWines = async (
   const statements = [];
   if (name) {
     statements.push(
-      ` (new_systembolaget_wines.productNameBold like '%${name}%' OR new_systembolaget_wines.productNameThin like '%${name}%') `,
+      ` (systembolaget_wines.productNameBold like '%${name}%' OR systembolaget_wines.productNameThin like '%${name}%') `,
     );
   }
   if (type) {
-    statements.push(` new_systembolaget_wines.categoryLevel2 like '${type}' `);
+    statements.push(` systembolaget_wines.categoryLevel2 like '${type}' `);
   }
   if (subType) {
-    statements.push(` new_systembolaget_wines.categoryLevel3 like '${subType}' `);
+    statements.push(` systembolaget_wines.categoryLevel3 like '${subType}' `);
   }
   if (price) {
-    statements.push(` new_systembolaget_wines.price like '${price}' `);
+    statements.push(` systembolaget_wines.price like '${price}' `);
   }
   if (vintage) {
-    statements.push(` new_systembolaget_wines.vintage like '${vintage}' `);
+    statements.push(` systembolaget_wines.vintage like '${vintage}' `);
   }
   if (volume) {
-    statements.push(` new_systembolaget_wines.volume like '${volume}' `);
+    statements.push(` systembolaget_wines.volume like '${volume}' `);
   }
   if (description) {
     statements.push(
-      ` (new_systembolaget_wines.taste like '%${description}%' OR new_systembolaget_wines.usageField like '%${description}%') `,
+      ` (systembolaget_wines.taste like '%${description}%' OR systembolaget_wines.usageField like '%${description}%') `,
     );
   }
   if (productId) {
-    statements.push(` new_systembolaget_wines.productCode like '${productId}' `);
+    statements.push(` systembolaget_wines.productCode like '${productId}' `);
   }
   if (country) {
-    statements.push(` new_systembolaget_wines.country like '${country}' `);
+    statements.push(` systembolaget_wines.country like '${country}' `);
   }
 
-  return getNewSystembolagWinesQuery(statements);
+  return getSystembolagWinesQuery(statements);
 };
 
 export const getUnpopulatedImagesArray = () => query(
@@ -625,76 +495,18 @@ export const getUnpopulatedImagesArray = () => query(
   return null;
 });
 
-export const getNewUnpopulatedImagesArray = () => query(
-  `SELECT DISTINCT image 
-      FROM new_systembolaget_wines 
-      WHERE fk_image_blob_id IS NULL 
-      LIMIT 500;`,
-).then((cursor) => {
-  if (cursor[0]) {
-    return cursor[0];
-  }
-  return null;
-});
-
-export const getSystembolagetProductCodeByImage = (image) => query(
-  `SELECT productCode 
-      FROM systembolaget_wines 
-      WHERE image = '${image}' 
-      AND fk_image_blob_id IS NULL;`,
-).then((cursor) => {
-  if (cursor[0]) {
-    return cursor[0];
-  }
-  return null;
-});
-
-export const insertImageBlob = (blob) => query('INSERT INTO systembolaget_images (image_blob) VALUES(?)', [blob])
-  .then((cursor) => cursor[0].insertId)
-  .catch((error) => {
-    console.log(error);
-  });
-
-export const getSystembolagetImageBlobById = (id) => query(`SELECT * FROM systembolaget_images where id = ${id};`)
-  .then((cursor) => cursor[0])
-  .catch((error) => {
-    console.log(error);
-  });
-
-export const addImageBlobIdToSystembolagetWine = (blobId, image) => query(
-  `UPDATE systembolaget_wines 
-        SET systembolaget_wines.fk_image_blob_id = ? 
-        WHERE image = ?`,
-  [blobId, image],
-)
-  .then((cursor) => cursor[0])
-  .catch((error) => {
-    console.log(error);
-  });
-
-export const addImageBlobIdToNewSystembolagetWine = (blobId, image) => query(
-  `UPDATE new_systembolaget_wines 
-          SET new_systembolaget_wines.fk_image_blob_id = ? 
-          WHERE image = ?`,
-  [blobId, image],
-)
-  .then((cursor) => cursor[0])
-  .catch((error) => {
-    console.log(error);
-  });
-
 export const getSystembolagSubTypes = () => query(
-  `SELECT DISTINCT subType
+  `SELECT DISTINCT categoryLevel3
       FROM systembolaget_wines
-      WHERE subType IS NOT NULL
-      GROUP BY subType
-      ORDER BY COUNT(subType) DESC;
+      WHERE categoryLevel3 IS NOT NULL
+      GROUP BY categoryLevel3
+      ORDER BY COUNT(categoryLevel3) DESC;
       `,
 ).then((cursor) => {
   if (cursor[0]) {
     return cursor[0].map((entity) => ({
-      name: entity.subType,
-      value: entity.subType,
+      name: entity.categoryLevel3,
+      value: entity.categoryLevel3,
     }));
   }
   return null;
@@ -717,45 +529,19 @@ export const getSystembolagCountries = () => query(
   return null;
 });
 
-export const getSystembolagVolumes = () => query(
-  `SELECT DISTINCT volume
-            FROM systembolaget_wines
-            WHERE volume IS NOT NULL
-            GROUP BY volume
-            ORDER BY COUNT(volume) DESC;
-            `,
-).then((cursor) => {
-  if (cursor[0]) {
-    return cursor[0].map((entity) => ({
-      name: entity.volume,
-      value: entity.volume,
-    }));
-  }
-  return null;
-});
-
 export const getSystembolagTypes = () => query(
-  `SELECT DISTINCT type
+  `SELECT DISTINCT categoryLevel2
       FROM systembolaget_wines 
-      WHERE type IS NOT NULL
-      GROUP BY type
-      ORDER BY COUNT(type) DESC;
+      WHERE categoryLevel2 IS NOT NULL
+      GROUP BY categoryLevel2
+      ORDER BY COUNT(categoryLevel2) DESC;
       `,
 ).then((cursor) => {
   if (cursor[0]) {
     return cursor[0].map((entity) => ({
-      name: entity.type,
-      value: entity.type,
+      name: entity.categoryLevel2,
+      value: entity.categoryLevel2,
     }));
-  }
-  return null;
-});
-
-export const getSystembolagWineByArtnr = async (productCode) => query(
-  `SELECT * from systembolager_wines WHERE productCode like ${productCode}; `,
-).then((cursor) => {
-  if (cursor[0][0]) {
-    return cursor[0][0];
   }
   return null;
 });
@@ -835,7 +621,7 @@ export const getGrapesByWine = (id) => query(`SELECT * FROM grapes WHERE grapes.
   },
 );
 
-export const getGrapesByNewSysWine = (id) => query(`SELECT grape FROM new_systembolaget_grapes WHERE new_systembolaget_grapes.fk_systembolaget_wine_id = ${id}`).then(
+export const getGrapesBySysWine = (id) => query(`SELECT grape FROM systembolaget_grapes WHERE systembolaget_grapes.fk_systembolaget_wine_id = ${id}`).then(
   (cursor) => {
     if (cursor[0]) {
       return cursor[0];
@@ -844,10 +630,9 @@ export const getGrapesByNewSysWine = (id) => query(`SELECT grape FROM new_system
   },
 ).catch((error) => {
   console.log(error);
-  console.log(id);
 });
 
-export const getTasteSymbolsByNewSysWine = (id) => query(`SELECT * FROM new_systembolaget_taste_symbols WHERE new_systembolaget_taste_symbols.fk_systembolaget_wine_id = ${id}`).then(
+export const getTasteSymbolsBySysWine = (id) => query(`SELECT * FROM systembolaget_taste_symbols WHERE systembolaget_taste_symbols.fk_systembolaget_wine_id = ${id}`).then(
   (cursor) => {
     if (cursor[0]) {
       return cursor[0];
@@ -856,7 +641,6 @@ export const getTasteSymbolsByNewSysWine = (id) => query(`SELECT * FROM new_syst
   },
 ).catch((error) => {
   console.log(error);
-  console.log(id);
 });
 
 export const getReviewsByWine = (id) => query(`SELECT * FROM reviews WHERE reviews.fk_wine_id = ${id}`).then(

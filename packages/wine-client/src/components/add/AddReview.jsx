@@ -54,7 +54,7 @@ const AddReview = () => {
 
   const getSysWines = (formdata) => {
     setIsLoading(true)
-    GetSystembolaget.getNewSysWines(formdata)
+    GetSystembolaget.getSysWines(formdata)
     .then((sysWinesResponse) => setSysWines(sysWinesResponse))
     .finally(() => setIsLoading(false))
   }

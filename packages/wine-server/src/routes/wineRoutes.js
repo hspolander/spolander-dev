@@ -1,8 +1,5 @@
 import bcrypt from 'bcrypt';
 import { uuid } from 'uuidv4';
-import cheerio from 'cheerio';
-import fetch from 'node-fetch';
-import { Buffer } from 'node:buffer';
 import browserObject from '../scrape/browser';
 import scraperController from '../scrape/pageController';
 
@@ -11,29 +8,21 @@ import {
   getUuidByUser,
   getUuidByUuid,
   getGrapesByWine,
-  getGrapesByNewSysWine,
-  getTasteSymbolsByNewSysWine,
+  getGrapesBySysWine,
+  getTasteSymbolsBySysWine,
   getReviewsByWine,
   getUserByUsername,
   getWineByProperty,
   getWineByForeignProperty,
   getDistinctFromSystembolagetWines,
-  getUnpopulatedImagesArray,
-  getNewUnpopulatedImagesArray,
-  addImageBlobIdToSystembolagetWine,
-  addImageBlobIdToNewSystembolagetWine,
-  getSystembolagetImageBlobById,
-  insertImageBlob,
   getHashByUsername,
   getAllNotCellarWines,
   getDistinctFromWine,
   getDistinctFromGrapes,
   getSystembolagWines,
-  getNewSystembolagWines,
   getAutocompleteResponse,
   getSystembolagCountries,
   getSystembolagSubTypes,
-  getSystembolagVolumes,
   getSystembolagTypes,
   insertReview,
   insertWine,
@@ -44,8 +33,6 @@ import {
   updateUuidTtl,
   setUuidExpired,
 } from '../controller/queries';
-
-const https = require('https');
 
 const fetchData = async (params) => {
   const browserInstance = browserObject.startBrowser();
@@ -138,125 +125,6 @@ export default (server) => {
       await fetchData('categoryLevel1=Vin&priceFrom=400&priceTo=500');
       await fetchData('categoryLevel1=Vin&priceFrom=500&priceTo=1000');
       await fetchData('categoryLevel1=Vin&priceFrom=1000');
-    } else {
-      res.clearCookie('WINE_UUID');
-      res.json({
-        error: true,
-        session: 'nosessionRedirect',
-        message: 'Session expired/invalid',
-        data: null,
-      });
-    }
-  });
-
-  // Get images one by one upon paginating
-  server.get('/api/getSystembolagetImageBlobById', async (req, res) => {
-    const { cookies } = req;
-
-    if (
-      cookies
-      && cookies.WINE_UUID
-      && (await validateSession(cookies.WINE_UUID))
-    ) {
-      const image = await getSystembolagetImageBlobById(req.query.blobId);
-      res.send({
-        error: false,
-        data: image[0].image_blob,
-      });
-    } else {
-      res.clearCookie('WINE_UUID');
-      res.json({
-        error: true,
-        session: 'nosessionRedirect',
-        message: 'Session expired/invalid',
-        data: null,
-      });
-    }
-  });
-
-  server.get('/api/populateNewSystembolagetImages', async (req, res) => {
-    const { cookies } = req;
-    if (
-      cookies
-      && cookies.WINE_UUID
-      && (await validateSession(cookies.WINE_UUID))
-    ) {
-      const images = await getUnpopulatedImagesArray();
-      await images.forEach(async (image, i) => {
-        setTimeout(async () => {
-          fetch(image.image)
-            .then((response) => response.blob())
-            .then((myBlob) => {
-              console.log(URL.createObjectURL(myBlob));
-            })
-            .catch((error) => console.log(error));
-        }, i * 700);
-      });
-      res.json({
-        error: false,
-        Message: 'Populating images',
-      });
-    } else {
-      res.clearCookie('WINE_UUID');
-      res.json({
-        error: true,
-        session: 'nosessionRedirect',
-        message: 'Session expired/invalid',
-        data: null,
-      });
-    }
-  });
-
-  // server.get('/api/populateNewSystembolagetImages', async (req, res) => {
-  //   const { cookies } = req;
-
-  //   if (
-  //     cookies
-  //     && cookies.WINE_UUID
-  //     && (await validateSession(cookies.WINE_UUID))
-  //   ) {
-  //     const images = await getNewUnpopulatedImagesArray();
-  //     await images.forEach(async (image, i) => {
-  //       setTimeout(async () => {
-  //         const systembolagetImage = await fetch(image.image);
-  //         const imageBlob = await systembolagetImage.buffer();
-  //         const imageBlobId = await insertImageBlob(imageBlob);
-  //         await addImageBlobIdToNewSystembolagetWine(imageBlobId, image.image);
-  //       }, i * 700);
-  //     });
-  //     res.json({
-  //       error: false,
-  //       Message: 'Populating images',
-  //     });
-  //   } else {
-  //     res.clearCookie('WINE_UUID');
-  //     res.json({
-  //       error: true,
-  //       session: 'nosessionRedirect',
-  //       message: 'Session expired/invalid',
-  //       data: null,
-  //     });
-  //   }
-  // });
-
-  server.get('/api/getAllById', async (req, res) => {
-    const { cookies } = req;
-    if (
-      cookies
-      && cookies.WINE_UUID
-      && (await validateSession(cookies.WINE_UUID))
-    ) {
-      const wine = await getWineById(req.query.id);
-      const grapes = await getGrapesByWine(wine.id);
-      const reviews = await getReviewsByWine(wine.id);
-      res.json({
-        error: false,
-        Message: 'Success',
-        data: {
-          grapes,
-          reviews,
-        },
-      });
     } else {
       res.clearCookie('WINE_UUID');
       res.json({
@@ -543,93 +411,20 @@ export default (server) => {
       && (await validateSession(cookies.WINE_UUID))
     ) {
       const { query } = req;
-      const systembolagetWines = await getSystembolagWines(
-        query.name,
-        query.type,
-        query.subType,
-        query.country,
-        query.price,
-        query.year,
-        query.description,
-        query.volume,
-        query.productCode,
-      );
-      res.json({ error: false, message: 'Success', data: systembolagetWines });
-    } else {
-      res.clearCookie('WINE_UUID');
-      res.json({
-        error: true,
-        session: 'nosessionRedirect',
-        message: 'Session expired/invalid',
-        data: null,
-      });
-    }
-  });
-
-  server.get('/api/getNewSysWines', async (req, res) => {
-    const { cookies } = req;
-    if (
-      cookies
-      && cookies.WINE_UUID
-      && (await validateSession(cookies.WINE_UUID))
-    ) {
-      const { query } = req;
       const {
         name, type, subtype, country, price, vintage, description, volume, productId,
       } = query;
-      const systembolagetWines = await getNewSystembolagWines(name, type, subtype, country, price, vintage, description, volume, productId);
+      const systembolagetWines = await getSystembolagWines(name, type, subtype, country, price, vintage, description, volume, productId);
       const winesWithGrapesAndTasteSymbols = await Promise.all(systembolagetWines.map(async (sysWine) => {
-        const wineGrapes = await getGrapesByNewSysWine(sysWine.productId);
+        const wineGrapes = await getGrapesBySysWine(sysWine.productId);
         const grapes = wineGrapes.map((grape) => grape.grape);
-        const tasteSymbols = await getTasteSymbolsByNewSysWine(sysWine.productId);
+        const tasteSymbols = await getTasteSymbolsBySysWine(sysWine.productId);
         return {
           ...sysWine, grapes, tasteSymbols,
         };
       }));
 
       res.json({ error: false, message: 'Success', data: winesWithGrapesAndTasteSymbols });
-    } else {
-      res.clearCookie('WINE_UUID');
-      res.json({
-        error: true,
-        session: 'nosessionRedirect',
-        message: 'Session expired/invalid',
-        data: null,
-      });
-    }
-  });
-
-  server.get('/api/getAdditionalWineData', async (req, res) => {
-    const { cookies } = req;
-    if (
-      cookies
-      && cookies.WINE_UUID
-      && (await validateSession(cookies.WINE_UUID))
-    ) {
-      const { url } = req.query;
-
-      const httpsAgent = new https.Agent({
-        rejectUnauthorized: false,
-      });
-
-      let $;
-      await fetch(url, {
-        agent: httpsAgent,
-      })
-        .then((additionalWineData) => additionalWineData.text())
-        .then((text) => {
-          $ = cheerio.load(text);
-        });
-
-      res.json({
-        error: false,
-        message: 'Success',
-        data: JSON.parse(
-          $('div[data-react-component="ProductDetailPageContainer"]').attr(
-            'data-props',
-          ),
-        ),
-      });
     } else {
       res.clearCookie('WINE_UUID');
       res.json({
@@ -651,27 +446,6 @@ export default (server) => {
       const countries = await getSystembolagCountries();
 
       res.json({ error: false, message: 'Success', data: countries });
-    } else {
-      res.clearCookie('WINE_UUID');
-      res.json({
-        error: true,
-        session: 'nosessionRedirect',
-        message: 'Session expired/invalid',
-        data: null,
-      });
-    }
-  });
-
-  server.get('/api/getVolumes', async (req, res) => {
-    const { cookies } = req;
-    if (
-      cookies
-      && cookies.WINE_UUID
-      && (await validateSession(cookies.WINE_UUID))
-    ) {
-      const volumes = await getSystembolagVolumes();
-
-      res.json({ error: false, message: 'Success', data: volumes });
     } else {
       res.clearCookie('WINE_UUID');
       res.json({
@@ -724,7 +498,7 @@ export default (server) => {
     }
   });
 
-  server.get('/api/autocompleteAddWine', async (req, res, next) => {
+  server.get('/api/autocompleteAddWine', async (req, res) => {
     const { cookies } = req;
     if (
       cookies
