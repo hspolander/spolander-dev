@@ -16,7 +16,7 @@ const SelectRegular = (props) => {
   }, []);
 
   return (
-    <FormControl required className={classes.root}>
+    <FormControl className={classes.root}>
       <InputLabel
         shrink
         ref={inputLabel}
