@@ -12,7 +12,7 @@
     "bcrypt": "^5.0.1",
     "cheerio": "^1.0.0-rc.3",
     "mysql2": "^2.3.2",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.2.10",
     "puppeteer": "^11.0.0",
     "restify": "^8.6.0",
     "restify-cookies": "^0.2.6",
